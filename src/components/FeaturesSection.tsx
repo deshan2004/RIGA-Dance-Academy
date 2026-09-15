@@ -1,52 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Star, Trophy, Users, Heart, GraduationCap, Users2, Building2, Clapperboard, Calendar } from "lucide-react";
-
-import Link from "next/link";
-
-const categories = [
-  {
-    id: "academy",
-    name: "ACADEMY",
-    tagline: "Elite Dance Education",
-    href: "/classes",
-    icon: <GraduationCap className="w-6 h-6 text-fuchsia-400" />,
-    description: "Structured curriculum for all skill levels from beginner to master."
-  },
-  {
-    id: "crew",
-    name: "CREW",
-    tagline: "Pro Performance Team",
-    href: "/crew",
-    icon: <Users2 className="w-6 h-6 text-purple-400" />,
-    description: "Award-winning competition & showcase performance dancers."
-  },
-  {
-    id: "rentals",
-    name: "RENTALS",
-    tagline: "Costumes, Props & Studio Spaces",
-    href: "/rentals",
-    icon: <Building2 className="w-6 h-6 text-fuchsia-400" />,
-    description: "Stage costumes, theatrical props, accessories & studio spaces for rent."
-  },
-  {
-    id: "productions",
-    name: "PRODUCTIONS",
-    tagline: "Choreography & Media",
-    href: "/productions",
-    icon: <Clapperboard className="w-6 h-6 text-purple-400" />,
-    description: "Film, commercial, and stage performance production services."
-  },
-  {
-    id: "events",
-    name: "EVENTS",
-    tagline: "Live Shows & Workshops",
-    href: "/events",
-    icon: <Calendar className="w-6 h-6 text-fuchsia-400" />,
-    description: "Exclusive masterclasses, dance battles, and live concerts."
-  }
-];
+import { Star, Trophy, Users, Heart } from "lucide-react";
 
 const features = [
   {
@@ -80,45 +35,7 @@ export default function FeaturesSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* CATEGORIES SHOWCASE BAR (ACADEMY | CREW | RENTALS | PRODUCTIONS | EVENTS) */}
-        <div className="mb-24">
-          <div className="text-center mb-10">
-            <h3 className="text-xs font-extrabold uppercase tracking-[0.3em] text-purple-400/90 mb-2">Our Divisions</h3>
-            <h2 className="text-2xl sm:text-3xl font-black uppercase text-white tracking-widest">
-              Explore <span className="text-metallic-purple">RIGA Ecosystem</span>
-            </h2>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {categories.map((cat, idx) => (
-              <Link key={cat.name} href={cat.href} className="block h-full">
-                <motion.div
-                  id={cat.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.08 }}
-                  className="group relative p-6 rounded-2xl bg-[#140924]/80 border border-purple-900/40 hover:border-purple-500/70 hover:shadow-[0_0_25px_rgba(168,85,247,0.35)] transition-all duration-300 backdrop-blur-md flex flex-col justify-between h-full scroll-mt-28"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none" />
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-purple-950/80 border border-purple-800/40 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-purple-500/60 transition-all shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-                      {cat.icon}
-                    </div>
-                    <h4 className="text-lg font-black tracking-wider text-purple-100 group-hover:text-fuchsia-300 transition-colors uppercase">
-                      {cat.name}
-                    </h4>
-                    <p className="text-xs text-purple-300/60 font-semibold mb-2">{cat.tagline}</p>
-                    <p className="text-xs text-purple-200/70 leading-relaxed font-light">{cat.description}</p>
-                  </div>
-                  <div className="mt-4 pt-3 border-t border-purple-950 flex items-center text-[10px] uppercase font-bold tracking-widest text-purple-400 group-hover:text-fuchsia-300">
-                    Explore Division &rarr;
-                  </div>
-                </motion.div>
-              </Link>
-            ))}
-          </div>
-        </div>
 
         {/* WHY CHOOSE US */}
         <div className="text-center mb-16">
