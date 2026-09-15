@@ -9,11 +9,25 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await request.json();
-    const newStatus = body.status ? body.status.toLowerCase() : "";
+    const updateData: Record<string, unknown> = {};
 
-    if (!newStatus || !["approved", "rejected", "pending", "pending_approval"].includes(newStatus)) {
+    if (body.status) {
+      const newStatus = body.status.toLowerCase();
+      if (["approved", "rejected", "pending", "pending_approval"].includes(newStatus)) {
+        updateData.status = newStatus;
+      }
+    }
+
+    if (body.role) {
+      const newRole = body.role.toLowerCase();
+      if (["admin", "user"].includes(newRole)) {
+        updateData.role = newRole;
+      }
+    }
+
+    if (Object.keys(updateData).length === 0) {
       return NextResponse.json(
-        { success: false, error: "Invalid status provided" },
+        { success: false, error: "Invalid parameters provided" },
         { status: 400 }
       );
     }
@@ -21,15 +35,15 @@ export async function PATCH(
     const docRef = doc(db, "users", id);
     const snap = await getDoc(docRef);
     if (snap.exists()) {
-      await updateDoc(docRef, { status: newStatus });
+      await updateDoc(docRef, updateData);
       const data = snap.data();
-      if (data.email) {
+      if (data.email && updateData.status) {
         // Also update matching enrollments for this user's email
         const enrollRef = collection(db, "enrollments");
         const q = query(enrollRef, where("email", "==", data.email));
         const enrollSnap = await getDocs(q);
         for (const eDoc of enrollSnap.docs) {
-          await updateDoc(doc(db, "enrollments", eDoc.id), { status: newStatus });
+          await updateDoc(doc(db, "enrollments", eDoc.id), { status: updateData.status as string });
         }
       }
     }

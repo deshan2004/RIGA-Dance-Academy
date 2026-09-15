@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
-import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, doc, getDoc, setDoc } from "firebase/firestore";
 import { Resend } from "resend";
 
 export async function GET() {
@@ -60,6 +60,31 @@ export async function POST(request: Request) {
       status: "pending",
       createdAt: serverTimestamp(),
     });
+
+    // Also ensure document is created in "users" collection so it appears in Firestore & Admin Panel
+    if (body.email) {
+      try {
+        const usersRef = collection(db, "users");
+        const userDocId = body.uid || body.email.replace(/[^a-zA-Z0-9]/g, "_");
+        const userDocRef = doc(db, "users", userDocId);
+        const userSnap = await getDoc(userDocRef);
+
+        if (!userSnap.exists()) {
+          await setDoc(userDocRef, {
+            uid: userDocId,
+            email: body.email,
+            firstName: body.student_name ? body.student_name.split(" ")[0] : "Student",
+            lastName: body.student_name ? body.student_name.split(" ").slice(1).join(" ") : "",
+            phone: body.phone || "",
+            role: "user",
+            status: "pending_approval",
+            createdAt: serverTimestamp(),
+          });
+        }
+      } catch (userErr) {
+        console.error("Error creating matching user doc:", userErr);
+      }
+    }
 
     // Send welcome email to student
     if (process.env.RESEND_API_KEY && process.env.RESEND_API_KEY !== "re_placeholder_key") {
