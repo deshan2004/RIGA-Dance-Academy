@@ -1,9 +1,43 @@
 import { NextResponse } from "next/server";
-import { collection, getDocs, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, setDoc, serverTimestamp, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get("email");
+    const uid = searchParams.get("uid");
+
+    // Single user lookup mode
+    if (email || uid) {
+      // 1. Try direct doc by UID
+      if (uid) {
+        const uDoc = await getDoc(doc(db, "users", uid));
+        if (uDoc.exists()) {
+          return NextResponse.json({ success: true, user: { uid: uDoc.id, ...uDoc.data() } });
+        }
+      }
+
+      // 2. Try direct doc by sanitized Email ID
+      if (email) {
+        const emailDocId = email.replace(/[^a-zA-Z0-9]/g, "_");
+        const uDocEmail = await getDoc(doc(db, "users", emailDocId));
+        if (uDocEmail.exists()) {
+          return NextResponse.json({ success: true, user: { uid: uDocEmail.id, ...uDocEmail.data() } });
+        }
+
+        // 3. Try query by email field
+        const q = query(collection(db, "users"), where("email", "==", email));
+        const qSnap = await getDocs(q);
+        if (!qSnap.empty) {
+          const matchedDoc = qSnap.docs[0];
+          return NextResponse.json({ success: true, user: { uid: matchedDoc.id, ...matchedDoc.data() } });
+        }
+      }
+
+      return NextResponse.json({ success: false, error: "User not found" }, { status: 404 });
+    }
+
     const usersRef = collection(db, "users");
     let snapshot;
     try {

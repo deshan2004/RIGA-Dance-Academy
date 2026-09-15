@@ -8,7 +8,7 @@ import {
   ChevronRight, ChevronLeft, Sparkles, User, MapPin, X, FileText
 } from "lucide-react";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 
@@ -96,18 +96,59 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      const userDoc = await getDoc(doc(db, "users", userCredential.user.uid));
-      const userData = userDoc.exists() ? userDoc.data() : null;
+      const user = userCredential.user;
+
+      // 1. Look up user document using multi-tier fallback (UID doc, Sanitized Email doc, Query, API fallback)
+      let userData: Record<string, any> | null = null;
+
+      try {
+        const userDocById = await getDoc(doc(db, "users", user.uid));
+        if (userDocById.exists()) {
+          userData = userDocById.data();
+        }
+      } catch (err) {}
+
+      if (!userData && user.email) {
+        try {
+          const emailDocId = user.email.replace(/[^a-zA-Z0-9]/g, "_");
+          const userDocByEmail = await getDoc(doc(db, "users", emailDocId));
+          if (userDocByEmail.exists()) {
+            userData = userDocByEmail.data();
+          }
+        } catch (err) {}
+      }
+
+      if (!userData && user.email) {
+        try {
+          const q = query(collection(db, "users"), where("email", "==", user.email));
+          const qSnap = await getDocs(q);
+          if (!qSnap.empty) {
+            userData = qSnap.docs[0].data();
+          }
+        } catch (err) {}
+      }
+
+      if (!userData && (user.email || user.uid)) {
+        try {
+          const res = await fetch(`/api/users?email=${encodeURIComponent(user.email || "")}&uid=${user.uid}`);
+          const apiData = await res.json();
+          if (apiData.success && apiData.user) {
+            userData = apiData.user;
+          }
+        } catch (err) {}
+      }
+
       const userRole = userData?.role?.toLowerCase() || "user";
 
-      // Admin bypasses approval check
+      // ADMIN BYPASSES ALL APPROVAL CHECKS!
       if (userRole === "admin") {
         router.push("/admin");
         return;
       }
 
-      // Check approval status in user document
-      const isDocApproved = userData?.status === "approved";
+      // 2. Check approval status for students
+      const uStatus = userData?.status?.toLowerCase();
+      const isDocApproved = uStatus === "approved" || uStatus === "approval";
 
       // Also check enrollment status via API
       let isEnrollmentApproved = false;
@@ -115,18 +156,21 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
         const res = await fetch(`/api/enroll/user?email=${encodeURIComponent(loginEmail)}`);
         const data = await res.json();
         if (data.success && Array.isArray(data.data)) {
-          isEnrollmentApproved = data.data.some((item: { status?: string }) => item.status === "approved");
+          isEnrollmentApproved = data.data.some((item: { status?: string }) => {
+            const s = item.status?.toLowerCase();
+            return s === "approved" || s === "approval";
+          });
         }
       } catch (err) {
         console.error("Error checking user approval:", err);
       }
 
       if (!isDocApproved && !isEnrollmentApproved) {
-        // Block sign in! Force sign out immediately and display notice.
+        // Block sign in for unapproved students!
         await auth.signOut();
         setStatus({
           type: "error",
-          message: "🚫 Account Pending Approval: Admin eken approve krnakal log wenn baha. Your registration & bank slip are pending Admin verification. Please wait for approval.",
+          message: "🚫 Account Pending Approval: Your registration is pending Admin verification. Please wait for approval.",
         });
         return;
       }

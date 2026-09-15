@@ -7,7 +7,7 @@ import FeaturedClassesPreview from "@/components/FeaturedClassesPreview";
 import CtaBanner from "@/components/CtaBanner";
 import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -18,8 +18,37 @@ export default function Home() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
-          const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-          if (userDoc.exists() && userDoc.data().role?.toLowerCase() === "admin") {
+          let userData: Record<string, any> | null = null;
+          try {
+            const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+            if (userDoc.exists()) userData = userDoc.data();
+          } catch (e) {}
+
+          if (!userData && currentUser.email) {
+            try {
+              const emailDocId = currentUser.email.replace(/[^a-zA-Z0-9]/g, "_");
+              const uByEmail = await getDoc(doc(db, "users", emailDocId));
+              if (uByEmail.exists()) userData = uByEmail.data();
+            } catch (e) {}
+          }
+
+          if (!userData && currentUser.email) {
+            try {
+              const q = query(collection(db, "users"), where("email", "==", currentUser.email));
+              const qSnap = await getDocs(q);
+              if (!qSnap.empty) userData = qSnap.docs[0].data();
+            } catch (e) {}
+          }
+
+          if (!userData && (currentUser.email || currentUser.uid)) {
+            try {
+              const res = await fetch(`/api/users?email=${encodeURIComponent(currentUser.email || "")}&uid=${currentUser.uid}`);
+              const apiData = await res.json();
+              if (apiData.success && apiData.user) userData = apiData.user;
+            } catch (e) {}
+          }
+
+          if (userData?.role?.toLowerCase() === "admin") {
             router.push("/admin");
             return;
           }

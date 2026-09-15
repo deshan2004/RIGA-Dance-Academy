@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { auth, db } from "@/lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, CheckCircle, Star, FileText } from "lucide-react";
@@ -147,8 +147,37 @@ export default function AdminDashboard() {
         router.push("/login");
       } else {
         try {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          if (userDoc.exists() && userDoc.data().role?.toLowerCase() === "admin") {
+          let userData: Record<string, any> | null = null;
+          try {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) userData = userDoc.data();
+          } catch (e) {}
+
+          if (!userData && user.email) {
+            try {
+              const emailDocId = user.email.replace(/[^a-zA-Z0-9]/g, "_");
+              const uByEmail = await getDoc(doc(db, "users", emailDocId));
+              if (uByEmail.exists()) userData = uByEmail.data();
+            } catch (e) {}
+          }
+
+          if (!userData && user.email) {
+            try {
+              const q = query(collection(db, "users"), where("email", "==", user.email));
+              const qSnap = await getDocs(q);
+              if (!qSnap.empty) userData = qSnap.docs[0].data();
+            } catch (e) {}
+          }
+
+          if (!userData && (user.email || user.uid)) {
+            try {
+              const res = await fetch(`/api/users?email=${encodeURIComponent(user.email || "")}&uid=${user.uid}`);
+              const apiData = await res.json();
+              if (apiData.success && apiData.user) userData = apiData.user;
+            } catch (e) {}
+          }
+
+          if (userData?.role?.toLowerCase() === "admin") {
             fetchEnrollments();
           } else {
             router.push("/");

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { auth, db } from "@/lib/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
 import type { User } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -91,15 +91,25 @@ export default function StudentDashboard() {
         setCurrentUser(user);
         try {
           // Check if admin or if account is approved
+          let data: Record<string, any> | null = null;
           const userDoc = await getDoc(doc(db, "users", user.uid));
-          const data = userDoc.exists() ? userDoc.data() : null;
+          if (userDoc.exists()) {
+            data = userDoc.data();
+          } else if (user.email) {
+            const q = query(collection(db, "users"), where("email", "==", user.email));
+            const qSnap = await getDocs(q);
+            if (!qSnap.empty) {
+              data = qSnap.docs[0].data();
+            }
+          }
 
           if (data?.role?.toLowerCase() === "admin") {
             router.push("/admin");
             return;
           }
 
-          let isApproved = data?.status === "approved";
+          const uStatus = data?.status?.toLowerCase();
+          let isApproved = uStatus === "approved" || uStatus === "approval";
 
           // Double check with enrollment status
           if (!isApproved && user.email) {
@@ -107,7 +117,10 @@ export default function StudentDashboard() {
               const res = await fetch(`/api/enroll/user?email=${encodeURIComponent(user.email)}`);
               const enrollData = await res.json();
               if (enrollData.success && Array.isArray(enrollData.data)) {
-                isApproved = enrollData.data.some((item: { status?: string }) => item.status === "approved");
+                isApproved = enrollData.data.some((item: { status?: string }) => {
+                  const s = item.status?.toLowerCase();
+                  return s === "approved" || s === "approval";
+                });
               }
             } catch (err) {
               console.error("Error checking user approval:", err);
