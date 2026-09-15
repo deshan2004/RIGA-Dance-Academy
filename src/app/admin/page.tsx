@@ -5,7 +5,7 @@ import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, CheckCircle, Star, FileText } from "lucide-react";
+import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, CheckCircle, Star, FileText, Image as ImageIcon, Upload } from "lucide-react";
 import AttendanceTab from "@/components/admin/AttendanceTab";
 import EventsTab from "@/components/admin/EventsTab";
 
@@ -42,6 +42,7 @@ interface ClassItem {
   time: string;
   instructor_name: string;
   hall_no: string;
+  image?: string;
   [key: string]: unknown;
 }
 
@@ -87,8 +88,20 @@ export default function AdminDashboard() {
     time: "",
     instructor_name: "",
     hall_no: "",
+    image: "",
   });
   const router = useRouter();
+
+  const handleClassImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setClassForm(prev => ({ ...prev, image: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const fetchEnrollments = async () => {
     try {
@@ -281,6 +294,7 @@ export default function AdminDashboard() {
         time: cls.time,
         instructor_name: cls.instructor_name,
         hall_no: cls.hall_no,
+        image: cls.image || "",
       });
     } else {
       setEditingClass(null);
@@ -291,6 +305,7 @@ export default function AdminDashboard() {
         time: "",
         instructor_name: "",
         hall_no: "",
+        image: "",
       });
     }
     setShowClassModal(true);
@@ -647,6 +662,7 @@ export default function AdminDashboard() {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-black/50 text-gray-400 text-sm uppercase tracking-wider">
+                  <th className="px-6 py-4 font-medium border-b border-gray-800">Photo</th>
                   <th className="px-6 py-4 font-medium border-b border-gray-800">Title</th>
                   <th className="px-6 py-4 font-medium border-b border-gray-800">Style</th>
                   <th className="px-6 py-4 font-medium border-b border-gray-800">Schedule</th>
@@ -658,13 +674,24 @@ export default function AdminDashboard() {
               <tbody className="divide-y divide-gray-800">
                 {classes.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                    <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
                       No classes found. Add one to get started.
                     </td>
                   </tr>
                 ) : (
                   classes.map((cls) => (
                     <tr key={cls._id} className="hover:bg-black/20 transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="w-12 h-12 rounded-xl overflow-hidden bg-purple-950 border border-purple-800/60 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                          {cls.image ? (
+                            <img src={cls.image} alt={cls.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-purple-400">
+                              <ImageIcon className="w-5 h-5" />
+                            </div>
+                          )}
+                        </div>
+                      </td>
                       <td className="px-6 py-4 text-white font-medium">{cls.title}</td>
                       <td className="px-6 py-4 text-academy-gold text-sm">{cls.style}</td>
                       <td className="px-6 py-4 text-gray-300 text-sm">
@@ -843,6 +870,44 @@ export default function AdminDashboard() {
                       onChange={(e) => setClassForm({...classForm, hall_no: e.target.value})}
                       className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-academy-gold focus:ring-1 focus:ring-academy-gold"
                     />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-1">Class Photo (Upload or URL)</label>
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                      <label className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-950/80 hover:bg-purple-900 border border-purple-700/60 rounded-lg text-purple-200 text-xs font-bold cursor-pointer transition-all shrink-0">
+                        <Upload className="w-4 h-4 text-fuchsia-400" />
+                        Upload Image
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleClassImageUpload}
+                          className="hidden"
+                        />
+                      </label>
+                      <span className="text-xs text-gray-500 font-semibold uppercase text-center">OR</span>
+                      <input
+                        type="text"
+                        value={classForm.image}
+                        onChange={(e) => setClassForm({ ...classForm, image: e.target.value })}
+                        className="flex-1 bg-academy-black border border-gray-700 rounded-lg px-3 py-2 text-white text-xs focus:border-academy-gold focus:ring-1 focus:ring-academy-gold"
+                        placeholder="Paste Image URL (https://...)"
+                      />
+                    </div>
+                    {classForm.image && (
+                      <div className="relative w-full h-32 rounded-xl overflow-hidden border border-purple-500/40 mt-2">
+                        <img src={classForm.image} alt="Preview" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => setClassForm({ ...classForm, image: "" })}
+                          className="absolute top-2 right-2 p-1.5 bg-black/70 hover:bg-red-900 text-white rounded-full transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 

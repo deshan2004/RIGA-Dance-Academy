@@ -170,7 +170,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
         await auth.signOut();
         setStatus({
           type: "error",
-          message: "🚫 Account Pending Approval: Your registration is pending Admin verification. Please wait for approval.",
+          message: "🚫 Account Pending Approval: Admin eken approve krnakal log wenn baha. Your registration & bank slip are pending Admin verification. Please wait for approval.",
         });
         return;
       }
