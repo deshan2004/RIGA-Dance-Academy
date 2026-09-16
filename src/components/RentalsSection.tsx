@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Sparkles, 
@@ -572,6 +572,15 @@ function RentalDetailModal({
   const [eventDate, setEventDate] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  // Lock body scroll while modal is open
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
+
   // Dynamic Quote Calculation
   const totalEstQuote = useMemo(() => {
     let rate = item.basePriceLkr * days * troupeQuantity;
@@ -607,70 +616,70 @@ function RentalDetailModal({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md overflow-y-auto"
       onClick={onClose}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+        exit={{ opacity: 0, scale: 0.95, y: 15 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-3xl rounded-3xl bg-[#120722] border border-purple-600/50 shadow-[0_0_50px_rgba(168,85,247,0.4)] overflow-hidden my-8"
+        className="relative w-full max-w-3xl max-h-[90vh] sm:max-h-[85vh] rounded-3xl bg-[#120722] border border-purple-600/50 shadow-[0_0_50px_rgba(168,85,247,0.4)] my-auto flex flex-col overflow-hidden"
       >
-        {/* Background Accents */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-fuchsia-600/10 rounded-full blur-[100px] pointer-events-none" />
-
-        {/* Modal Close & Heart Buttons */}
-        <div className="absolute top-5 right-5 z-20 flex items-center gap-2">
-          <button
-            onClick={(e) => onToggleLike(e, item.id)}
-            className={`p-2.5 rounded-full border transition-all ${
-              isLiked
-                ? "bg-fuchsia-600 text-white border-fuchsia-400 shadow-[0_0_15px_rgba(232,121,249,0.7)]"
-                : "bg-purple-950/80 text-purple-300 border-purple-800/60 hover:text-white hover:border-purple-500/80"
-            }`}
-          >
-            <Heart className={`w-4 h-4 ${isLiked ? "fill-white" : ""}`} />
-          </button>
-          <button
-            onClick={onClose}
-            className="p-2.5 rounded-full bg-purple-950/80 hover:bg-purple-900 border border-purple-800/60 text-purple-300 hover:text-white transition-all"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Modal Body */}
-        <div className="p-6 sm:p-8 space-y-6">
-          {/* Header Info */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-b border-purple-900/50 pb-6">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-purple-950 to-fuchsia-950 border border-purple-700/50 flex items-center justify-center text-4xl shadow-[0_0_25px_rgba(168,85,247,0.3)] shrink-0">
+        {/* Modal Sticky Header with Close & Heart Buttons */}
+        <div className="relative p-5 sm:p-6 border-b border-purple-900/50 shrink-0 flex items-start justify-between gap-4 bg-[#120722]/95 backdrop-blur-md z-20">
+          <div className="flex items-center gap-3.5 min-w-0 pr-16">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-purple-950 to-fuchsia-950 border border-purple-700/50 flex items-center justify-center text-3xl sm:text-4xl shadow-[0_0_20px_rgba(168,85,247,0.3)] shrink-0">
               {item.icon}
             </div>
-            <div>
-              <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-950 border border-purple-700 text-fuchsia-300">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-purple-950 border border-purple-700 text-fuchsia-300">
                   {item.categoryLabel}
                 </span>
                 {item.highlight && (
-                  <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-fuchsia-950 border border-fuchsia-600 text-fuchsia-200">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider bg-fuchsia-950 border border-fuchsia-600 text-fuchsia-200">
                     🔥 {item.highlight}
                   </span>
                 )}
-                <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-950/80 border border-emerald-700/60 text-emerald-400 flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  Available for Oct - Dec Booking
+                <span className="px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-emerald-950/80 border border-emerald-700/60 text-emerald-400 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Available for Booking
                 </span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-white truncate">
                 {item.name}
               </h2>
             </div>
           </div>
 
-          <p className="text-sm text-purple-200/80 leading-relaxed font-light">
+          {/* Top Controls: Heart & Close */}
+          <div className="absolute top-5 right-5 z-30 flex items-center gap-2">
+            <button
+              onClick={(e) => onToggleLike(e, item.id)}
+              className={`p-2 sm:p-2.5 rounded-full border transition-all ${
+                isLiked
+                  ? "bg-fuchsia-600 text-white border-fuchsia-400 shadow-[0_0_15px_rgba(232,121,249,0.7)]"
+                  : "bg-purple-950/80 text-purple-300 border-purple-800/60 hover:text-white hover:border-purple-500/80"
+              }`}
+              title={isLiked ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <Heart className={`w-4 h-4 ${isLiked ? "fill-white" : ""}`} />
+            </button>
+            <button
+              onClick={onClose}
+              className="p-2 sm:p-2.5 rounded-full bg-purple-950/80 hover:bg-purple-900 border border-purple-800/60 text-purple-300 hover:text-white transition-all"
+              title="Close modal"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable Modal Body */}
+        <div className="p-5 sm:p-8 space-y-6 overflow-y-auto flex-1 custom-scrollbar">
+          <p className="text-xs sm:text-sm text-purple-200/80 leading-relaxed font-light">
             {item.description}
           </p>
 
@@ -712,8 +721,8 @@ function RentalDetailModal({
 
           {/* Dynamic Rental Estimator Controls */}
           <div className="p-5 rounded-2xl bg-gradient-to-r from-purple-950/60 via-[#1e0e38] to-purple-950/60 border border-purple-700/50 space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
                 <Zap className="w-4 h-4 text-amber-400" />
                 Interactive Rental Estimator
               </h3>
@@ -753,16 +762,16 @@ function RentalDetailModal({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setTroupeQuantity(Math.max(1, troupeQuantity - 1))}
-                    className="w-8 h-8 rounded-lg bg-purple-900/60 border border-purple-700 text-white font-bold text-sm hover:bg-purple-800"
+                    className="w-8 h-8 rounded-lg bg-purple-900/60 border border-purple-700 text-white font-bold text-sm hover:bg-purple-800 shrink-0"
                   >
                     -
                   </button>
-                  <span className="px-3 py-1.5 bg-[#120722] border border-purple-800 rounded-lg text-white font-bold text-xs">
+                  <span className="px-3 py-1.5 bg-[#120722] border border-purple-800 rounded-lg text-white font-bold text-xs flex-1 text-center">
                     {troupeQuantity} {troupeQuantity === 1 ? "Set" : "Sets"}
                   </span>
                   <button
                     onClick={() => setTroupeQuantity(troupeQuantity + 1)}
-                    className="w-8 h-8 rounded-lg bg-purple-900/60 border border-purple-700 text-white font-bold text-sm hover:bg-purple-800"
+                    className="w-8 h-8 rounded-lg bg-purple-900/60 border border-purple-700 text-white font-bold text-sm hover:bg-purple-800 shrink-0"
                   >
                     +
                   </button>
@@ -789,7 +798,7 @@ function RentalDetailModal({
             </div>
 
             {/* Total Estimated Rate Display */}
-            <div className="pt-3 border-t border-purple-800/40 flex items-center justify-between">
+            <div className="pt-3 border-t border-purple-800/40 flex items-center justify-between flex-wrap gap-2">
               <span className="text-xs text-purple-300/80">Estimated Rental Total:</span>
               <div className="text-right">
                 <span className="text-xl font-black text-fuchsia-300">
@@ -801,11 +810,11 @@ function RentalDetailModal({
           </div>
 
           {/* Action Tabs & Inquiry Options */}
-          <div className="space-y-4">
+          <div className="space-y-4 pb-2">
             <div className="flex items-center gap-2 border-b border-purple-900/50 pb-2">
               <button
                 onClick={() => setInquiryType("whatsapp")}
-                className={`flex-1 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+                className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
                   inquiryType === "whatsapp"
                     ? "bg-emerald-950 border border-emerald-600 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)]"
                     : "bg-purple-950/40 text-purple-300/60 hover:text-white"
@@ -816,7 +825,7 @@ function RentalDetailModal({
               </button>
               <button
                 onClick={() => setInquiryType("form")}
-                className={`flex-1 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+                className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
                   inquiryType === "form"
                     ? "bg-purple-900 border border-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.3)]"
                     : "bg-purple-950/40 text-purple-300/60 hover:text-white"
@@ -833,11 +842,11 @@ function RentalDetailModal({
                   href={`https://wa.me/94777123456?text=${whatsappMessage}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-sm uppercase tracking-wider flex items-center justify-center gap-3 shadow-[0_0_25px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-0.5"
+                  className="w-full py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-3 shadow-[0_0_25px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-0.5"
                 >
-                  <MessageCircle className="w-5 h-5 fill-white text-emerald-600" />
+                  <MessageCircle className="w-5 h-5 fill-white text-emerald-600 shrink-0" />
                   <span>Send WhatsApp Inquiry Now</span>
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 shrink-0" />
                 </a>
                 <p className="text-[11px] text-center text-purple-300/60">
                   ⚡ Response time usually under 15 minutes during working hours (9 AM - 8 PM)
