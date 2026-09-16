@@ -5,8 +5,7 @@ import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, CheckCircle, Star, FileText, Image as ImageIcon, Upload, Camera } from "lucide-react";
-import AttendanceTab from "@/components/admin/AttendanceTab";
+import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera } from "lucide-react";
 import EventsTab from "@/components/admin/EventsTab";
 
 interface FirestoreTimestamp {
@@ -84,7 +83,7 @@ export default function AdminDashboard() {
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [inquiries, setInquiries] = useState<InquiryItem[]>([]);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
-  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "attendance" | "events" | "gallery">("enrollments");
+  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery">("enrollments");
   const [loading, setLoading] = useState(true);
   const [selectedSlip, setSelectedSlip] = useState<EnrollmentItem | null>(null);
   
@@ -483,19 +482,7 @@ export default function AdminDashboard() {
               Inquiries
             </div>
           </button>
-          <button
-            onClick={() => setActiveTab("attendance")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-              activeTab === "attendance" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4" />
-              Attendance
-            </div>
-          </button>
+
           <button
             onClick={() => setActiveTab("events")}
             className={`px-6 py-3 font-medium transition-colors border-b-2 ${
@@ -866,8 +853,6 @@ export default function AdminDashboard() {
             </table>
           </div>
         </motion.div>
-        ) : activeTab === "attendance" ? (
-          <AttendanceTab classes={classes} enrollments={enrollments} />
         ) : activeTab === "events" ? (
           <EventsTab />
         ) : activeTab === "gallery" ? (

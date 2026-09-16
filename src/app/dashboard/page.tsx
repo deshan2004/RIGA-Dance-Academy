@@ -19,12 +19,7 @@ interface Enrollment {
   [key: string]: unknown;
 }
 
-interface AttendanceRecord {
-  _id: string;
-  date: string;
-  presentEmails?: string[];
-  [key: string]: unknown;
-}
+
 
 interface UserData {
   firstName?: string;
@@ -39,8 +34,7 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [activeTab, setActiveTab] = useState<"classes" | "profile" | "attendance">("classes");
-  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
+  const [activeTab, setActiveTab] = useState<"classes" | "profile">("classes");
   
   // Profile form state
   const [firstName, setFirstName] = useState("");
@@ -52,18 +46,7 @@ export default function StudentDashboard() {
 
   const router = useRouter();
 
-  const fetchMyAttendance = async (email: string | null) => {
-    if (!email) return;
-    try {
-      const res = await fetch(`/api/attendance?studentEmail=${encodeURIComponent(email)}`);
-      const data = await res.json();
-      if (data.success) {
-        setAttendanceRecords(data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching attendance:", error);
-    }
-  };
+
 
   const fetchMyEnrollments = async (email: string | null) => {
     if (!email) {
@@ -150,11 +133,9 @@ export default function StudentDashboard() {
           }
 
           fetchMyEnrollments(user.email);
-          fetchMyAttendance(user.email);
         } catch (error) {
           console.error(error);
           fetchMyEnrollments(user.email);
-          fetchMyAttendance(user.email);
         }
       }
     });
@@ -262,19 +243,7 @@ export default function StudentDashboard() {
               My Profile
             </div>
           </button>
-          <button
-            onClick={() => setActiveTab("attendance")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
-              activeTab === "attendance" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <CheckCircle className="w-4 h-4" />
-              Attendance
-            </div>
-          </button>
+
         </div>
 
         {activeTab === "classes" ? (
@@ -440,50 +409,7 @@ export default function StudentDashboard() {
               </div>
             </form>
           </motion.div>
-        ) : activeTab === "attendance" ? (
-          <motion.div
-            key="attendance"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-6"
-          >
-            <h2 className="text-2xl font-bold text-white mb-6">My Attendance</h2>
-            
-            {attendanceRecords.length === 0 ? (
-              <div className="bg-academy-gray border border-gray-800 rounded-3xl p-12 text-center shadow-2xl">
-                <div className="w-20 h-20 bg-academy-black rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="w-10 h-10 text-gray-600" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">No attendance records found</h3>
-                <p className="text-gray-400 mb-8 max-w-md mx-auto">
-                  You don&apos;t have any attendance records yet. Make sure you attend your enrolled classes!
-                </p>
-              </div>
-            ) : (
-              <div className="bg-academy-gray border border-gray-800 rounded-2xl shadow-xl overflow-hidden">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-black/50 text-gray-400 text-sm uppercase tracking-wider">
-                      <th className="px-6 py-4 font-medium border-b border-gray-800">Date</th>
-                      <th className="px-6 py-4 font-medium border-b border-gray-800">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-800">
-                    {attendanceRecords.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(record => (
-                      <tr key={record._id} className="hover:bg-black/20 transition-colors">
-                        <td className="px-6 py-4 text-white font-medium">{new Date(record.date).toLocaleDateString()}</td>
-                        <td className="px-6 py-4">
-                          <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border bg-green-900/30 text-green-400 border-green-500/30">
-                            <CheckCircle className="w-3 h-3 mr-1 self-center" /> PRESENT
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </motion.div>
+
         ) : null}
       </div>
     </div>
