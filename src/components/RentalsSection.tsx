@@ -30,6 +30,7 @@ interface RentalItem {
   name: string;
   description: string;
   icon: string;
+  image?: string;
   highlight?: string;
   basePriceLkr: number;
   availableSizes?: string[];
@@ -54,7 +55,7 @@ const quickTagFilters = [
   { id: "Bulk Sets", label: "👥 Troupe Sets" },
 ];
 
-const rentalItems: RentalItem[] = [
+const defaultRentalItems: RentalItem[] = [
   // 👗 COSTUMES
   {
     id: "c1",
@@ -418,7 +419,7 @@ const rentalItems: RentalItem[] = [
   }
 ];
 
-// Interactive Card Component with Spotlight Mouse Tracking Effect
+// Interactive Card Component with Spotlight Mouse Tracking Effect & Photo Support
 function RentalCard({
   item,
   isLiked,
@@ -453,7 +454,7 @@ function RentalCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onOpenModal(item)}
-      className="group relative cursor-pointer p-6 rounded-2xl bg-[#120722]/90 border border-purple-900/40 hover:border-purple-500/80 shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.35)] transition-all duration-300 flex flex-col justify-between overflow-hidden"
+      className="group relative cursor-pointer p-5 rounded-2xl bg-[#120722]/90 border border-purple-900/40 hover:border-purple-500/80 shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.35)] transition-all duration-300 flex flex-col justify-between overflow-hidden"
     >
       {/* Interactive Cursor Spotlight Glow */}
       {isHovered && (
@@ -469,40 +470,68 @@ function RentalCard({
       <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-fuchsia-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl" />
 
       <div className="relative z-10">
-        {/* Header Row: Icon + Tag + Heart Bookmark */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="relative">
-            <span className="w-14 h-14 rounded-2xl bg-purple-950/90 border border-purple-700/40 flex items-center justify-center text-3xl shadow-[0_0_15px_rgba(168,85,247,0.25)] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+        {/* Photo Image Preview OR Emoji Icon */}
+        {item.image ? (
+          <div className="relative h-44 w-full rounded-xl overflow-hidden mb-4 border border-purple-800/40 bg-purple-950/60">
+            <img
+              src={item.image}
+              alt={item.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <span className="absolute top-2 left-2 text-2xl drop-shadow-md">
               {item.icon}
             </span>
-            <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#120722] shadow-[0_0_8px_rgba(16,185,129,0.8)]" title="Available for rent" />
-          </div>
+            <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-bold text-fuchsia-300 border border-purple-500/40">
+              📸 Uploaded Photo
+            </span>
 
-          <div className="flex items-center gap-2">
-            {item.highlight ? (
-              <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-fuchsia-950/90 border border-fuchsia-600/70 text-fuchsia-300 shadow-[0_0_12px_rgba(232,121,249,0.4)]">
-                {item.highlight}
-              </span>
-            ) : (
-              <span className="text-[10px] uppercase tracking-widest text-purple-300/60 font-semibold px-2 py-0.5 rounded-md bg-purple-950/50 border border-purple-900/30">
-                {item.categoryLabel}
-              </span>
-            )}
-
-            {/* Bookmark / Wishlist Heart Button */}
+            {/* Top Right Heart Wishlist Button over Image */}
             <button
               onClick={(e) => onToggleLike(e, item.id)}
-              className={`p-2 rounded-xl border transition-all duration-200 z-20 ${
+              className={`absolute top-2 right-2 p-2 rounded-xl border transition-all duration-200 z-20 ${
                 isLiked
                   ? "bg-fuchsia-600 text-white border-fuchsia-400 shadow-[0_0_12px_rgba(232,121,249,0.6)] scale-110"
-                  : "bg-purple-950/60 text-purple-400/70 border-purple-800/40 hover:text-white hover:border-purple-500/60"
+                  : "bg-black/70 text-purple-300 border-purple-800/60 hover:text-white"
               }`}
-              title={isLiked ? "Remove from Inquiry List" : "Add to Inquiry List"}
             >
               <Heart className={`w-4 h-4 ${isLiked ? "fill-white text-white" : ""}`} />
             </button>
           </div>
-        </div>
+        ) : (
+          <div className="flex items-start justify-between mb-4">
+            <div className="relative">
+              <span className="w-14 h-14 rounded-2xl bg-purple-950/90 border border-purple-700/40 flex items-center justify-center text-3xl shadow-[0_0_15px_rgba(168,85,247,0.25)] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                {item.icon}
+              </span>
+              <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#120722] shadow-[0_0_8px_rgba(16,185,129,0.8)]" title="Available for rent" />
+            </div>
+
+            <div className="flex items-center gap-2">
+              {item.highlight ? (
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-fuchsia-950/90 border border-fuchsia-600/70 text-fuchsia-300 shadow-[0_0_12px_rgba(232,121,249,0.4)]">
+                  {item.highlight}
+                </span>
+              ) : (
+                <span className="text-[10px] uppercase tracking-widest text-purple-300/60 font-semibold px-2 py-0.5 rounded-md bg-purple-950/50 border border-purple-900/30">
+                  {item.categoryLabel}
+                </span>
+              )}
+
+              {/* Bookmark / Wishlist Heart Button */}
+              <button
+                onClick={(e) => onToggleLike(e, item.id)}
+                className={`p-2 rounded-xl border transition-all duration-200 z-20 ${
+                  isLiked
+                    ? "bg-fuchsia-600 text-white border-fuchsia-400 shadow-[0_0_12px_rgba(232,121,249,0.6)] scale-110"
+                    : "bg-purple-950/60 text-purple-400/70 border-purple-800/40 hover:text-white hover:border-purple-500/60"
+                }`}
+                title={isLiked ? "Remove from Inquiry List" : "Add to Inquiry List"}
+              >
+                <Heart className={`w-4 h-4 ${isLiked ? "fill-white text-white" : ""}`} />
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Title & Description */}
         <h3 className="text-lg font-bold text-white group-hover:text-fuchsia-300 transition-colors mb-2 line-clamp-1">
@@ -547,7 +576,7 @@ function RentalCard({
   );
 }
 
-// Quick View & Booking Inquiry Modal
+// Quick View & Booking Inquiry Modal with Photo Support
 function RentalDetailModal({
   item,
   onClose,
@@ -630,8 +659,12 @@ function RentalDetailModal({
         {/* Modal Sticky Header with Close & Heart Buttons */}
         <div className="relative p-5 sm:p-6 border-b border-purple-900/50 shrink-0 flex items-start justify-between gap-4 bg-[#120722]/95 backdrop-blur-md z-20">
           <div className="flex items-center gap-3.5 min-w-0 pr-16">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-purple-950 to-fuchsia-950 border border-purple-700/50 flex items-center justify-center text-3xl sm:text-4xl shadow-[0_0_20px_rgba(168,85,247,0.3)] shrink-0">
-              {item.icon}
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-purple-950 to-fuchsia-950 border border-purple-700/50 flex items-center justify-center text-3xl sm:text-4xl shadow-[0_0_20px_rgba(168,85,247,0.3)] shrink-0 overflow-hidden">
+              {item.image ? (
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+              ) : (
+                item.icon
+              )}
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 mb-1 flex-wrap">
@@ -679,6 +712,17 @@ function RentalDetailModal({
 
         {/* Scrollable Modal Body */}
         <div className="p-5 sm:p-8 space-y-6 overflow-y-auto flex-1 custom-scrollbar">
+          {/* Photo Banner if Available */}
+          {item.image && (
+            <div className="relative w-full h-52 sm:h-64 rounded-2xl overflow-hidden border border-purple-700/40 shrink-0 bg-purple-950 shadow-inner">
+              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#120722] via-transparent to-black/30" />
+              <span className="absolute bottom-3 left-3 text-3xl drop-shadow-lg">
+                {item.icon}
+              </span>
+            </div>
+          )}
+
           <p className="text-xs sm:text-sm text-purple-200/80 leading-relaxed font-light">
             {item.description}
           </p>
@@ -901,24 +945,55 @@ function RentalDetailModal({
 }
 
 export default function RentalsSection() {
+  const [itemsList, setItemsList] = useState<RentalItem[]>(defaultRentalItems);
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeTag, setActiveTag] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [likedItemIds, setLikedItemIds] = useState<string[]>([]);
   const [selectedModalItem, setSelectedModalItem] = useState<RentalItem | null>(null);
 
+  useEffect(() => {
+    async function loadLiveRentals() {
+      try {
+        const res = await fetch("/api/rentals");
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          const apiItems: RentalItem[] = json.data.map((doc: any) => ({
+            id: doc._id || doc.id,
+            category: doc.category || "costumes",
+            categoryLabel: doc.categoryLabel || (doc.category === "props" ? "Props" : doc.category === "accessories" ? "Performance Accessories" : "Costumes"),
+            name: doc.name,
+            description: doc.description || "",
+            icon: doc.icon || "👗",
+            image: doc.image || "",
+            highlight: doc.highlight || "",
+            basePriceLkr: Number(doc.basePriceLkr) || 2000,
+            availableSizes: doc.availableSizes || ["Standard"],
+            includedPieces: doc.includedPieces || [],
+            suitableFor: doc.suitableFor || [],
+            stockCount: doc.stockCount || 10,
+          }));
+          setItemsList([...apiItems, ...defaultRentalItems]);
+        }
+      } catch (e) {
+        console.error("Failed to load live rentals:", e);
+      }
+    }
+    loadLiveRentals();
+  }, []);
+
   // Category counts
   const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = { all: rentalItems.length };
-    rentalItems.forEach((item) => {
+    const counts: Record<string, number> = { all: itemsList.length };
+    itemsList.forEach((item) => {
       counts[item.category] = (counts[item.category] || 0) + 1;
     });
     return counts;
-  }, []);
+  }, [itemsList]);
 
   // Filtered items logic
   const filteredItems = useMemo(() => {
-    return rentalItems.filter((item) => {
+    return itemsList.filter((item) => {
       const matchesCategory = activeCategory === "all" || item.category === activeCategory;
       const matchesTag = activeTag === "all" || item.highlight === activeTag;
       const matchesSearch =
@@ -927,7 +1002,7 @@ export default function RentalsSection() {
         (item.includedPieces && item.includedPieces.some((p) => p.toLowerCase().includes(searchQuery.toLowerCase())));
       return matchesCategory && matchesTag && matchesSearch;
     });
-  }, [activeCategory, activeTag, searchQuery]);
+  }, [itemsList, activeCategory, activeTag, searchQuery]);
 
   const toggleLike = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
@@ -937,8 +1012,8 @@ export default function RentalsSection() {
   };
 
   const selectedLikedItems = useMemo(() => {
-    return rentalItems.filter((item) => likedItemIds.includes(item.id));
-  }, [likedItemIds]);
+    return itemsList.filter((item) => likedItemIds.includes(item.id));
+  }, [itemsList, likedItemIds]);
 
   const handleBatchInquiryWhatsApp = () => {
     if (selectedLikedItems.length === 0) return;

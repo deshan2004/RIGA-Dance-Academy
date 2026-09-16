@@ -5,8 +5,9 @@ import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera } from "lucide-react";
+import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag } from "lucide-react";
 import EventsTab from "@/components/admin/EventsTab";
+import RentalsTab from "@/components/admin/RentalsTab";
 
 interface FirestoreTimestamp {
   seconds: number;
@@ -83,7 +84,7 @@ export default function AdminDashboard() {
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [inquiries, setInquiries] = useState<InquiryItem[]>([]);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
-  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery">("enrollments");
+  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery" | "rentals">("enrollments");
   const [loading, setLoading] = useState(true);
   const [selectedSlip, setSelectedSlip] = useState<EnrollmentItem | null>(null);
   
@@ -509,6 +510,19 @@ export default function AdminDashboard() {
               Gallery & Photos
             </div>
           </button>
+          <button
+            onClick={() => setActiveTab("rentals")}
+            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+              activeTab === "rentals" 
+                ? "text-academy-gold border-academy-gold" 
+                : "text-gray-500 border-transparent hover:text-gray-300"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4" />
+              Rentals & Wardrobe
+            </div>
+          </button>
         </div>
 
         {activeTab === "enrollments" ? (
@@ -855,6 +869,8 @@ export default function AdminDashboard() {
         </motion.div>
         ) : activeTab === "events" ? (
           <EventsTab />
+        ) : activeTab === "rentals" ? (
+          <RentalsTab />
         ) : activeTab === "gallery" ? (
         <motion.div
           key="gallery"
