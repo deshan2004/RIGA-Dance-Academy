@@ -21,9 +21,131 @@ export interface RentalItemData {
   stockCount?: number;
 }
 
+const DEMO_PHOTO_PRESETS = [
+  {
+    label: "Bollywood Outfit",
+    category: "costumes",
+    icon: "💃",
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=800&auto=format&fit=crop",
+    name: "Bollywood Stage Ensemble",
+    price: 2500,
+    highlight: "Popular"
+  },
+  {
+    label: "Contemporary Silk",
+    category: "costumes",
+    icon: "🕊️",
+    image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=800&auto=format&fit=crop",
+    name: "Contemporary Flow Silks",
+    price: 1800,
+  },
+  {
+    label: "Hip-Hop Streetwear",
+    category: "costumes",
+    icon: "🧢",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=800&auto=format&fit=crop",
+    name: "Urban Hip-Hop Streetwear",
+    price: 2200,
+    highlight: "Trending"
+  },
+  {
+    label: "K-Pop Idol Suit",
+    category: "costumes",
+    icon: "⭐",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800&auto=format&fit=crop",
+    name: "K-Pop Stage Idol Suit",
+    price: 3000,
+  },
+  {
+    label: "Latin Salsa Dress",
+    category: "costumes",
+    icon: "💃",
+    image: "https://images.unsplash.com/photo-1545959570-a94467d3a049?q=80&w=800&auto=format&fit=crop",
+    name: "Latin Salsa & Ballroom Couture",
+    price: 2800,
+  },
+  {
+    label: "Kandyan Ves Regalia",
+    category: "costumes",
+    icon: "🥁",
+    image: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?q=80&w=800&auto=format&fit=crop",
+    name: "Traditional Sri Lankan Regalia",
+    price: 4500,
+    highlight: "Heritage"
+  },
+  {
+    label: "Stage Feather Fans",
+    category: "props",
+    icon: "🪭",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop",
+    name: "Dramatic Feather & Silk Fans",
+    price: 1200,
+    highlight: "Popular"
+  },
+  {
+    label: "Broadway Tap Canes",
+    category: "props",
+    icon: "🦯",
+    image: "https://images.unsplash.com/photo-1469488865564-c2de10f69f96?q=80&w=800&auto=format&fit=crop",
+    name: "Broadway Tap & Cabaret Canes",
+    price: 800,
+  },
+  {
+    label: "LED Wings & Glow Props",
+    category: "props",
+    icon: "💡",
+    image: "https://images.unsplash.com/photo-1508997449629-303059a039c0?q=80&w=800&auto=format&fit=crop",
+    name: "Programmable LED Glow Props",
+    price: 3500,
+    highlight: "High-Tech"
+  },
+  {
+    label: "Geta Beraya Drum",
+    category: "props",
+    icon: "🪘",
+    image: "https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?q=80&w=800&auto=format&fit=crop",
+    name: "Authentic Sri Lankan Drums",
+    price: 3000,
+    highlight: "Heritage"
+  },
+  {
+    label: "Kundan Jewelry Set",
+    category: "accessories",
+    icon: "💎",
+    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop",
+    name: "Kundan & Temple Jewelry Sets",
+    price: 1500,
+    highlight: "Popular"
+  },
+  {
+    label: "Traditional Raksha Mask",
+    category: "accessories",
+    icon: "🎭",
+    image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=800&auto=format&fit=crop",
+    name: "Raksha & Masquerade Stage Masks",
+    price: 1800,
+  },
+  {
+    label: "Ghungroo & Pro Shoes",
+    category: "accessories",
+    icon: "👠",
+    image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop",
+    name: "Ghungroo Anklets & Pro Shoes",
+    price: 1600,
+    highlight: "Pro Grade"
+  }
+];
+
+const getFallbackImage = (category: string) => {
+  if (category === "props") return "/images/rentals/props_demo.jpg";
+  if (category === "accessories") return "/images/rentals/accessories_demo.jpg";
+  return "/images/rentals/costume_demo.jpg";
+};
+
 export default function RentalsTab() {
   const [rentals, setRentals] = useState<RentalItemData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<RentalItemData | null>(null);
 
@@ -67,6 +189,38 @@ export default function RentalsTab() {
         setFormState((prev) => ({ ...prev, image: reader.result as string }));
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const seedDemoData = async () => {
+    if (!confirm("This will add high-res demo items with photos to your wardrobe database. Proceed?")) return;
+    try {
+      setSeeding(true);
+      for (const preset of DEMO_PHOTO_PRESETS) {
+        await fetch("/api/rentals", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: preset.name,
+            category: preset.category,
+            categoryLabel: preset.category === "props" ? "Props" : preset.category === "accessories" ? "Performance Accessories" : "Costumes",
+            description: `Professional performance grade ${preset.name.toLowerCase()} equipped for stage productions, video shoots, and live concerts.`,
+            icon: preset.icon,
+            image: preset.image,
+            highlight: preset.highlight || "",
+            basePriceLkr: preset.price,
+            includedPieces: ["Full Stage Set", "Matching Accessories"],
+            suitableFor: ["Stage Shows", "TV Shoots", "Competitions"],
+            availableSizes: ["S", "M", "L", "Troupe Sizing"]
+          })
+        });
+      }
+      fetchRentals();
+      alert("Successfully seeded demo items with photos!");
+    } catch (err) {
+      console.error("Error seeding demo items:", err);
+    } finally {
+      setSeeding(false);
     }
   };
 
@@ -183,12 +337,22 @@ export default function RentalsTab() {
           </p>
         </div>
 
-        <button
-          onClick={openModalForNew}
-          className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold py-2.5 px-5 rounded-xl flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] shrink-0"
-        >
-          <Plus className="w-4 h-4" /> Add Rental Item
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={seedDemoData}
+            disabled={seeding}
+            className="bg-purple-950/80 hover:bg-purple-900 border border-purple-700/60 text-fuchsia-300 font-semibold text-xs py-2.5 px-4 rounded-xl flex items-center gap-2 transition-all disabled:opacity-50"
+          >
+            <Sparkles className="w-4 h-4 text-fuchsia-400" />
+            {seeding ? "Seeding..." : "Seed Demo Photos Items"}
+          </button>
+          <button
+            onClick={openModalForNew}
+            className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold py-2.5 px-5 rounded-xl flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] shrink-0"
+          >
+            <Plus className="w-4 h-4" /> Add Rental Item
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -216,17 +380,13 @@ export default function RentalsTab() {
               key={item._id}
               className="bg-black/60 border border-purple-900/40 rounded-2xl overflow-hidden group relative flex flex-col justify-between hover:border-purple-500/60 transition-all"
             >
-              {/* Photo or Fallback Icon */}
+              {/* Photo or Fallback Demo Photo */}
               <div className="relative h-44 w-full bg-purple-950/50 overflow-hidden flex items-center justify-center">
-                {item.image ? (
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="text-5xl">{item.icon}</div>
-                )}
+                <img
+                  src={item.image || getFallbackImage(item.category)}
+                  alt={item.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
 
                 <span className="absolute top-2 left-2 bg-purple-950/90 text-fuchsia-300 border border-purple-500/50 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
                   {item.category}
@@ -422,6 +582,50 @@ export default function RentalsTab() {
                       </button>
                     </div>
                   )}
+
+                  {/* Quick Select Demo Photos */}
+                  <div className="mt-3">
+                    <label className="block text-[11px] font-bold text-purple-300/90 mb-1.5 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-fuchsia-400" />
+                      Quick Pick Demo Photo Presets:
+                    </label>
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 max-h-36 overflow-y-auto p-2 bg-[#090410] border border-purple-900/60 rounded-xl">
+                      {DEMO_PHOTO_PRESETS.map((preset, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => {
+                            setFormState((prev) => ({
+                              ...prev,
+                              image: preset.image,
+                              name: prev.name ? prev.name : preset.name,
+                              category: (preset.category as "costumes" | "props" | "accessories"),
+                              icon: preset.icon,
+                              basePriceLkr: String(preset.price),
+                              highlight: preset.highlight || prev.highlight
+                            }));
+                          }}
+                          className={`group relative h-14 rounded-lg overflow-hidden border transition-all text-left ${
+                            formState.image === preset.image
+                              ? "border-fuchsia-500 ring-2 ring-fuchsia-500/50"
+                              : "border-purple-900/40 hover:border-purple-500"
+                          }`}
+                        >
+                          <img
+                            src={preset.image}
+                            alt={preset.label}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-1 flex flex-col justify-end">
+                            <span className="text-[9px] font-bold text-white line-clamp-1 flex items-center gap-0.5">
+                              <span>{preset.icon}</span>
+                              <span>{preset.label}</span>
+                            </span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 

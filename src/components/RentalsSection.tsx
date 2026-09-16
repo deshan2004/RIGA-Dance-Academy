@@ -64,6 +64,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Bollywood Stage Ensemble",
     description: "Vibrant ghagra cholis, embroidered fusion outfits, and sequined dupattas designed for high-energy routines.",
     icon: "💃",
+    image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=800&auto=format&fit=crop",
     highlight: "Popular",
     basePriceLkr: 2500,
     availableSizes: ["S", "M", "L", "Custom Troupe"],
@@ -78,6 +79,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Contemporary Flow Silks",
     description: "Fluid, breathable silks, mesh tunics, and minimalist drapes for expressive lyrical performances.",
     icon: "🕊️",
+    image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 1800,
     availableSizes: ["S", "M", "L", "XL"],
     includedPieces: ["Asymmetric Silk Tunic", "Matching Flow Trousers", "Expressive Drape Ribbon"],
@@ -91,6 +93,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Urban Hip-Hop Streetwear",
     description: "Urban streetwear, oversized metallic jackets, cargo sets, and custom varsity gear.",
     icon: "🧢",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=800&auto=format&fit=crop",
     highlight: "Trending",
     basePriceLkr: 2200,
     availableSizes: ["M", "L", "XL", "Over-sized"],
@@ -105,6 +108,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "K-Pop Stage Idol Suit",
     description: "Sleek, matching idol team outfits, futuristic harnesses, and concept stage suits.",
     icon: "⭐",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 3000,
     availableSizes: ["S", "M", "L"],
     includedPieces: ["Tailored Stage Blazer", "Tactical Body Harness", "Fitted Dance Trousers"],
@@ -118,6 +122,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Latin Salsa & Ballroom Couture",
     description: "Fringed salsa dresses, ballroom gowns, and tailored Latin dance trousers with beaded detailing.",
     icon: "💃",
+    image: "https://images.unsplash.com/photo-1545959570-a94467d3a049?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 2800,
     availableSizes: ["XS", "S", "M", "L"],
     includedPieces: ["Tiered Fringe Latin Dress", "Rhinestone Arm Cuffs", "Matching Hairpiece"],
@@ -131,6 +136,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Traditional Sri Lankan Regalia",
     description: "Authentic Kandyan Ves attire, Pahatharata low-country costumes, and Sabaragamuwa dance regalia.",
     icon: "🥁",
+    image: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?q=80&w=800&auto=format&fit=crop",
     highlight: "Heritage",
     basePriceLkr: 4500,
     availableSizes: ["Custom Fitted"],
@@ -145,6 +151,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Pageant & High-Glamour Gowns",
     description: "High-glamour couture stage gowns, crystal-embellished bodysuits, and dramatic wings.",
     icon: "👑",
+    image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 5000,
     availableSizes: ["S", "M", "L"],
     includedPieces: ["Crystal Bodysuit", "Detachable Feathered Cape/Wings", "Matching Choker"],
@@ -158,6 +165,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Junior & Kids Stage Costumes",
     description: "Tailored mini stage costumes for junior dance troupes, competitions, and school recitals.",
     icon: "🧸",
+    image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 1500,
     availableSizes: ["Kids 4-6", "Kids 7-9", "Kids 10-12"],
     includedPieces: ["Junior Dance Top", "Skirt/Shorts", "Sparkle Headband"],
@@ -171,6 +179,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Themed & Theatrical Wardrobe",
     description: "Custom theatrical wardrobe for conceptual storylines, period pieces, and fantasy themes.",
     icon: "🎨",
+    image: "https://images.unsplash.com/photo-1534215754734-18e55d13e346?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 3200,
     availableSizes: ["S", "M", "L", "Custom"],
     includedPieces: ["Character Robe/Tunic", "Themed Props Overlay", "Custom Head Ornament"],
@@ -184,6 +193,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Mega Ensemble Troupe Sets",
     description: "Synchronized ensemble wardrobe sets (10 to 50+ dancers) ensuring visual stage perfection.",
     icon: "👥",
+    image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=800&auto=format&fit=crop",
     highlight: "Bulk Sets",
     basePriceLkr: 12000,
     availableSizes: ["Full Troupe Sizing (10-50 Sets)"],
@@ -200,6 +210,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Dramatic Feather & Silk Fans",
     description: "Feather fan veils, silk folding fans, and oversized theatrical hand fans for dramatic reveals.",
     icon: "🪭",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop",
     highlight: "Popular",
     basePriceLkr: 1200,
     includedPieces: ["Pair of 1.8m Silk Veil Fans (Left + Right)"],
@@ -213,6 +224,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Broadway Tap & Cabaret Canes",
     description: "Broadway tap canes, dazzle sticks, and traditional cabaret performance walking canes.",
     icon: "🦯",
+    image: "https://images.unsplash.com/photo-1469488865564-c2de10f69f96?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 800,
     includedPieces: ["Heavy-duty Gloss Finish Dance Cane"],
     suitableFor: ["Jazz Routines", "Tap Dance", "Cabaret Numbers"],
@@ -225,6 +237,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Theatrical Top Hats & Headdresses",
     description: "Fedora hats, top hats, Sri Lankan traditional headdresses, and glitter bowler hats.",
     icon: "🎩",
+    image: "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 900,
     includedPieces: ["Glitter Satin Top Hat with Metallic Ribbon"],
     suitableFor: ["Jazz & Tap", "Gentleman Troupe Themes"],
@@ -237,6 +250,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "LED Lit & Vintage Umbrellas",
     description: "Traditional Sri Lankan parasols, LED lit umbrellas, and lace vintage rain props.",
     icon: "☂️",
+    image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 1400,
     includedPieces: ["Programmable LED Fiber Umbrella"],
     suitableFor: ["Night Stage Routines", "Music Videos", "Rain Dance Concepts"],
@@ -249,6 +263,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Gymnastics Satin Ribbons",
     description: "Rhythmic gymnastics satin ribbons, aerial silks, and long color-wave streamers.",
     icon: "🎗️",
+    image: "https://images.unsplash.com/photo-1508997449629-303059a039c0?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 600,
     includedPieces: ["6m Satin Ribbon with Fiber Wand"],
     suitableFor: ["Rhythmic Solos", "Stage Wave Routines"],
@@ -261,6 +276,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Bellydance Silk Veils & Drapes",
     description: "Bellydance silk veils, mystery shrouds, and multi-layered tulle performance drapes.",
     icon: "🌌",
+    image: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 1000,
     includedPieces: ["100% Habotai Gradient Silk Veil"],
     suitableFor: ["Oriental Dance", "Airy Flow Pieces"],
@@ -273,6 +289,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Color Guard & Metallic Flags",
     description: "Color guard flags, giant metallic team banners, and silk motion flags.",
     icon: "🚩",
+    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 1500,
     includedPieces: ["Poly-silk Flag + Lightweight Aluminum Pole"],
     suitableFor: ["Troupe Opening March", "Stadium Events"],
@@ -285,6 +302,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Sleek Metallic Performance Chairs",
     description: "Sleek metallic performance chairs, vintage wooden props, and cabaret dance seating.",
     icon: "🪑",
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 1800,
     includedPieces: ["Reinforced Chrome Dance Chair"],
     suitableFor: ["Chair Heels Choreography", "Cabaret Solos"],
@@ -297,6 +315,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Programmable LED Glow Props",
     description: "Programmable LED light whips, glow poi, illuminated wings, and neon stage props.",
     icon: "💡",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800&auto=format&fit=crop",
     highlight: "High-Tech",
     basePriceLkr: 3500,
     includedPieces: ["Pair of Multi-mode LED Wings + Controller"],
@@ -310,6 +329,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Authentic Sri Lankan Drums & Raban",
     description: "Authentic Sri Lankan drums (Geta Beraya, Yak Beraya), Raban, and ceremonial brass items.",
     icon: "🪘",
+    image: "https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?q=80&w=800&auto=format&fit=crop",
     highlight: "Heritage",
     basePriceLkr: 3000,
     includedPieces: ["Authentic Hand-carved Geta Beraya + Straps"],
@@ -323,6 +343,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Large Portable Stage Backdrops",
     description: "Large-scale portable backdrop elements, throne chairs, and custom concert set pieces.",
     icon: "🎪",
+    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 8000,
     includedPieces: ["Collapsible Stage Arch & Props Frame"],
     suitableFor: ["Concert Set Designs", "Theatre Stage Productions"],
@@ -337,6 +358,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Kundan & Temple Jewelry Sets",
     description: "Stage-ready Kundan sets, temple jewellery, sparkling rhinestone necklaces, and earrings.",
     icon: "💎",
+    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop",
     highlight: "Popular",
     basePriceLkr: 1500,
     includedPieces: ["Heavy Necklace", "Matching Earrings", "Maang Tikka", "Armlets (Vanki)"],
@@ -350,6 +372,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Satin Opera & LED Gloves",
     description: "Satin opera gloves, fingerless leather street gloves, and LED glowing performance gloves.",
     icon: "🧤",
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 700,
     includedPieces: ["Pair of Elbow-length Satin Gloves"],
     suitableFor: ["High Fashion Dance", "Voguing", "Stage Jazz"],
@@ -362,6 +385,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Royal Crown Tiaras & Nalalpata",
     description: "Ornate Kandyan Nalalpata, crown tiaras, feather headdresses, and crystal forehead chains.",
     icon: "👑",
+    image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop",
     highlight: "Heritage",
     basePriceLkr: 2000,
     includedPieces: ["Brass Gold Plated Nalalpata Head Chain"],
@@ -375,6 +399,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Raksha & Masquerade Stage Masks",
     description: "Traditional Sri Lankan Raksha masks, Venetian masquerade masks, and futuristic cyber visors.",
     icon: "🎭",
+    image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 1800,
     includedPieces: ["Authentic Wooden Hand-painted Gurulu/Maru Raksha Mask"],
     suitableFor: ["Traditional Ritual Dance", "Masquerade Balls", "Cyberpunk Themes"],
@@ -387,6 +412,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Bellydance Coin Belts & Chains",
     description: "Coin bellydance belts, metallic waist chains, traditional silver waistbands, and leather harnesses.",
     icon: "⛓️",
+    image: "https://images.unsplash.com/photo-1611591475285-a36ad5e14391?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 1100,
     includedPieces: ["Velvet Coin Hip Scarf with Jingle Bells"],
     suitableFor: ["Bellydance", "Fusion Latin", "Street Style"],
@@ -399,6 +425,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Gajra Garlands & Hair Cages",
     description: "Gajra flower garlands, bun cages, decorative hair pins, and metallic braided extensions.",
     icon: "🌺",
+    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=800&auto=format&fit=crop",
     basePriceLkr: 500,
     includedPieces: ["Reusable Silk Flower Gajra Ring + Golden Pins"],
     suitableFor: ["Bharatanatyam", "Traditional Hair Styling"],
@@ -411,6 +438,7 @@ const defaultRentalItems: RentalItem[] = [
     name: "Ghungroo Anklets & Pro Shoes",
     description: "Ghungroo anklets, Latin salsa heels, character shoes, jazz boots, and tap footwear.",
     icon: "👠",
+    image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop",
     highlight: "Pro Grade",
     basePriceLkr: 1600,
     includedPieces: ["Pair of 100-bell Brass Ghungroo Pad Straps"],
@@ -419,7 +447,13 @@ const defaultRentalItems: RentalItem[] = [
   }
 ];
 
-// Interactive Card Component with Spotlight Mouse Tracking Effect & Photo Support
+const getFallbackImage = (category: string) => {
+  if (category === "props") return "/images/rentals/props_demo.jpg";
+  if (category === "accessories") return "/images/rentals/accessories_demo.jpg";
+  return "/images/rentals/costume_demo.jpg";
+};
+
+// Interactive Card Component with Spotlight Mouse Tracking Effect & Photo Showcase Header
 function RentalCard({
   item,
   isLiked,
@@ -442,6 +476,8 @@ function RentalCard({
     });
   };
 
+  const displayImage = item.image || getFallbackImage(item.category);
+
   return (
     <motion.div
       layout
@@ -454,12 +490,12 @@ function RentalCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onOpenModal(item)}
-      className="group relative cursor-pointer p-5 rounded-2xl bg-[#120722]/90 border border-purple-900/40 hover:border-purple-500/80 shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.35)] transition-all duration-300 flex flex-col justify-between overflow-hidden"
+      className="group relative cursor-pointer p-4 rounded-3xl bg-[#120722]/95 border border-purple-900/40 hover:border-purple-500/80 shadow-lg hover:shadow-[0_0_35px_rgba(168,85,247,0.35)] transition-all duration-300 flex flex-col justify-between overflow-hidden"
     >
       {/* Interactive Cursor Spotlight Glow */}
       {isHovered && (
         <div
-          className="pointer-events-none absolute -inset-px rounded-2xl transition-opacity duration-300 z-0"
+          className="pointer-events-none absolute -inset-px rounded-3xl transition-opacity duration-300 z-0"
           style={{
             background: `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(192, 132, 252, 0.15), transparent 80%)`
           }}
@@ -467,74 +503,55 @@ function RentalCard({
       )}
 
       {/* Ambient Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-fuchsia-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl" />
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-fuchsia-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-3xl" />
 
       <div className="relative z-10">
-        {/* Photo Image Preview OR Emoji Icon */}
-        {item.image ? (
-          <div className="relative h-44 w-full rounded-xl overflow-hidden mb-4 border border-purple-800/40 bg-purple-950/60">
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-            <span className="absolute top-2 left-2 text-2xl drop-shadow-md">
-              {item.icon}
-            </span>
-            <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-bold text-fuchsia-300 border border-purple-500/40">
-              📸 Uploaded Photo
-            </span>
+        {/* Full-Width Showcase Photo Frame (with Generated Category Fallback Photo) */}
+        <div className="relative h-48 sm:h-52 w-full rounded-2xl overflow-hidden mb-4 border border-purple-800/40 bg-[#17092e] group/img shadow-inner">
+          <img
+            src={displayImage}
+            alt={item.name}
+            className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
+          />
 
-            {/* Top Right Heart Wishlist Button over Image */}
+          {/* Overlay Gradient at Bottom */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#120722] via-transparent to-black/30 pointer-events-none" />
+
+          {/* Floating Category Badge */}
+          <span className="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/70 backdrop-blur-md text-fuchsia-300 border border-purple-500/40 shadow-lg">
+            {item.categoryLabel}
+          </span>
+
+          {/* Top Right Tag Badge & Heart Wishlist */}
+          <div className="absolute top-3 right-3 flex items-center gap-2 z-20">
+            {item.highlight && (
+              <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-fuchsia-950/90 backdrop-blur-md border border-fuchsia-500/70 text-fuchsia-200 shadow-[0_0_12px_rgba(232,121,249,0.5)]">
+                🔥 {item.highlight}
+              </span>
+            )}
+
             <button
               onClick={(e) => onToggleLike(e, item.id)}
-              className={`absolute top-2 right-2 p-2 rounded-xl border transition-all duration-200 z-20 ${
+              className={`p-2 rounded-xl border backdrop-blur-md transition-all duration-200 ${
                 isLiked
-                  ? "bg-fuchsia-600 text-white border-fuchsia-400 shadow-[0_0_12px_rgba(232,121,249,0.6)] scale-110"
-                  : "bg-black/70 text-purple-300 border-purple-800/60 hover:text-white"
+                  ? "bg-fuchsia-600 text-white border-fuchsia-400 shadow-[0_0_12px_rgba(232,121,249,0.7)] scale-110"
+                  : "bg-black/70 text-purple-300 border-purple-800/60 hover:text-white hover:border-purple-500"
               }`}
+              title={isLiked ? "Remove from wishlist" : "Add to wishlist"}
             >
               <Heart className={`w-4 h-4 ${isLiked ? "fill-white text-white" : ""}`} />
             </button>
           </div>
-        ) : (
-          <div className="flex items-start justify-between mb-4">
-            <div className="relative">
-              <span className="w-14 h-14 rounded-2xl bg-purple-950/90 border border-purple-700/40 flex items-center justify-center text-3xl shadow-[0_0_15px_rgba(168,85,247,0.25)] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                {item.icon}
-              </span>
-              <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-[#120722] shadow-[0_0_8px_rgba(16,185,129,0.8)]" title="Available for rent" />
-            </div>
 
-            <div className="flex items-center gap-2">
-              {item.highlight ? (
-                <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-fuchsia-950/90 border border-fuchsia-600/70 text-fuchsia-300 shadow-[0_0_12px_rgba(232,121,249,0.4)]">
-                  {item.highlight}
-                </span>
-              ) : (
-                <span className="text-[10px] uppercase tracking-widest text-purple-300/60 font-semibold px-2 py-0.5 rounded-md bg-purple-950/50 border border-purple-900/30">
-                  {item.categoryLabel}
-                </span>
-              )}
-
-              {/* Bookmark / Wishlist Heart Button */}
-              <button
-                onClick={(e) => onToggleLike(e, item.id)}
-                className={`p-2 rounded-xl border transition-all duration-200 z-20 ${
-                  isLiked
-                    ? "bg-fuchsia-600 text-white border-fuchsia-400 shadow-[0_0_12px_rgba(232,121,249,0.6)] scale-110"
-                    : "bg-purple-950/60 text-purple-400/70 border-purple-800/40 hover:text-white hover:border-purple-500/60"
-                }`}
-                title={isLiked ? "Remove from Inquiry List" : "Add to Inquiry List"}
-              >
-                <Heart className={`w-4 h-4 ${isLiked ? "fill-white text-white" : ""}`} />
-              </button>
-            </div>
+          {/* Availability Indicator */}
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-emerald-500/40 text-[10px] text-emerald-400 font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Available</span>
           </div>
-        )}
+        </div>
 
         {/* Title & Description */}
-        <h3 className="text-lg font-bold text-white group-hover:text-fuchsia-300 transition-colors mb-2 line-clamp-1">
+        <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-fuchsia-300 transition-colors mb-2 line-clamp-1">
           {item.name}
         </h3>
         <p className="text-xs text-purple-200/70 leading-relaxed font-light mb-4 line-clamp-2">
@@ -559,7 +576,7 @@ function RentalCard({
       </div>
 
       {/* Footer Price & Action */}
-      <div className="relative z-10 pt-3 border-t border-purple-900/40 flex items-center justify-between gap-2 mt-2">
+      <div className="relative z-10 pt-3 border-t border-purple-900/40 flex items-center justify-between gap-2 mt-1">
         <div>
           <span className="text-[10px] uppercase tracking-wider text-purple-400/60 block">Est. Rental</span>
           <span className="text-xs sm:text-sm font-extrabold text-fuchsia-300">
@@ -576,7 +593,7 @@ function RentalCard({
   );
 }
 
-// Quick View & Booking Inquiry Modal with Photo Support
+// Quick View & Booking Inquiry Modal with Prominent Photo Display Right Below Description
 function RentalDetailModal({
   item,
   onClose,
@@ -659,12 +676,12 @@ function RentalDetailModal({
         {/* Modal Sticky Header with Close & Heart Buttons */}
         <div className="relative p-5 sm:p-6 border-b border-purple-900/50 shrink-0 flex items-start justify-between gap-4 bg-[#120722]/95 backdrop-blur-md z-20">
           <div className="flex items-center gap-3.5 min-w-0 pr-16">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-purple-950 to-fuchsia-950 border border-purple-700/50 flex items-center justify-center text-3xl sm:text-4xl shadow-[0_0_20px_rgba(168,85,247,0.3)] shrink-0 overflow-hidden">
-              {item.image ? (
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-              ) : (
-                item.icon
-              )}
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-purple-950 to-fuchsia-950 border border-purple-700/50 flex items-center justify-center text-3xl sm:text-3xl shadow-[0_0_20px_rgba(168,85,247,0.3)] shrink-0 overflow-hidden">
+              <img
+                src={item.image || getFallbackImage(item.category)}
+                alt={item.name}
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 mb-1 flex-wrap">
@@ -712,20 +729,23 @@ function RentalDetailModal({
 
         {/* Scrollable Modal Body */}
         <div className="p-5 sm:p-8 space-y-6 overflow-y-auto flex-1 custom-scrollbar">
-          {/* Photo Banner if Available */}
-          {item.image && (
-            <div className="relative w-full h-52 sm:h-64 rounded-2xl overflow-hidden border border-purple-700/40 shrink-0 bg-purple-950 shadow-inner">
-              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#120722] via-transparent to-black/30" />
-              <span className="absolute bottom-3 left-3 text-3xl drop-shadow-lg">
-                {item.icon}
-              </span>
-            </div>
-          )}
-
-          <p className="text-xs sm:text-sm text-purple-200/80 leading-relaxed font-light">
+          {/* Description Text */}
+          <p className="text-xs sm:text-sm text-purple-200/90 leading-relaxed font-light">
             {item.description}
           </p>
+
+          {/* Prominent Featured Photo Banner Right Below Description */}
+          <div className="relative w-full h-56 sm:h-72 rounded-2xl overflow-hidden border border-purple-600/50 shrink-0 bg-[#16082b] shadow-[0_0_30px_rgba(168,85,247,0.25)]">
+            <img
+              src={item.image || getFallbackImage(item.category)}
+              alt={item.name}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#120722] via-transparent to-black/20" />
+            <span className="absolute bottom-3 left-4 text-xs font-bold text-fuchsia-300 bg-black/75 backdrop-blur-md px-3.5 py-1 rounded-full border border-purple-500/40">
+              📸 Stage Wardrobe Showcase
+            </span>
+          </div>
 
           {/* Included Items & Suitable For Badges */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
