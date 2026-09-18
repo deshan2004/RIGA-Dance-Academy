@@ -4,10 +4,10 @@ import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     await deleteDoc(doc(db, "practice_videos", id));
     return NextResponse.json({ success: true, message: "Practice video deleted" }, { status: 200 });
   } catch (error) {
@@ -18,10 +18,10 @@ export async function DELETE(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     await updateDoc(doc(db, "practice_videos", id), {
       title: body.title,
