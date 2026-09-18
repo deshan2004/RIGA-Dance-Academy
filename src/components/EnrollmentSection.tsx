@@ -48,6 +48,8 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
     notes: "",
   });
   const [countryCode, setCountryCode] = useState("+94");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [paymentSlip, setPaymentSlip] = useState<string>("");
   const [paymentSlipName, setPaymentSlipName] = useState<string>("");
   const [signupLoading, setSignupLoading] = useState(false);
@@ -202,13 +204,18 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
       !formData.phone.trim() ||
       !formData.email.trim() ||
       !formData.location.trim() ||
-      !formData.password
+      !formData.password ||
+      !confirmPassword
     ) {
-      setStatus({ type: "error", message: "Please fill in all required student details and account password before proceeding." });
+      setStatus({ type: "error", message: "Please fill in all required student details and both password fields before proceeding." });
       return false;
     }
     if (formData.password.length < 6) {
       setStatus({ type: "error", message: "Account password must be at least 6 characters long." });
+      return false;
+    }
+    if (formData.password !== confirmPassword) {
+      setStatus({ type: "error", message: "Passwords do not match. Please make sure both password fields match." });
       return false;
     }
     setStatus({ type: null, message: "" });
@@ -220,6 +227,15 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
     e.preventDefault();
     setSignupLoading(true);
     setStatus({ type: null, message: "" });
+
+    if (formData.password !== confirmPassword) {
+      setStatus({
+        type: "error",
+        message: "Passwords do not match. Please verify your password entry.",
+      });
+      setSignupLoading(false);
+      return;
+    }
 
     if (!paymentSlip && !formData.transaction_ref) {
       setStatus({
@@ -291,6 +307,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
           transaction_ref: "",
           notes: "",
         });
+        setConfirmPassword("");
         setPaymentSlip("");
         setPaymentSlipName("");
         setSignupStep(1);
@@ -653,7 +670,10 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                           />
                         </div>
                       </div>
+                    </div>
 
+                    {/* PASSWORDS GRID */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-xs font-bold uppercase tracking-wider text-purple-300/90 mb-2">
                           Account Password *
@@ -676,6 +696,32 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                             className="absolute right-3.5 top-1/2 -translate-y-1/2 text-purple-400 hover:text-white transition-colors"
                           >
                             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-purple-300/90 mb-2">
+                          Confirm Password *
+                        </label>
+                        <div className="relative">
+                          <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-fuchsia-400" />
+                          <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            name="confirmPassword"
+                            required
+                            minLength={6}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="w-full bg-[#080312] border border-purple-900/60 rounded-xl pl-10 pr-10 py-3.5 text-white text-sm focus:outline-none focus:border-purple-500/90 focus:ring-2 focus:ring-purple-500/30 transition-all placeholder:text-purple-400/40"
+                            placeholder="•••••••• (Re-enter password)"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-purple-400 hover:text-white transition-colors"
+                          >
+                            {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                           </button>
                         </div>
                       </div>
@@ -702,7 +748,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                     <button
                       type="button"
                       onClick={() => { if (validateStep1()) setSignupStep(2); }}
-                      className="w-full py-4 px-8 rounded-xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2 mt-4"
+                      className="w-full py-4 px-8 rounded-xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-widest transition-all transform hover:-translate-y-0.5 shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:shadow-[0_0_40px_rgba(232,121,249,0.7)] flex items-center justify-center gap-2 mt-6 cursor-pointer"
                     >
                       <span>Next: Select Dance Program</span>
                       <ChevronRight className="w-4 h-4 text-fuchsia-300" />
