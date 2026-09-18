@@ -5,7 +5,7 @@ import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag } from "lucide-react";
+import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video } from "lucide-react";
 import EventsTab from "@/components/admin/EventsTab";
 import RentalsTab from "@/components/admin/RentalsTab";
 
@@ -78,15 +78,62 @@ interface GalleryItem {
   createdAt?: FirestoreTimestamp | string | number | null;
 }
 
+interface AnnouncementItem {
+  _id: string;
+  title: string;
+  tag: string;
+  date: string;
+  desc: string;
+  createdAt?: FirestoreTimestamp | string | number | null;
+}
+
+interface VideoItem {
+  _id: string;
+  title: string;
+  style: string;
+  duration: string;
+  instructor: string;
+  thumbnail: string;
+  videoUrl: string;
+  desc: string;
+  createdAt?: FirestoreTimestamp | string | number | null;
+}
+
 export default function AdminDashboard() {
   const [enrollments, setEnrollments] = useState<EnrollmentItem[]>([]);
   const [registeredUsers, setRegisteredUsers] = useState<UserItem[]>([]);
   const [classes, setClasses] = useState<ClassItem[]>([]);
   const [inquiries, setInquiries] = useState<InquiryItem[]>([]);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
-  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery" | "rentals">("enrollments");
+  const [announcements, setAnnouncements] = useState<AnnouncementItem[]>([]);
+  const [practiceVideos, setPracticeVideos] = useState<VideoItem[]>([]);
+
+  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery" | "rentals" | "announcements" | "videos">("enrollments");
   const [loading, setLoading] = useState(true);
   const [selectedSlip, setSelectedSlip] = useState<EnrollmentItem | null>(null);
+
+  // Announcement Form State
+  const [showAnnModal, setShowAnnModal] = useState(false);
+  const [editingAnn, setEditingAnn] = useState<AnnouncementItem | null>(null);
+  const [annForm, setAnnForm] = useState({
+    title: "",
+    tag: "IMPORTANT EVENT",
+    date: "",
+    desc: "",
+  });
+
+  // Practice Video Form State
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [editingVideo, setEditingVideo] = useState<VideoItem | null>(null);
+  const [videoForm, setVideoForm] = useState({
+    title: "",
+    style: "Kandyan Traditional",
+    duration: "15 mins",
+    instructor: "Guru K. Jayawardena",
+    thumbnail: "",
+    videoUrl: "",
+    desc: "",
+  });
   
   // Class Form State
   const [showClassModal, setShowClassModal] = useState(false);
@@ -196,6 +243,30 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchAnnouncements = async () => {
+    try {
+      const res = await fetch("/api/announcements");
+      const data = await res.json();
+      if (data.success) {
+        setAnnouncements(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching announcements:", error);
+    }
+  };
+
+  const fetchVideos = async () => {
+    try {
+      const res = await fetch("/api/videos");
+      const data = await res.json();
+      if (data.success) {
+        setPracticeVideos(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    }
+  };
+
   useEffect(() => {
     // Check if user is logged in and is admin
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -256,10 +327,138 @@ export default function AdminDashboard() {
         await fetchInquiries();
       } else if (activeTab === "gallery" && galleryItems.length === 0) {
         await fetchGalleryItems();
+      } else if (activeTab === "announcements") {
+        await fetchAnnouncements();
+      } else if (activeTab === "videos") {
+        await fetchVideos();
       }
     }
     loadTabData();
   }, [activeTab, registeredUsers.length, classes.length, inquiries.length, galleryItems.length]);
+
+  // Announcement Handlers
+  const handleSaveAnnouncement = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const method = editingAnn ? "PUT" : "POST";
+      const url = editingAnn ? `/api/announcements/${editingAnn._id}` : "/api/announcements";
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(annForm),
+      });
+      if (res.ok) {
+        setShowAnnModal(false);
+        setEditingAnn(null);
+        setAnnForm({ title: "", tag: "IMPORTANT EVENT", date: "", desc: "" });
+        fetchAnnouncements();
+      }
+    } catch (error) {
+      console.error("Error saving announcement:", error);
+    }
+  };
+
+  const handleDeleteAnnouncement = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this announcement?")) return;
+    try {
+      const res = await fetch(`/api/announcements/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setAnnouncements(announcements.filter(a => a._id !== id));
+      }
+    } catch (error) {
+      console.error("Error deleting announcement:", error);
+    }
+  };
+
+  const openAnnModal = (ann: AnnouncementItem | null = null) => {
+    if (ann) {
+      setEditingAnn(ann);
+      setAnnForm({
+        title: ann.title,
+        tag: ann.tag,
+        date: ann.date,
+        desc: ann.desc,
+      });
+    } else {
+      setEditingAnn(null);
+      setAnnForm({
+        title: "",
+        tag: "IMPORTANT EVENT",
+        date: new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+        desc: "",
+      });
+    }
+    setShowAnnModal(true);
+  };
+
+  // Video Handlers
+  const handleSaveVideo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const method = editingVideo ? "PUT" : "POST";
+      const url = editingVideo ? `/api/videos/${editingVideo._id}` : "/api/videos";
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(videoForm),
+      });
+      if (res.ok) {
+        setShowVideoModal(false);
+        setEditingVideo(null);
+        setVideoForm({
+          title: "",
+          style: "Kandyan Traditional",
+          duration: "15 mins",
+          instructor: "Guru K. Jayawardena",
+          thumbnail: "",
+          videoUrl: "",
+          desc: "",
+        });
+        fetchVideos();
+      }
+    } catch (error) {
+      console.error("Error saving practice video:", error);
+    }
+  };
+
+  const handleDeleteVideo = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this practice video lesson?")) return;
+    try {
+      const res = await fetch(`/api/videos/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setPracticeVideos(practiceVideos.filter(v => v._id !== id));
+      }
+    } catch (error) {
+      console.error("Error deleting video:", error);
+    }
+  };
+
+  const openVideoModal = (vid: VideoItem | null = null) => {
+    if (vid) {
+      setEditingVideo(vid);
+      setVideoForm({
+        title: vid.title,
+        style: vid.style,
+        duration: vid.duration,
+        instructor: vid.instructor,
+        thumbnail: vid.thumbnail,
+        videoUrl: vid.videoUrl,
+        desc: vid.desc,
+      });
+    } else {
+      setEditingVideo(null);
+      setVideoForm({
+        title: "",
+        style: "Kandyan Traditional",
+        duration: "15 mins",
+        instructor: "Guru K. Jayawardena",
+        thumbnail: "https://images.unsplash.com/photo-1542838686-37ed7a956140?auto=format&fit=crop&q=80",
+        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        desc: "",
+      });
+    }
+    setShowVideoModal(true);
+  };
 
   const handleSaveGalleryPhoto = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -521,6 +720,32 @@ export default function AdminDashboard() {
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-4 h-4" />
               Rentals & Wardrobe
+            </div>
+          </button>
+          <button
+            onClick={() => setActiveTab("announcements")}
+            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+              activeTab === "announcements" 
+                ? "text-academy-gold border-academy-gold" 
+                : "text-gray-500 border-transparent hover:text-gray-300"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Bell className="w-4 h-4" />
+              Announcements
+            </div>
+          </button>
+          <button
+            onClick={() => setActiveTab("videos")}
+            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+              activeTab === "videos" 
+                ? "text-academy-gold border-academy-gold" 
+                : "text-gray-500 border-transparent hover:text-gray-300"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Video className="w-4 h-4" />
+              Practice Videos
             </div>
           </button>
         </div>
@@ -942,7 +1167,369 @@ export default function AdminDashboard() {
             </div>
           )}
         </motion.div>
+        ) : activeTab === "announcements" ? (
+        <motion.div
+          key="announcements"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-academy-gray border border-gray-800 rounded-3xl shadow-2xl overflow-hidden p-6"
+        >
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <Bell className="w-5 h-5 text-academy-gold" />
+                Student Announcements & Notices
+              </h2>
+              <p className="text-xs text-gray-400 mt-1">Publish notices, rehearsal dates, and workshop announcements for students</p>
+            </div>
+            <button
+              onClick={() => openAnnModal()}
+              className="bg-academy-gold hover:bg-yellow-600 text-black font-bold py-2.5 px-5 rounded-xl flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(234,179,8,0.3)] shrink-0"
+            >
+              <Plus className="w-4 h-4" /> Add Announcement
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {announcements.length === 0 ? (
+              <div className="text-center py-16 border border-dashed border-gray-800 rounded-2xl">
+                <Bell className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-white mb-1">No Announcements Added</h3>
+                <p className="text-sm text-gray-500 mb-4">Post your first announcement for students to view in their portal.</p>
+                <button
+                  onClick={() => openAnnModal()}
+                  className="bg-purple-950 border border-purple-700 text-purple-300 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider"
+                >
+                  + Add First Announcement
+                </button>
+              </div>
+            ) : (
+              announcements.map((ann) => (
+                <div key={ann._id} className="p-5 rounded-2xl bg-black/60 border border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3">
+                      <span className="px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-950 text-fuchsia-300 border border-purple-800">
+                        {ann.tag}
+                      </span>
+                      <span className="text-xs text-gray-400">{ann.date}</span>
+                    </div>
+                    <h3 className="text-base font-bold text-white">{ann.title}</h3>
+                    <p className="text-xs text-gray-300 font-light">{ann.desc}</p>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={() => openAnnModal(ann)}
+                      className="p-2 bg-blue-900/30 text-blue-400 hover:bg-blue-900/60 rounded-lg transition-colors"
+                      title="Edit Announcement"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteAnnouncement(ann._id)}
+                      className="p-2 bg-red-900/30 text-red-400 hover:bg-red-900/60 rounded-lg transition-colors"
+                      title="Delete Announcement"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </motion.div>
+        ) : activeTab === "videos" ? (
+        <motion.div
+          key="videos"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-academy-gray border border-gray-800 rounded-3xl shadow-2xl overflow-hidden p-6"
+        >
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <Video className="w-5 h-5 text-academy-gold" />
+                Practice Videos & Lessons
+              </h2>
+              <p className="text-xs text-gray-400 mt-1">Upload and manage choreography video lessons for student practice</p>
+            </div>
+            <button
+              onClick={() => openVideoModal()}
+              className="bg-academy-gold hover:bg-yellow-600 text-black font-bold py-2.5 px-5 rounded-xl flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(234,179,8,0.3)] shrink-0"
+            >
+              <Plus className="w-4 h-4" /> Add Video Lesson
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {practiceVideos.length === 0 ? (
+              <div className="col-span-2 text-center py-16 border border-dashed border-gray-800 rounded-2xl">
+                <Video className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-white mb-1">No Video Lessons Added</h3>
+                <p className="text-sm text-gray-500 mb-4">Add dance practice videos for students to watch and practice at home.</p>
+                <button
+                  onClick={() => openVideoModal()}
+                  className="bg-purple-950 border border-purple-700 text-purple-300 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider"
+                >
+                  + Add First Video Lesson
+                </button>
+              </div>
+            ) : (
+              practiceVideos.map((vid) => (
+                <div key={vid._id} className="bg-black/60 border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between">
+                  <div className="relative h-44 w-full bg-purple-950 overflow-hidden">
+                    <img src={vid.thumbnail} alt={vid.title} className="w-full h-full object-cover" />
+                    <span className="absolute top-2 right-2 bg-purple-950/90 text-fuchsia-300 border border-purple-500/50 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      {vid.duration}
+                    </span>
+                    <span className="absolute top-2 left-2 bg-purple-950/90 text-white border border-purple-500/50 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      {vid.style}
+                    </span>
+                  </div>
+
+                  <div className="p-4">
+                    <h3 className="text-sm font-bold text-white mb-1 line-clamp-1">{vid.title}</h3>
+                    <p className="text-xs text-gray-400 mb-3 line-clamp-2">{vid.desc}</p>
+                    <div className="text-[11px] text-gray-500 mb-3">Instructor: {vid.instructor}</div>
+
+                    <div className="pt-3 border-t border-gray-900 flex justify-end gap-2">
+                      <button
+                        onClick={() => openVideoModal(vid)}
+                        className="p-1.5 bg-blue-900/30 text-blue-400 hover:bg-blue-900/60 rounded-lg transition-colors"
+                        title="Edit Video"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteVideo(vid._id)}
+                        className="p-1.5 bg-red-900/30 text-red-400 hover:bg-red-900/60 rounded-lg transition-colors"
+                        title="Delete Video"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </motion.div>
         ) : null}
+
+        {/* Announcement Modal */}
+        {showAnnModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-academy-gray border border-gray-800 rounded-2xl w-full max-w-lg p-6 relative"
+            >
+              <button
+                onClick={() => setShowAnnModal(false)}
+                className="absolute right-4 top-4 text-gray-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <h2 className="text-xl font-bold text-white mb-6">
+                {editingAnn ? "Edit Announcement" : "Add Announcement"}
+              </h2>
+
+              <form onSubmit={handleSaveAnnouncement} className="space-y-4 text-xs">
+                <div>
+                  <label className="block text-gray-400 font-bold mb-1">Title *</label>
+                  <input
+                    type="text"
+                    required
+                    value={annForm.title}
+                    onChange={(e) => setAnnForm({ ...annForm, title: e.target.value })}
+                    className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2.5 text-white"
+                    placeholder="e.g. Rehearsal Schedule for Grand Showcase"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-400 font-bold mb-1">Tag / Category</label>
+                    <select
+                      value={annForm.tag}
+                      onChange={(e) => setAnnForm({ ...annForm, tag: e.target.value })}
+                      className="w-full bg-academy-black border border-gray-700 rounded-lg px-3 py-2.5 text-white"
+                    >
+                      <option value="IMPORTANT EVENT">IMPORTANT EVENT</option>
+                      <option value="SPECIAL WORKSHOP">SPECIAL WORKSHOP</option>
+                      <option value="ACADEMY NOTICE">ACADEMY NOTICE</option>
+                      <option value="REHEARSAL">REHEARSAL</option>
+                      <option value="AUDITION">AUDITION</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-gray-400 font-bold mb-1">Date</label>
+                    <input
+                      type="text"
+                      value={annForm.date}
+                      onChange={(e) => setAnnForm({ ...annForm, date: e.target.value })}
+                      className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2.5 text-white"
+                      placeholder="e.g. October 15, 2026"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-400 font-bold mb-1">Description / Details *</label>
+                  <textarea
+                    rows={3}
+                    required
+                    value={annForm.desc}
+                    onChange={(e) => setAnnForm({ ...annForm, desc: e.target.value })}
+                    className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2 text-white"
+                    placeholder="Provide detailed notification info for students..."
+                  />
+                </div>
+
+                <div className="pt-4 flex justify-end gap-3 border-t border-gray-800">
+                  <button
+                    type="button"
+                    onClick={() => setShowAnnModal(false)}
+                    className="px-4 py-2 rounded-lg font-medium text-gray-400 hover:text-white"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-academy-gold hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-lg"
+                  >
+                    {editingAnn ? "Save Changes" : "Create Announcement"}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Practice Video Modal */}
+        {showVideoModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-academy-gray border border-gray-800 rounded-2xl w-full max-w-lg p-6 relative max-h-[90vh] overflow-y-auto"
+            >
+              <button
+                onClick={() => setShowVideoModal(false)}
+                className="absolute right-4 top-4 text-gray-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <h2 className="text-xl font-bold text-white mb-6">
+                {editingVideo ? "Edit Video Lesson" : "Add Practice Video Lesson"}
+              </h2>
+
+              <form onSubmit={handleSaveVideo} className="space-y-4 text-xs">
+                <div>
+                  <label className="block text-gray-400 font-bold mb-1">Lesson Title *</label>
+                  <input
+                    type="text"
+                    required
+                    value={videoForm.title}
+                    onChange={(e) => setVideoForm({ ...videoForm, title: e.target.value })}
+                    className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2.5 text-white"
+                    placeholder="e.g. Kandyan Basic Footwork Routine"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-400 font-bold mb-1">Dance Style</label>
+                    <select
+                      value={videoForm.style}
+                      onChange={(e) => setVideoForm({ ...videoForm, style: e.target.value })}
+                      className="w-full bg-academy-black border border-gray-700 rounded-lg px-3 py-2.5 text-white"
+                    >
+                      <option value="Kandyan Traditional">Kandyan Traditional</option>
+                      <option value="Urban Hip-Hop">Urban Hip-Hop</option>
+                      <option value="Pahatharata Low-Country">Pahatharata Low-Country</option>
+                      <option value="Contemporary Flow">Contemporary Flow</option>
+                      <option value="Sabaragamuwa Dance">Sabaragamuwa Dance</option>
+                      <option value="Latin & Ballroom">Latin & Ballroom</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-gray-400 font-bold mb-1">Duration</label>
+                    <input
+                      type="text"
+                      value={videoForm.duration}
+                      onChange={(e) => setVideoForm({ ...videoForm, duration: e.target.value })}
+                      className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2.5 text-white"
+                      placeholder="e.g. 18 mins"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-400 font-bold mb-1">Instructor Name</label>
+                    <input
+                      type="text"
+                      value={videoForm.instructor}
+                      onChange={(e) => setVideoForm({ ...videoForm, instructor: e.target.value })}
+                      className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2.5 text-white"
+                      placeholder="Guru K. Jayawardena"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-400 font-bold mb-1">Thumbnail Photo Link</label>
+                    <input
+                      type="text"
+                      value={videoForm.thumbnail}
+                      onChange={(e) => setVideoForm({ ...videoForm, thumbnail: e.target.value })}
+                      className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2.5 text-white"
+                      placeholder="https://images.unsplash.com/..."
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-400 font-bold mb-1">Video Embed / Watch Link *</label>
+                  <input
+                    type="text"
+                    required
+                    value={videoForm.videoUrl}
+                    onChange={(e) => setVideoForm({ ...videoForm, videoUrl: e.target.value })}
+                    className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2.5 text-white"
+                    placeholder="https://www.youtube.com/embed/..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-400 font-bold mb-1">Description / Practice Notes</label>
+                  <textarea
+                    rows={2}
+                    value={videoForm.desc}
+                    onChange={(e) => setVideoForm({ ...videoForm, desc: e.target.value })}
+                    className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2 text-white"
+                    placeholder="Breakdown of footwork drills..."
+                  />
+                </div>
+
+                <div className="pt-4 flex justify-end gap-3 border-t border-gray-800">
+                  <button
+                    type="button"
+                    onClick={() => setShowVideoModal(false)}
+                    className="px-4 py-2 rounded-lg font-medium text-gray-400 hover:text-white"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-academy-gold hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-lg"
+                  >
+                    {editingVideo ? "Save Changes" : "Create Video Lesson"}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
 
         {/* Gallery Upload Modal */}
         {showGalleryModal && (
