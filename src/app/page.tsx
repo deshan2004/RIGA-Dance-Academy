@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
+import TroupeShowcase from "@/components/TroupeShowcase";
 import FeaturesSection from "@/components/FeaturesSection";
 import FeaturedClassesPreview from "@/components/FeaturedClassesPreview";
 import GalleryPreview from "@/components/GalleryPreview";
@@ -65,8 +66,9 @@ export default function Home() {
   if (loading) return <div className="bg-[#090410] min-h-screen"></div>;
 
   return (
-    <div className="bg-[#090410] text-[#f8f5ff] min-h-screen">
+    <div className="bg-[#07020e] text-[#f8f5ff] min-h-screen">
       <Hero />
+      <TroupeShowcase />
       <FeaturesSection />
       <FeaturedClassesPreview />
       <GalleryPreview />
@@ -74,4 +76,5 @@ export default function Home() {
     </div>
   );
 }
+
 

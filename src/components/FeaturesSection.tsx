@@ -35,8 +35,6 @@ export default function FeaturesSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-
-
         {/* WHY CHOOSE US */}
         <div className="text-center mb-16">
           <motion.h2 
@@ -45,7 +43,7 @@ export default function FeaturesSection() {
             viewport={{ once: true }}
             className="text-3xl md:text-5xl font-extrabold text-white mb-4"
           >
-            Why Choose <span className="text-metallic-purple">RIGA Academy</span>
+            Why Choose <span className="text-metallic-purple">RIGA Troupe &amp; Academy</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -54,7 +52,7 @@ export default function FeaturesSection() {
             transition={{ delay: 0.1 }}
             className="text-purple-200/70 max-w-2xl mx-auto text-lg font-light"
           >
-            We provide an unparalleled dancing experience designed to take your skills to the next level.
+            We provide an unparalleled stage performance and training experience designed to unleash world-class artistic talent.
           </motion.p>
         </div>
 
