@@ -35,22 +35,26 @@ const Hero = () => {
           <span>Sri Lanka&apos;s #1 Dance Troupe &amp; Academy</span>
         </motion.div>
 
-        {/* --- HERO IMAGE BANNER CARD (EXACT HIGH-RES RIGA DANCE TROUPE IMAGE) --- */}
+        {/* --- HERO IMAGE BANNER (BORDERLESS SEAMLESS FADE - NO PHOTO FRAME BOX) --- */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
-          className="w-full relative mb-8 rounded-3xl overflow-hidden border border-purple-500/40 shadow-[0_0_60px_rgba(168,85,247,0.45)] bg-[#0e051c] group"
+          className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* Main Troupe Image */}
-          <img 
-            src="/images/riga-troupe-hero.jpg" 
-            alt="RIGA Dance Troupe" 
-            className="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-transform duration-700 select-none block"
-          />
-
-          {/* Interactive Light Flare Overlay on Hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#07020e] via-transparent to-purple-950/20 opacity-80 pointer-events-none" />
+          {/* Main Troupe Image with Radial Mask & Edge Blending */}
+          <div className="relative w-full max-w-5xl overflow-hidden rounded-2xl [mask-image:radial-gradient(ellipse_at_center,black_75%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_75%,transparent_100%)]">
+            <img 
+              src="/images/riga-troupe-hero.jpg" 
+              alt="RIGA Dance Troupe" 
+              className="w-full h-auto object-contain block mx-auto filter drop-shadow-[0_0_45px_rgba(168,85,247,0.7)]"
+            />
+            {/* Seamless 4-Directional Vignette Gradient Overlay */}
+            <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#07020e] via-[#07020e]/60 to-transparent pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#07020e] via-[#07020e]/60 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-[#07020e] via-[#07020e]/60 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#07020e] via-[#07020e]/80 to-transparent pointer-events-none" />
+          </div>
         </motion.div>
 
         {/* --- CATEGORY NAVIGATION LINKS (ACADEMY | CREW | RENTALS | PRODUCTIONS | EVENTS) --- */}
