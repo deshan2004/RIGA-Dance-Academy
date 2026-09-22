@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Calendar, Zap } from "lucide-react";
+import { ArrowRight, Sparkles, Calendar } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -37,17 +37,6 @@ const Hero = () => {
       {/* --- NATIVE WEB HERO UI CONTENT --- */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* TOP BADGE */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-purple-950/80 border border-purple-500/40 text-purple-200 text-xs font-semibold tracking-widest uppercase mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(168,85,247,0.3)]"
-        >
-          <Zap className="w-3.5 h-3.5 text-fuchsia-400 animate-pulse" />
-          <span>SRI LANKA&apos;S #1 DANCE TROUPE &amp; ACADEMY</span>
-        </motion.div>
-
         {/* NATIVE RIGA WORDMARK LOGO */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
