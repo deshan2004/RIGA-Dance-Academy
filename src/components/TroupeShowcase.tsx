@@ -12,7 +12,7 @@ const troupeStyles = [
     badge: "Heritage & Beats",
     description: "Authentic Sri Lankan cultural heritage infused with electronic beats and high-energy percussion.",
     tags: ["Kandyan", "Low Country", "Drum & Beats", "Cultural Fusion"],
-    color: "from-purple-600 to-fuchsia-600",
+    color: "from-purple-600 to-purple-800",
   },
   {
     id: "hiphop",
@@ -20,7 +20,7 @@ const troupeStyles = [
     badge: "High-Voltage Power",
     description: "Hard-hitting popping, locking, breaking, and modern commercial urban hip-hop choreographies.",
     tags: ["Hip Hop", "Breakdance", "Popping", "Street Jam"],
-    color: "from-fuchsia-600 to-pink-600",
+    color: "from-purple-700 to-purple-900",
   },
   {
     id: "bollywood",
@@ -28,7 +28,7 @@ const troupeStyles = [
     badge: "Grand Stage Acts",
     description: "Extravagant storytelling, high-energy formations, and vibrant cinematic production acts.",
     tags: ["Bollywood", "Tollywood", "Cinematic", "Celebration"],
-    color: "from-purple-700 to-purple-500",
+    color: "from-purple-800 to-purple-600",
   },
   {
     id: "contemporary",
@@ -36,7 +36,7 @@ const troupeStyles = [
     badge: "Fluid Elegance",
     description: "Breath-taking acrobatic lifts, emotional storytelling, and expressive lyrical contemporary motion.",
     tags: ["Contemporary", "Ballet Fusion", "Lyrical", "Acrobatic"],
-    color: "from-indigo-600 to-purple-600",
+    color: "from-indigo-700 to-purple-800",
   },
   {
     id: "extravaganza",
@@ -44,7 +44,7 @@ const troupeStyles = [
     badge: "Mega Production",
     description: "Full-scale concert backing dancers, pyrotechnic synced acts, and star event performances.",
     tags: ["Concerts", "Award Shows", "TV Broadcast", "Mega Stage"],
-    color: "from-fuchsia-700 to-purple-900",
+    color: "from-purple-900 to-purple-700",
   },
 ];
 
@@ -71,9 +71,9 @@ export default function TroupeShowcase() {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950/80 border border-purple-500/30 text-fuchsia-300 text-xs font-semibold tracking-widest uppercase mb-4 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950/80 border border-purple-500/30 text-purple-300 text-xs font-semibold tracking-widest uppercase mb-4 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
           >
-            <Trophy className="w-3.5 h-3.5 text-fuchsia-400" />
+            <Trophy className="w-3.5 h-3.5 text-purple-400" />
             <span>Sri Lanka&apos;s Elite Performance Troupe</span>
           </motion.div>
           <motion.h2
@@ -111,12 +111,12 @@ export default function TroupeShowcase() {
                 onClick={() => setSelectedStyle(style)}
                 className={`w-full text-left p-5 rounded-2xl transition-all duration-300 border flex items-center justify-between group ${
                   selectedStyle.id === style.id
-                    ? "bg-gradient-to-r from-purple-950 via-[#1b0833] to-[#250b44] border-fuchsia-500/70 shadow-[0_0_30px_rgba(168,85,247,0.4)] text-white scale-[1.02]"
+                    ? "bg-gradient-to-r from-purple-950 via-[#1b0833] to-[#250b44] border-purple-500/70 shadow-[0_0_30px_rgba(168,85,247,0.4)] text-white scale-[1.02]"
                     : "bg-[#100620]/70 border-purple-900/40 text-purple-200/80 hover:bg-[#16082e] hover:border-purple-600/50"
                 }`}
               >
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-fuchsia-400 block mb-1">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-purple-400 block mb-1">
                     {style.badge}
                   </span>
                   <h4 className="text-base sm:text-lg font-bold tracking-wide">
@@ -125,7 +125,7 @@ export default function TroupeShowcase() {
                 </div>
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform ${
                   selectedStyle.id === style.id
-                    ? "bg-fuchsia-600 text-white shadow-[0_0_15px_#e879f9] rotate-45"
+                    ? "bg-purple-600 text-white shadow-[0_0_15px_#a855f7] rotate-45"
                     : "bg-purple-950 text-purple-400 group-hover:scale-110"
                 }`}>
                   <ArrowRight className="w-4 h-4" />
@@ -154,7 +154,7 @@ export default function TroupeShowcase() {
                 ))}
               </div>
 
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-fuchsia-400 block mb-2">Featured Performance Genre</span>
+              <span className="text-xs font-bold uppercase tracking-[0.3em] text-purple-400 block mb-2">Featured Performance Genre</span>
               <h3 className="text-2xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">
                 {selectedStyle.title}
               </h3>
@@ -164,15 +164,15 @@ export default function TroupeShowcase() {
 
               <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-3 text-sm text-purple-100 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-fuchsia-400 flex-shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-purple-400 flex-shrink-0" />
                   <span>Custom stage choreography tailored to event themes</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-purple-100 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-fuchsia-400 flex-shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-purple-400 flex-shrink-0" />
                   <span>Includes full high-end costume wardrobe and prop setup</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-purple-100 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-fuchsia-400 flex-shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-purple-400 flex-shrink-0" />
                   <span>Available for Weddings, Corporate Shows, TV &amp; Concerts</span>
                 </div>
               </div>
@@ -181,14 +181,14 @@ export default function TroupeShowcase() {
             <div className="pt-6 border-t border-purple-900/60 flex flex-wrap items-center justify-between gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white font-bold text-xs uppercase tracking-widest hover:shadow-[0_0_30px_rgba(232,121,249,0.8)] transition-all"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-purple-700 via-purple-600 to-purple-800 text-white font-bold text-xs uppercase tracking-widest hover:shadow-[0_0_30px_rgba(168,85,247,0.8)] transition-all"
               >
                 Inquire For Booking
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/crew"
-                className="text-xs uppercase tracking-widest font-bold text-purple-300 hover:text-fuchsia-300 transition-colors"
+                className="text-xs uppercase tracking-widest font-bold text-purple-300 hover:text-purple-100 transition-colors"
               >
                 Meet Troupe Dancers &rarr;
               </Link>
@@ -208,7 +208,7 @@ export default function TroupeShowcase() {
               transition={{ delay: index * 0.1 }}
               className="bg-[#120726]/80 border border-purple-900/50 p-6 rounded-2xl text-center shadow-[0_0_20px_rgba(168,85,247,0.15)] hover:border-purple-500/50 transition-all"
             >
-              <h4 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-fuchsia-300 to-purple-400 mb-2">
+              <h4 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-100 via-purple-300 to-purple-400 mb-2">
                 {stat.value}
               </h4>
               <p className="text-xs uppercase font-bold tracking-widest text-purple-300/70">

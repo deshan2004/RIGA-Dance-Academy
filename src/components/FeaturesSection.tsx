@@ -5,7 +5,7 @@ import { Star, Trophy, Users, Heart } from "lucide-react";
 
 const features = [
   {
-    icon: <Star className="w-8 h-8 text-fuchsia-400" />,
+    icon: <Star className="w-8 h-8 text-purple-400" />,
     title: "Expert Instructors",
     description: "Learn from internationally recognized professional dancers with years of industry experience.",
   },
@@ -15,7 +15,7 @@ const features = [
     description: "Get personalized attention with limited student numbers to ensure your rapid progression.",
   },
   {
-    icon: <Trophy className="w-8 h-8 text-fuchsia-400" />,
+    icon: <Trophy className="w-8 h-8 text-purple-400" />,
     title: "Premium Facilities",
     description: "Train in our state-of-the-art studios equipped with sprung floors and professional sound systems.",
   },
@@ -28,10 +28,10 @@ const features = [
 
 export default function FeaturesSection() {
   return (
-    <section className="py-24 bg-[#090410] relative overflow-hidden">
+    <section className="py-24 bg-[#07020e] relative overflow-hidden">
       {/* Background ambient lighting */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-purple-900/15 rounded-full blur-[140px] pointer-events-none -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-fuchsia-900/15 rounded-full blur-[140px] pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-900/15 rounded-full blur-[140px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         

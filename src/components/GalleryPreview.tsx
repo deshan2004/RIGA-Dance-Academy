@@ -84,9 +84,9 @@ export default function GalleryPreview() {
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950/80 border border-purple-500/40 text-fuchsia-300 text-xs font-extrabold uppercase tracking-widest mb-3 shadow-[0_0_15px_rgba(232,121,249,0.3)]"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950/80 border border-purple-500/40 text-purple-300 text-xs font-extrabold uppercase tracking-widest mb-3 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
             >
-              <Camera className="w-4 h-4 text-fuchsia-400" />
+              <Camera className="w-4 h-4 text-purple-400" />
               Life At RIGA
             </motion.div>
 
@@ -116,10 +116,10 @@ export default function GalleryPreview() {
           >
             <Link 
               href="/gallery"
-              className="group flex items-center gap-2 text-purple-300 hover:text-fuchsia-300 font-semibold tracking-wider text-sm uppercase transition-colors"
+              className="group flex items-center gap-2 text-purple-300 hover:text-purple-100 font-semibold tracking-wider text-sm uppercase transition-colors"
             >
               Explore Full Gallery
-              <ArrowRight className="w-4 h-4 text-fuchsia-400 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 text-purple-400 group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
         </div>
@@ -127,7 +127,7 @@ export default function GalleryPreview() {
         {/* Photos Grid */}
         {loading ? (
           <div className="flex justify-center py-16">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-fuchsia-400"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-400"></div>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -147,22 +147,22 @@ export default function GalleryPreview() {
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#090410] via-[#090410]/50 to-transparent opacity-85 group-hover:opacity-70 transition-opacity" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#07020e] via-[#07020e]/50 to-transparent opacity-85 group-hover:opacity-70 transition-opacity" />
 
                 <div className="absolute top-3 left-3 z-10">
-                  <span className="px-3 py-1 bg-purple-950/90 backdrop-blur-md rounded-full text-[10px] font-bold text-fuchsia-300 tracking-wider uppercase border border-purple-500/50 shadow-[0_0_10px_rgba(232,121,249,0.3)]">
+                  <span className="px-3 py-1 bg-purple-950/90 backdrop-blur-md rounded-full text-[10px] font-bold text-purple-200 tracking-wider uppercase border border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]">
                     {item.category}
                   </span>
                 </div>
 
                 <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-8 h-8 rounded-full bg-purple-950/90 border border-purple-500/60 flex items-center justify-center text-fuchsia-300 shadow-lg">
+                  <div className="w-8 h-8 rounded-full bg-purple-950/90 border border-purple-500/60 flex items-center justify-center text-purple-200 shadow-lg">
                     <ZoomIn className="w-3.5 h-3.5" />
                   </div>
                 </div>
 
                 <div className="relative z-10 p-5 transform group-hover:-translate-y-1 transition-transform duration-300">
-                  <h3 className="text-lg font-bold text-white mb-1 group-hover:text-fuchsia-300 transition-colors line-clamp-1">
+                  <h3 className="text-lg font-bold text-white mb-1 group-hover:text-purple-300 transition-colors line-clamp-1">
                     {item.title}
                   </h3>
                   {item.description && (

@@ -3,12 +3,12 @@
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  --color-academy-black: #090410;
+  --color-academy-black: #07020e;
   --color-academy-gray: #140924;
   --color-academy-gold: #c084fc;
-  --color-academy-red: #e879f9;
+  --color-academy-red: #c084fc;
   --color-academy-purple: #a855f7;
-  --color-academy-magenta: #f0abfc;
+  --color-academy-magenta: #c084fc;
   --color-academy-violet: #7e22ce;
   --color-academy-white: #f8f5ff;
   --color-academy-accent: #d8b4fe;
@@ -16,7 +16,7 @@
 
 @layer base {
   :root {
-    --background: #090410;
+    --background: #07020e;
     --foreground: #f8f5ff;
   }
 
