@@ -33,25 +33,25 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (BORDERLESS & SEAMLESS - NO OVERLAPPING LOGOS) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (VIVID, CRISP & SEAMLESS BORDER FADE) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* Main Troupe Artwork with Seamless Edge Fading & Screen Blend Mode */}
-          <div className="relative w-full max-w-5xl overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_90%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_90%)]">
+          {/* Main Troupe Artwork with 70% Solid Center for Maximum Clarity */}
+          <div className="relative w-full max-w-5xl overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_72%,transparent_98%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_72%,transparent_98%)]">
             <img 
-              src="/images/riga-troupe-hero-seamless.png" 
+              src="/images/riga-troupe-hero.jpg" 
               alt="RIGA Dance Troupe" 
-              className="w-full h-auto object-contain block mx-auto mix-blend-screen filter drop-shadow-[0_0_60px_rgba(168,85,247,0.8)]"
+              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 drop-shadow-[0_0_50px_rgba(168,85,247,0.7)]"
             />
             {/* Seamless Edge Gradient Fades to blend into #07020e background */}
-            <div className="absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-[#07020e] via-[#07020e]/70 to-transparent pointer-events-none z-10" />
-            <div className="absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-[#07020e] via-[#07020e]/70 to-transparent pointer-events-none z-10" />
-            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#07020e] via-[#07020e]/70 to-transparent pointer-events-none z-10" />
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#07020e] via-[#07020e]/90 to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#07020e] via-[#07020e]/60 to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#07020e] via-[#07020e]/60 to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#07020e] via-[#07020e]/60 to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#07020e] via-[#07020e]/80 to-transparent pointer-events-none z-10" />
           </div>
         </motion.div>
 
