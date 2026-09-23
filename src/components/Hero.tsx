@@ -15,43 +15,43 @@ const navItems = [
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-[#07020e] text-white pt-12 pb-16">
+    <section id="home" className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-[#04000b] text-white pt-12 pb-16">
       
       {/* Background Ambient Lights & Swirling Purple Smoke */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {/* Left & Right Vertical Neon Light Beams - Symmetrical Glowing Purple */}
-        <div className="absolute top-0 left-4 sm:left-12 w-1 h-full bg-gradient-to-b from-transparent via-purple-500 to-transparent opacity-80 blur-[2px] shadow-[0_0_20px_#a855f7]" />
-        <div className="absolute top-0 right-4 sm:right-12 w-1 h-full bg-gradient-to-b from-transparent via-purple-500 to-transparent opacity-80 blur-[2px] shadow-[0_0_20px_#a855f7]" />
+        {/* Symmetrical Glowing Purple Beams */}
+        <div className="absolute top-0 left-4 sm:left-12 w-1 h-full bg-gradient-to-b from-transparent via-purple-500/70 to-transparent opacity-70 blur-[2px] shadow-[0_0_20px_#a855f7]" />
+        <div className="absolute top-0 right-4 sm:right-12 w-1 h-full bg-gradient-to-b from-transparent via-purple-500/70 to-transparent opacity-70 blur-[2px] shadow-[0_0_20px_#a855f7]" />
 
-        {/* Ambient Glows */}
-        <div className="absolute -top-24 -left-24 w-[600px] h-[600px] bg-purple-900/30 rounded-full blur-[150px] mix-blend-screen animate-pulse" />
-        <div className="absolute top-1/3 -right-24 w-[600px] h-[600px] bg-purple-900/30 rounded-full blur-[160px] mix-blend-screen" />
-        <div className="absolute -bottom-36 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-purple-800/20 rounded-full blur-[130px] mix-blend-screen" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#07020e]/60 via-transparent to-[#07020e]" />
+        {/* Ambient Glows Positioned Seamlessly Behind Center Artwork */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-purple-900/25 rounded-full blur-[140px] mix-blend-screen pointer-events-none" />
+        <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-purple-950/40 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute -bottom-36 right-0 w-[500px] h-[500px] bg-purple-950/40 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#04000b]/80 via-transparent to-[#04000b]" />
       </div>
 
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (VIVID, CRISP & SEAMLESS BORDER FADE) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (ZERO BOX OUTLINE - SEAMLESS INTEGRATION) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* Main Troupe Artwork with 70% Solid Center for Maximum Clarity */}
-          <div className="relative w-full max-w-5xl overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_72%,transparent_98%)] [-webkit-mask-image:radial-gradient(ellipse_at_center,black_72%,transparent_98%)]">
+          {/* Main Troupe Artwork with Radial Edge Vignette to match #04000b */}
+          <div className="relative w-full max-w-5xl overflow-hidden [mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)]">
             <img 
               src="/images/riga-troupe-hero.jpg" 
               alt="RIGA Dance Troupe" 
-              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 drop-shadow-[0_0_50px_rgba(168,85,247,0.7)]"
+              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 drop-shadow-[0_0_50px_rgba(168,85,247,0.6)]"
             />
-            {/* Seamless Edge Gradient Fades to blend into #07020e background */}
-            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#07020e] via-[#07020e]/60 to-transparent pointer-events-none z-10" />
-            <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#07020e] via-[#07020e]/60 to-transparent pointer-events-none z-10" />
-            <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#07020e] via-[#07020e]/60 to-transparent pointer-events-none z-10" />
-            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#07020e] via-[#07020e]/80 to-transparent pointer-events-none z-10" />
+            {/* Seamless Edge Gradient Overlays matching section background #04000b */}
+            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#04000b] via-[#04000b]/70 to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#04000b] via-[#04000b]/70 to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#04000b] via-[#04000b]/70 to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#04000b] via-[#04000b]/90 to-transparent pointer-events-none z-10" />
           </div>
         </motion.div>
 

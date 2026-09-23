@@ -1,110 +1,72 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Clapperboard, Film, Music, Video, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-
-const services = [
-  {
-    icon: <Clapperboard className="w-8 h-8 text-fuchsia-400" />,
-    title: "Music Video Choreography",
-    description: "Tailored movement direction for solo artists, bands, and concept music videos with camera-blocking expertise."
-  },
-  {
-    icon: <Film className="w-8 h-8 text-purple-400" />,
-    title: "Film & Commercial Production",
-    description: "Professional dancers, stunt doubles, and choreographers for TV commercials, feature films, and digital campaigns."
-  },
-  {
-    icon: <Music className="w-8 h-8 text-fuchsia-400" />,
-    title: "Stage & Concert Direction",
-    description: "Full stage direction, lighting sync, and group movement coordination for arena concerts and award galas."
-  },
-  {
-    icon: <Video className="w-8 h-8 text-purple-400" />,
-    title: "Concept Video Production",
-    description: "End-to-end dance film creation including location scouting, wardrobe styling, lighting, and 4K video editing."
-  }
-];
+import { ArrowLeft, Clapperboard, Clock } from "lucide-react";
 
 export default function ProductionsPage() {
   return (
-    <div className="min-h-screen bg-[#090410] text-white">
-      {/* Back Button */}
-      <div className="pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[#04000b] text-white flex flex-col justify-between relative overflow-hidden">
+      {/* Background Ambient Lights */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-purple-900/20 via-fuchsia-900/15 to-transparent rounded-full blur-[160px] pointer-events-none" />
+
+      {/* Top Header Navigation */}
+      <div className="pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-300 hover:text-white hover:border-purple-500/60 transition-all text-xs font-semibold uppercase tracking-wider shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-950/70 border border-purple-800/40 text-purple-300 hover:text-white hover:border-purple-500/60 transition-all text-xs font-semibold uppercase tracking-wider shadow-[0_0_15px_rgba(168,85,247,0.2)]"
         >
           <ArrowLeft className="w-4 h-4 text-fuchsia-400" />
           Back to Home
         </Link>
       </div>
 
-      {/* Hero Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+      {/* Main Content Card */}
+      <div className="max-w-3xl mx-auto px-4 py-16 text-center relative z-10 my-auto">
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950/80 border border-purple-800/50 text-fuchsia-300 text-xs font-bold uppercase tracking-widest mb-4 shadow-[0_0_15px_rgba(168,85,247,0.25)]"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="p-8 sm:p-12 rounded-3xl bg-[#120726]/80 border border-purple-500/30 backdrop-blur-xl shadow-[0_0_50px_rgba(168,85,247,0.25)] flex flex-col items-center"
         >
-          <Clapperboard className="w-4 h-4 text-fuchsia-400" />
-          RIGA Productions & Media
-        </motion.div>
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-4xl sm:text-6xl font-black uppercase text-white tracking-wide mb-6"
-        >
-          Choreography & <span className="text-metallic-purple">Media Productions</span>
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-purple-200/70 max-w-3xl mx-auto text-base sm:text-lg font-light leading-relaxed mb-16"
-        >
-          We deliver world-class movement direction, film choreography, and full-scale dance video production for commercials, artists, and grand theatrical stages.
-        </motion.p>
-
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 text-left">
-          {services.map((item, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="p-8 rounded-2xl bg-[#140924] border border-purple-900/40 hover:border-purple-500/60 transition-all group"
-            >
-              <div className="w-16 h-16 rounded-xl bg-purple-950/80 border border-purple-800/40 flex items-center justify-center mb-6 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-                {item.icon}
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
-              <p className="text-sm text-purple-200/70 font-light leading-relaxed mb-6">{item.description}</p>
-              <div className="flex items-center gap-2 text-xs font-bold text-fuchsia-400 uppercase tracking-wider">
-                <CheckCircle2 className="w-4 h-4 text-fuchsia-400" />
-                Professional Production Ready
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div className="p-8 rounded-2xl bg-gradient-to-r from-purple-900/40 via-fuchsia-900/30 to-purple-900/40 border border-purple-800/50 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
-          <div>
-            <h3 className="text-2xl font-black text-white mb-2">Have a Commercial or Video Project in Mind?</h3>
-            <p className="text-xs sm:text-sm text-purple-200/70 font-light">Contact our production directors to discuss choreography, dancer casting & shoot schedules.</p>
+          <div className="w-20 h-20 rounded-2xl bg-purple-950/90 border border-purple-700/60 flex items-center justify-center text-fuchsia-400 mb-6 shadow-[0_0_30px_rgba(232,121,249,0.4)]">
+            <Clapperboard className="w-10 h-10" />
           </div>
-          <Link
-            href="/contact"
-            className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-widest shadow-[0_0_25px_rgba(168,85,247,0.5)] whitespace-nowrap"
-          >
-            Start Production Inquiry
-          </Link>
-        </div>
-      </section>
+
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950 border border-purple-700/60 text-fuchsia-300 text-xs font-bold uppercase tracking-widest mb-4 shadow-[0_0_15px_rgba(168,85,247,0.3)]">
+            <Clock className="w-3.5 h-3.5 text-fuchsia-400 animate-pulse" />
+            <span>Launching Soon</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-5xl font-black uppercase tracking-wide text-white mb-4">
+            RIGA Media <span className="text-metallic-purple">&amp; Productions</span>
+          </h1>
+
+          <p className="text-purple-200/80 text-sm sm:text-base font-light leading-relaxed max-w-xl mb-8">
+            Our film choreography, music video direction, and grand concert production services will be introduced soon. Get ready for breathtaking dance cinema!
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md">
+            <Link
+              href="/events"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 text-white font-black text-xs uppercase tracking-widest shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-[1.02] transition-all"
+            >
+              Book Dance Troupe
+            </Link>
+            <Link
+              href="/contact"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-purple-950/80 border border-purple-700/60 hover:border-purple-400 text-purple-200 hover:text-white font-bold text-xs uppercase tracking-widest transition-all"
+            >
+              Contact Directing Team
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Footer copyright space */}
+      <div className="pb-8 text-center text-purple-300/40 text-xs relative z-10">
+        © {new Date().getFullYear()} RIGA Dance Academy. All rights reserved.
+      </div>
     </div>
   );
 }
