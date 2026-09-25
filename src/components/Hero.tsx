@@ -11,7 +11,7 @@ const navItems = [
   { label: "CREW", href: "/crew" },
   { label: "RENTALS", href: "/rentals" },
   { label: "PRODUCTIONS", href: "/productions" },
-  { label: "EVENTS", href: "/events" },
+  { label: "CHOREOGRAPHY", href: "/events" },
 ];
 
 const Hero = () => {
