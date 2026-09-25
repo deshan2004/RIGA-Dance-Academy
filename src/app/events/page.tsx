@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Bus } from "lucide-react";
+import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Bus, Video, PartyPopper } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
@@ -18,8 +18,9 @@ interface EventItem {
   [key: string]: unknown;
 }
 
-interface WeddingPackage {
+export interface ChoreographyPackage {
   id: string;
+  category: "weddings" | "events" | "music_video";
   dancerCount: number;
   dancersLabel: string;
   actsLabel: string;
@@ -31,9 +32,11 @@ interface WeddingPackage {
   features: string[];
 }
 
-const weddingPackages: WeddingPackage[] = [
+const choreographyPackages: ChoreographyPackage[] = [
+  // --- WEDDINGS ---
   {
-    id: "pkg-4d-3a",
+    id: "pkg-w-4d-3a",
+    category: "weddings",
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "3 Dance Acts",
@@ -50,7 +53,8 @@ const weddingPackages: WeddingPackage[] = [
     ]
   },
   {
-    id: "pkg-4d-w3a",
+    id: "pkg-w-4d-w3a",
+    category: "weddings",
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "Welcome Dance + 3 Dance Acts",
@@ -69,7 +73,8 @@ const weddingPackages: WeddingPackage[] = [
     ]
   },
   {
-    id: "pkg-4d-4a",
+    id: "pkg-w-4d-4a",
+    category: "weddings",
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "4 Dance Acts",
@@ -86,7 +91,8 @@ const weddingPackages: WeddingPackage[] = [
     ]
   },
   {
-    id: "pkg-5d-3a",
+    id: "pkg-w-5d-3a",
+    category: "weddings",
     dancerCount: 5,
     dancersLabel: "5 Dancers",
     actsLabel: "3 Dance Acts",
@@ -103,7 +109,8 @@ const weddingPackages: WeddingPackage[] = [
     ]
   },
   {
-    id: "pkg-5d-4a",
+    id: "pkg-w-5d-4a",
+    category: "weddings",
     dancerCount: 5,
     dancersLabel: "5 Dancers",
     actsLabel: "4 Dance Acts",
@@ -121,7 +128,8 @@ const weddingPackages: WeddingPackage[] = [
     ]
   },
   {
-    id: "pkg-6d-3a",
+    id: "pkg-w-6d-3a",
+    category: "weddings",
     dancerCount: 6,
     dancersLabel: "6 Dancers",
     actsLabel: "3 Dance Acts",
@@ -138,7 +146,8 @@ const weddingPackages: WeddingPackage[] = [
     ]
   },
   {
-    id: "pkg-6d-4a",
+    id: "pkg-w-6d-4a",
+    category: "weddings",
     dancerCount: 6,
     dancersLabel: "6 Dancers",
     actsLabel: "4 Dance Acts",
@@ -155,12 +164,203 @@ const weddingPackages: WeddingPackage[] = [
       "Dedicated Stage Manager & Coordinator",
       "Without Transport (Transport charged separately)"
     ]
+  },
+
+  // --- EVENTS ---
+  {
+    id: "pkg-e-4d-3a",
+    category: "events",
+    dancerCount: 4,
+    dancersLabel: "4 Dancers",
+    actsLabel: "3 Dance Acts",
+    priceLkr: 75000,
+    priceFormatted: "75,000 LKR",
+    transport: "Without Transport",
+    badge: "Corporate & Stage",
+    features: [
+      "4 Professional Troupe Dancers",
+      "3 High-Impact Event Stage Acts",
+      "Custom Corporate & Concert Outfits",
+      "High-Energy Group Choreography",
+      "Without Transport (Transport charged separately)"
+    ]
+  },
+  {
+    id: "pkg-e-4d-4a",
+    category: "events",
+    dancerCount: 4,
+    dancersLabel: "4 Dancers",
+    actsLabel: "4 Dance Acts",
+    priceLkr: 85000,
+    priceFormatted: "85,000 LKR",
+    transport: "Without Transport",
+    badge: "Full Stage Set",
+    highlighted: true,
+    features: [
+      "4 Professional Troupe Dancers",
+      "4 Complete Stage Performances",
+      "Multi-Style Costume Wardrobe Changes",
+      "Pyrotechnic / Lighting Sync Option",
+      "Without Transport (Transport charged separately)"
+    ]
+  },
+  {
+    id: "pkg-e-5d-3a",
+    category: "events",
+    dancerCount: 5,
+    dancersLabel: "5 Dancers",
+    actsLabel: "3 Dance Acts",
+    priceLkr: 95000,
+    priceFormatted: "95,000 LKR",
+    transport: "Without Transport",
+    badge: "Grand Show",
+    features: [
+      "5 Professional Troupe Dancers",
+      "3 High-Voltage Stage Dance Acts",
+      "Custom Concert / Festival Theme Outfits",
+      "Center-Stage Formations & Solo Sequences",
+      "Without Transport (Transport charged separately)"
+    ]
+  },
+  {
+    id: "pkg-e-5d-4a",
+    category: "events",
+    dancerCount: 5,
+    dancersLabel: "5 Dancers",
+    actsLabel: "4 Dance Acts",
+    priceLkr: 110000,
+    priceFormatted: "110,000 LKR",
+    transport: "Without Transport",
+    badge: "Mega Event Set",
+    highlighted: true,
+    features: [
+      "5 Professional Troupe Dancers",
+      "4 Complete Mega Stage Acts",
+      "Multi-Genre Fusion (Kandyan / Urban / Bollywood)",
+      "Full Wardrobe & Prop Production",
+      "Dedicated Troupe Director & Coordinator",
+      "Without Transport (Transport charged separately)"
+    ]
+  },
+
+  // --- MUSIC VIDEO ---
+  {
+    id: "pkg-mv-4d-wc",
+    category: "music_video",
+    dancerCount: 4,
+    dancersLabel: "4 Dancers",
+    actsLabel: "With Choreography",
+    priceLkr: 70000,
+    priceFormatted: "70,000 LKR",
+    transport: "Without Transport",
+    badge: "Full Choreography",
+    highlighted: true,
+    features: [
+      "4 Professional Music Video Dancers",
+      "Full Original Video Choreography Creation",
+      "Concept & Routine Rehearsal Sessions",
+      "Styled Video Shoot Costumes",
+      "Without Transport (Transport charged separately)"
+    ]
+  },
+  {
+    id: "pkg-mv-4d-woc",
+    category: "music_video",
+    dancerCount: 4,
+    dancersLabel: "4 Dancers",
+    actsLabel: "Without Choreography",
+    priceLkr: 60000,
+    priceFormatted: "60,000 LKR",
+    transport: "Without Transport",
+    badge: "Dancers Only",
+    features: [
+      "4 Professional Backing Dancers",
+      "Execution of Director's Routine / Placement",
+      "On-set Costume Wardrobe Coordination",
+      "Full Shoot Day Availability",
+      "Without Transport (Transport charged separately)"
+    ]
+  },
+  {
+    id: "pkg-mv-5d-wc",
+    category: "music_video",
+    dancerCount: 5,
+    dancersLabel: "5 Dancers",
+    actsLabel: "With Choreography",
+    priceLkr: 80000,
+    priceFormatted: "80,000 LKR",
+    transport: "Without Transport",
+    badge: "Full Choreography",
+    highlighted: true,
+    features: [
+      "5 Professional Music Video Dancers",
+      "Bespoke Video Choreography & Hook Step Creation",
+      "Group Formation & Solo Framing Sequences",
+      "Themed Costume Wardrobe",
+      "Without Transport (Transport charged separately)"
+    ]
+  },
+  {
+    id: "pkg-mv-5d-woc",
+    category: "music_video",
+    dancerCount: 5,
+    dancersLabel: "5 Dancers",
+    actsLabel: "Without Choreography",
+    priceLkr: 70000,
+    priceFormatted: "70,000 LKR",
+    transport: "Without Transport",
+    badge: "Dancers Only",
+    features: [
+      "5 Professional Backing Dancers",
+      "Execution of Pre-existing Choreography",
+      "Camera Blocking & Placement Readiness",
+      "Full Shoot Day Coverage",
+      "Without Transport (Transport charged separately)"
+    ]
+  },
+  {
+    id: "pkg-mv-6d-wc",
+    category: "music_video",
+    dancerCount: 6,
+    dancersLabel: "6 Dancers",
+    actsLabel: "With Choreography",
+    priceLkr: 90000,
+    priceFormatted: "90,000 LKR",
+    transport: "Without Transport",
+    badge: "Grand Video Set",
+    highlighted: true,
+    features: [
+      "6 Professional Music Video Dancers",
+      "Master Choreography & Hook Movement Design",
+      "Pre-Production Rehearsals & Camera Blocking",
+      "Premium Styling & Wardrobe Outfits",
+      "Without Transport (Transport charged separately)"
+    ]
+  },
+  {
+    id: "pkg-mv-6d-woc",
+    category: "music_video",
+    dancerCount: 6,
+    dancersLabel: "6 Dancers",
+    actsLabel: "Without Choreography",
+    priceLkr: 80000,
+    priceFormatted: "80,000 LKR",
+    transport: "Without Transport",
+    badge: "Dancers Only",
+    features: [
+      "6 Professional Backing Dancers",
+      "High-Impact Group Formations for Camera",
+      "Flexible Movement Adaptation to Director Cues",
+      "Full Shoot Day Coverage",
+      "Without Transport (Transport charged separately)"
+    ]
   }
 ];
 
 export default function EventsPage() {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<"weddings" | "events" | "music_video">("weddings");
   const [selectedDancerFilter, setSelectedDancerFilter] = useState<number | "all">("all");
 
   useEffect(() => {
@@ -186,12 +386,15 @@ export default function EventsPage() {
     };
   }, []);
 
-  const filteredPackages = selectedDancerFilter === "all"
-    ? weddingPackages
-    : weddingPackages.filter(p => p.dancerCount === selectedDancerFilter);
+  const categoryPackages = choreographyPackages.filter(p => p.category === selectedCategory);
 
-  const getWhatsAppLink = (pkg: WeddingPackage) => {
-    const message = `Hi RIGA Dance Academy! I would like to inquire about booking the Wedding Package: ${pkg.dancersLabel} - ${pkg.actsLabel} (${pkg.priceFormatted}). Please share availability and details!`;
+  const filteredPackages = selectedDancerFilter === "all"
+    ? categoryPackages
+    : categoryPackages.filter(p => p.dancerCount === selectedDancerFilter);
+
+  const getWhatsAppLink = (pkg: ChoreographyPackage) => {
+    const categoryName = pkg.category === "weddings" ? "Weddings" : pkg.category === "events" ? "Events" : "Music Video";
+    const message = `Hi RIGA Dance Academy! I would like to inquire about booking the ${categoryName} Package: ${pkg.dancersLabel} - ${pkg.actsLabel} (${pkg.priceFormatted}). Please share availability and details!`;
     return `https://wa.me/94777123456?text=${encodeURIComponent(message)}`;
   };
 
@@ -226,7 +429,7 @@ export default function EventsPage() {
             className="inline-flex items-center gap-2 bg-purple-500/10 text-purple-300 px-4 py-2 rounded-full mb-6 border border-purple-500/30 backdrop-blur-md shadow-[0_0_15px_rgba(168,85,247,0.2)]"
           >
             <Sparkles className="w-4 h-4 text-fuchsia-400" />
-            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-metallic-purple">Troupe Bookings & Events</span>
+            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-metallic-purple">Official RIGA Choreography Packages</span>
           </motion.div>
           
           <motion.h1 
@@ -235,7 +438,7 @@ export default function EventsPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase"
           >
-            Wedding & Event <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-purple-500 drop-shadow-[0_0_25px_rgba(192,132,252,0.4)]">Dance Packages</span>
+            Troupe & Performance <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-purple-500 drop-shadow-[0_0_25px_rgba(192,132,252,0.4)]">Choreography Rates</span>
           </motion.h1>
           
           <motion.p 
@@ -244,25 +447,67 @@ export default function EventsPage() {
             transition={{ delay: 0.2 }}
             className="text-base sm:text-lg text-purple-200/80 max-w-3xl mx-auto mb-10 leading-relaxed"
           >
-            Make your special day unforgettable with Sri Lanka’s premier performance troupe. Explore our official Wedding Troupe Packages with customized choreography, authentic stage regalia, and high-energy live acts.
+            Book Sri Lanka&apos;s premier dance ensemble for Weddings, Corporate Events, and Music Video Shoots. Explore our official rates with customized choreography, authentic stage regalia, and high-energy troupe performances.
           </motion.p>
         </div>
       </section>
 
-      {/* --- WEDDING PACKAGES SECTION --- */}
+      {/* --- CHOREOGRAPHY PACKAGES SECTION --- */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
         
-        {/* Section Header */}
+        {/* Section Header & Main Category Selector */}
         <div className="flex flex-col items-center text-center mb-10">
           <div className="inline-flex items-center gap-2 text-fuchsia-300 mb-2 font-bold tracking-widest uppercase text-xs">
             <Heart className="w-4 h-4 text-pink-500 fill-pink-500/30" />
-            Official Pricing & Troupe Sets
+            Official Package Pricing
           </div>
+          
+          {/* Main Category Tabs: WEDDINGS | EVENTS | MUSIC VIDEO */}
+          <div className="flex flex-wrap items-center justify-center gap-3 p-2 rounded-2xl bg-[#130728] border border-purple-500/40 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.6)] mb-8">
+            <button
+              onClick={() => { setSelectedCategory("weddings"); setSelectedDancerFilter("all"); }}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                selectedCategory === "weddings"
+                  ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 text-white shadow-[0_0_25px_rgba(192,132,252,0.6)] border border-purple-300/40"
+                  : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
+              }`}
+            >
+              <Heart className="w-4 h-4 text-pink-400" />
+              <span>Weddings</span>
+            </button>
+
+            <button
+              onClick={() => { setSelectedCategory("events"); setSelectedDancerFilter("all"); }}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                selectedCategory === "events"
+                  ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 text-white shadow-[0_0_25px_rgba(192,132,252,0.6)] border border-purple-300/40"
+                  : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
+              }`}
+            >
+              <PartyPopper className="w-4 h-4 text-amber-400" />
+              <span>Events</span>
+            </button>
+
+            <button
+              onClick={() => { setSelectedCategory("music_video"); setSelectedDancerFilter("all"); }}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                selectedCategory === "music_video"
+                  ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 text-white shadow-[0_0_25px_rgba(192,132,252,0.6)] border border-purple-300/40"
+                  : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
+              }`}
+            >
+              <Video className="w-4 h-4 text-cyan-400" />
+              <span>Music Video</span>
+            </button>
+          </div>
+
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-wide uppercase mb-6">
-            Wedding Troupe Packages
+            {selectedCategory === "weddings" && "💍 Wedding Troupe Packages"}
+            {selectedCategory === "events" && "🎭 Event & Stage Acts Packages"}
+            {selectedCategory === "music_video" && "🎬 Music Video Choreography Packages"}
           </h2>
 
-          {/* Filter Tabs */}
+          {/* Secondary Dancer Filter Tabs */}
           <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-full bg-[#130728]/80 border border-purple-500/30 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
             <button
               onClick={() => setSelectedDancerFilter("all")}
@@ -272,25 +517,29 @@ export default function EventsPage() {
                   : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
               }`}
             >
-              All Packages ({weddingPackages.length})
+              All ({categoryPackages.length})
             </button>
-            {[4, 5, 6].map((dancers) => (
-              <button
-                key={dancers}
-                onClick={() => setSelectedDancerFilter(dancers)}
-                className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 ${
-                  selectedDancerFilter === dancers
-                    ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)]"
-                    : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
-                }`}
-              >
-                {dancers} Dancers
-              </button>
-            ))}
+            {[4, 5, 6].map((dancers) => {
+              const count = categoryPackages.filter(p => p.dancerCount === dancers).length;
+              if (count === 0) return null;
+              return (
+                <button
+                  key={dancers}
+                  onClick={() => setSelectedDancerFilter(dancers)}
+                  className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 ${
+                    selectedDancerFilter === dancers
+                      ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)]"
+                      : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
+                  }`}
+                >
+                  {dancers} Dancers ({count})
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Wedding Packages Grid */}
+        {/* Packages Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredPackages.map((pkg, idx) => (
             <motion.div
