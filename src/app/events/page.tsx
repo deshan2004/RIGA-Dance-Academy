@@ -414,10 +414,11 @@ export default function EventsPage() {
           <div className="flex justify-center mb-8">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-950/60 border border-purple-500/30 text-purple-200 hover:text-white hover:border-purple-400/70 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all text-xs font-bold uppercase tracking-widest backdrop-blur-md"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-purple-950/60 border border-purple-500/30 text-purple-200 hover:text-white hover:border-purple-400/70 hover:bg-purple-900/80 transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:scale-105 backdrop-blur-md"
+              aria-label="Back to Home"
+              title="Back to Home"
             >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Home
+              <ArrowLeft className="w-5 h-5 text-purple-300" />
             </Link>
           </div>
         </div>
