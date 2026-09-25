@@ -411,7 +411,7 @@ export default function EventsPage() {
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-purple-900/30 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-start mb-8">
             <Link
               href="/"
               className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-purple-950/60 border border-purple-500/30 text-purple-200 hover:text-white hover:border-purple-400/70 hover:bg-purple-900/80 transition-all shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:scale-105 backdrop-blur-md"
