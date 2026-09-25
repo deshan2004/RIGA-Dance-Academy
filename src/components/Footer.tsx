@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Camera, MapPin, Mail, Phone, Music2 } from "lucide-react";
 
 const Footer = () => {
@@ -60,11 +61,11 @@ const Footer = () => {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start space-x-3 text-purple-200/70">
                 <MapPin className="w-5 h-5 text-fuchsia-400 flex-shrink-0 mt-0.5" />
-                <span>123 Rhythm Avenue, Dance District, NY 10001</span>
+                <span>123 Dance Studio Road, Colombo 07, Sri Lanka</span>
               </li>
               <li className="flex items-center space-x-3 text-purple-200/70">
                 <Phone className="w-5 h-5 text-fuchsia-400 flex-shrink-0" />
-                <span>+1 (555) 123-4567</span>
+                <span>+94 77 123 4567</span>
               </li>
               <li className="flex items-center space-x-3 text-purple-200/70">
                 <Mail className="w-5 h-5 text-fuchsia-400 flex-shrink-0" />
@@ -78,10 +79,12 @@ const Footer = () => {
             <h4 className="text-white font-extrabold text-sm uppercase tracking-widest mb-6 text-purple-300">Location</h4>
             <div className="w-full h-40 bg-[#140924] rounded-2xl border border-purple-900/50 overflow-hidden relative group">
               <div className="absolute inset-0 bg-purple-950/30 group-hover:bg-transparent transition-colors z-10" />
-              <img 
+              <Image 
                 src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
                 alt="Map Location" 
-                className="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity"
+                fill
+                className="object-cover opacity-40 group-hover:opacity-60 transition-opacity"
+                unoptimized
               />
               <div className="absolute inset-0 flex items-center justify-center z-20">
                 <MapPin className="w-8 h-8 text-fuchsia-400 animate-bounce drop-shadow-[0_0_10px_rgba(232,121,249,0.8)]" />

@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://rigadance.com"),
   title: "RIGA - Sri Lanka's next generation of professional dancers starts at RIGA.",
   description: "Sri Lanka's next generation of professional dancers starts at RIGA. Master Kandyan, Hip-Hop, Classical, and Contemporary dance styles with world-class instructors.",
   keywords: ["RIGA", "RIGA Dance Academy", "Dance Academy Sri Lanka", "Kandyan Dance", "Hip Hop", "Contemporary Dance", "Dance Classes"],
@@ -41,16 +45,13 @@ export const metadata: Metadata = {
   },
 };
 
-
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { GoogleAnalytics } from "@next/third-parties/google";
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased bg-academy-black text-academy-white selection:bg-academy-gold selection:text-black min-h-screen flex flex-col`}>
@@ -59,8 +60,9 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
+        {gaId && <GoogleAnalytics gaId={gaId} />}
       </body>
     </html>
   );
 }
+

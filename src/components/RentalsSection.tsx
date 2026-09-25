@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Sparkles, 
@@ -508,10 +509,12 @@ function RentalCard({
       <div className="relative z-10">
         {/* Full-Width Showcase Photo Frame (with Generated Category Fallback Photo) */}
         <div className="relative h-48 sm:h-52 w-full rounded-2xl overflow-hidden mb-4 border border-purple-800/40 bg-[#17092e] group/img shadow-inner">
-          <img
+          <Image
             src={displayImage}
             alt={item.name}
-            className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
+            fill
+            className="object-cover group-hover/img:scale-105 transition-transform duration-500"
+            unoptimized
           />
 
           {/* Overlay Gradient at Bottom */}
@@ -676,11 +679,13 @@ function RentalDetailModal({
         {/* Modal Sticky Header with Close & Heart Buttons */}
         <div className="relative p-5 sm:p-6 border-b border-purple-900/50 shrink-0 flex items-start justify-between gap-4 bg-[#120722]/95 backdrop-blur-md z-20">
           <div className="flex items-center gap-3.5 min-w-0 pr-16">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-purple-950 to-fuchsia-950 border border-purple-700/50 flex items-center justify-center text-3xl sm:text-3xl shadow-[0_0_20px_rgba(168,85,247,0.3)] shrink-0 overflow-hidden">
-              <img
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-purple-950 to-fuchsia-950 border border-purple-700/50 flex items-center justify-center text-3xl sm:text-3xl shadow-[0_0_20px_rgba(168,85,247,0.3)] shrink-0 overflow-hidden relative">
+              <Image
                 src={item.image || getFallbackImage(item.category)}
                 alt={item.name}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                unoptimized
               />
             </div>
             <div className="min-w-0">
@@ -736,10 +741,12 @@ function RentalDetailModal({
 
           {/* Prominent Featured Photo Banner Right Below Description */}
           <div className="relative w-full h-56 sm:h-72 rounded-2xl overflow-hidden border border-purple-600/50 shrink-0 bg-[#16082b] shadow-[0_0_30px_rgba(168,85,247,0.25)]">
-            <img
+            <Image
               src={item.image || getFallbackImage(item.category)}
               alt={item.name}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#120722] via-transparent to-black/20" />
             <span className="absolute bottom-3 left-4 text-xs font-bold text-fuchsia-300 bg-black/75 backdrop-blur-md px-3.5 py-1 rounded-full border border-purple-500/40">
@@ -978,15 +985,15 @@ export default function RentalsSection() {
         const res = await fetch("/api/rentals");
         const json = await res.json();
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          const apiItems: RentalItem[] = json.data.map((doc: any) => ({
-            id: doc._id || doc.id,
-            category: doc.category || "costumes",
-            categoryLabel: doc.categoryLabel || (doc.category === "props" ? "Props" : doc.category === "accessories" ? "Performance Accessories" : "Costumes"),
-            name: doc.name,
-            description: doc.description || "",
-            icon: doc.icon || "👗",
-            image: doc.image || "",
-            highlight: doc.highlight || "",
+          const apiItems: RentalItem[] = json.data.map((doc: Record<string, unknown>) => ({
+            id: (doc._id || doc.id) as string,
+            category: (doc.category as "costumes" | "props" | "accessories") || "costumes",
+            categoryLabel: (doc.categoryLabel as string) || (doc.category === "props" ? "Props" : doc.category === "accessories" ? "Performance Accessories" : "Costumes"),
+            name: (doc.name as string) || "",
+            description: (doc.description as string) || "",
+            icon: (doc.icon as string) || "👗",
+            image: (doc.image as string) || "",
+            highlight: (doc.highlight as string) || "",
             basePriceLkr: Number(doc.basePriceLkr) || 2000,
             availableSizes: doc.availableSizes || ["Standard"],
             includedPieces: doc.includedPieces || [],

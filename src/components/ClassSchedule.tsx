@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, Calendar, MapPin, User, Sparkles } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export interface IClass {
   _id?: string;
@@ -102,10 +103,12 @@ const ClassSchedule = () => {
                 >
                   {/* Photo Header */}
                   <div className="relative h-56 w-full overflow-hidden">
-                    <img 
+                    <Image 
                       src={photo} 
                       alt={cls.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700" 
+                      unoptimized
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#140924] via-[#140924]/40 to-transparent" />
                     

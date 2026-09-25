@@ -2,18 +2,17 @@
 
 import { useState } from "react";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ShieldCheck, ArrowLeft, Lock, Mail, User, Key, CheckCircle, AlertCircle } from "lucide-react";
+import { ShieldCheck, ArrowLeft, Lock, Mail, User, CheckCircle, AlertCircle } from "lucide-react";
 
 export default function AdminSetupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [secretKey, setSecretKey] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<{ type: "success" | "error" | null; message: string }>({
     type: null,
@@ -46,9 +45,10 @@ export default function AdminSetupPage() {
         // Try creating a new Firebase user
         const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
         uid = userCredential.user.uid;
-      } catch (authErr: any) {
+      } catch (authErr: unknown) {
+        const firebaseErr = authErr as { code?: string };
         // If email already in use, try signing in to promote existing user to admin
-        if (authErr.code === "auth/email-already-in-use") {
+        if (firebaseErr.code === "auth/email-already-in-use") {
           const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
           uid = userCredential.user.uid;
         } else {
@@ -77,11 +77,12 @@ export default function AdminSetupPage() {
       setTimeout(() => {
         router.push("/admin");
       }, 1500);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
+      const errorObj = err as { message?: string };
       setStatus({
         type: "error",
-        message: err.message || "Failed to create Admin account. Please check your credentials.",
+        message: errorObj.message || "Failed to create Admin account. Please check your credentials.",
       });
     } finally {
       setLoading(false);
@@ -164,7 +165,7 @@ export default function AdminSetupPage() {
               <input
                 type="email"
                 required
-                placeholder="admin@grooveacademy.com"
+                placeholder="admin@rigadance.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-purple-950/50 border border-purple-800/50 text-white placeholder-purple-400/50 text-sm focus:outline-none focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 transition-all"
@@ -225,8 +226,9 @@ export default function AdminSetupPage() {
 
       {/* Footer link */}
       <div className="text-center text-xs text-purple-400/60 pb-4">
-        Groove Academy &copy; {new Date().getFullYear()} Management Portal
+        RIGA Dance Academy &copy; {new Date().getFullYear()} Management Portal
       </div>
     </div>
   );
 }
+

@@ -64,7 +64,6 @@ export async function POST(request: Request) {
     // Also ensure document is created in "users" collection so it appears in Firestore & Admin Panel
     if (body.email) {
       try {
-        const usersRef = collection(db, "users");
         const userDocId = body.uid || body.email.replace(/[^a-zA-Z0-9]/g, "_");
         const userDocRef = doc(db, "users", userDocId);
         const userSnap = await getDoc(userDocRef);

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Bus } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 
 interface EventItem {
@@ -403,10 +404,12 @@ export default function EventsPage() {
               >
                 <div className="h-48 bg-black relative overflow-hidden">
                   {ev.imageUrl ? (
-                    <img 
+                    <Image 
                       src={ev.imageUrl} 
                       alt={ev.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      unoptimized
                     />
                   ) : (
                     <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/40 to-black flex items-center justify-center">

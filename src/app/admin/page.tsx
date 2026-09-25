@@ -6,6 +6,7 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video } from "lucide-react";
+import Image from "next/image";
 import EventsTab from "@/components/admin/EventsTab";
 import RentalsTab from "@/components/admin/RentalsTab";
 
@@ -274,18 +275,18 @@ export default function AdminDashboard() {
         router.push("/login");
       } else {
         try {
-          let userData: Record<string, any> | null = null;
+          let userData: Record<string, unknown> | null = null;
           try {
             const userDoc = await getDoc(doc(db, "users", user.uid));
             if (userDoc.exists()) userData = userDoc.data();
-          } catch (e) {}
+          } catch {}
 
           if (!userData && user.email) {
             try {
               const emailDocId = user.email.replace(/[^a-zA-Z0-9]/g, "_");
               const uByEmail = await getDoc(doc(db, "users", emailDocId));
               if (uByEmail.exists()) userData = uByEmail.data();
-            } catch (e) {}
+            } catch {}
           }
 
           if (!userData && user.email) {
@@ -293,7 +294,7 @@ export default function AdminDashboard() {
               const q = query(collection(db, "users"), where("email", "==", user.email));
               const qSnap = await getDocs(q);
               if (!qSnap.empty) userData = qSnap.docs[0].data();
-            } catch (e) {}
+            } catch {}
           }
 
           if (!userData && (user.email || user.uid)) {
@@ -301,10 +302,11 @@ export default function AdminDashboard() {
               const res = await fetch(`/api/users?email=${encodeURIComponent(user.email || "")}&uid=${user.uid}`);
               const apiData = await res.json();
               if (apiData.success && apiData.user) userData = apiData.user;
-            } catch (e) {}
+            } catch {}
           }
 
-          if (userData?.role?.toLowerCase() === "admin") {
+          const roleStr = typeof userData?.role === "string" ? userData.role : "";
+          if (roleStr.toLowerCase() === "admin") {
             fetchEnrollments();
           } else {
             router.push("/");
@@ -1000,9 +1002,9 @@ export default function AdminDashboard() {
                   classes.map((cls) => (
                     <tr key={cls._id} className="hover:bg-black/20 transition-colors">
                       <td className="px-6 py-4">
-                        <div className="w-12 h-12 rounded-xl overflow-hidden bg-purple-950 border border-purple-800/60 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                        <div className="w-12 h-12 rounded-xl overflow-hidden bg-purple-950 border border-purple-800/60 shadow-[0_0_10px_rgba(168,85,247,0.2)] relative">
                           {cls.image ? (
-                            <img src={cls.image} alt={cls.title} className="w-full h-full object-cover" />
+                            <Image src={cls.image} alt={cls.title} fill className="object-cover" unoptimized />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-purple-400">
                               <ImageIcon className="w-5 h-5" />
@@ -1139,7 +1141,7 @@ export default function AdminDashboard() {
               {galleryItems.map((photo) => (
                 <div key={photo._id} className="bg-black/60 border border-gray-800 rounded-2xl overflow-hidden group relative flex flex-col justify-between">
                   <div className="relative h-44 w-full overflow-hidden">
-                    <img src={photo.image} alt={photo.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src={photo.image} alt={photo.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
                     <span className="absolute top-2 left-2 bg-purple-950/90 text-fuchsia-300 border border-purple-500/50 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
                       {photo.category}
                     </span>
@@ -1278,7 +1280,7 @@ export default function AdminDashboard() {
               practiceVideos.map((vid) => (
                 <div key={vid._id} className="bg-black/60 border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between">
                   <div className="relative h-44 w-full bg-purple-950 overflow-hidden">
-                    <img src={vid.thumbnail} alt={vid.title} className="w-full h-full object-cover" />
+                    <Image src={vid.thumbnail} alt={vid.title} fill className="object-cover" unoptimized />
                     <span className="absolute top-2 right-2 bg-purple-950/90 text-fuchsia-300 border border-purple-500/50 text-[10px] font-bold px-2 py-0.5 rounded-full">
                       {vid.duration}
                     </span>
@@ -1600,7 +1602,7 @@ export default function AdminDashboard() {
                     </div>
                     {galleryForm.image && (
                       <div className="relative w-full h-36 rounded-xl overflow-hidden border border-purple-500/40 mt-2">
-                        <img src={galleryForm.image} alt="Preview" className="w-full h-full object-cover" />
+                        <Image src={galleryForm.image} alt="Preview" fill className="object-cover" unoptimized />
                         <button
                           type="button"
                           onClick={() => setGalleryForm({ ...galleryForm, image: "" })}
@@ -1764,7 +1766,7 @@ export default function AdminDashboard() {
                     </div>
                     {classForm.image && (
                       <div className="relative w-full h-32 rounded-xl overflow-hidden border border-purple-500/40 mt-2">
-                        <img src={classForm.image} alt="Preview" className="w-full h-full object-cover" />
+                        <Image src={classForm.image} alt="Preview" fill className="object-cover" unoptimized />
                         <button
                           type="button"
                           onClick={() => setClassForm({ ...classForm, image: "" })}
@@ -1830,11 +1832,13 @@ export default function AdminDashboard() {
 
               {/* Payment Slip Image Preview */}
               {selectedSlip.payment_slip ? (
-                <div className="mb-6 rounded-2xl overflow-hidden border border-purple-800/60 bg-[#090410] max-h-96 flex items-center justify-center p-2">
-                  <img
+                <div className="mb-6 rounded-2xl overflow-hidden border border-purple-800/60 bg-[#090410] max-h-96 flex items-center justify-center p-2 relative min-h-[250px]">
+                  <Image
                     src={selectedSlip.payment_slip}
                     alt="Payment Slip"
-                    className="max-h-80 w-auto object-contain rounded-xl"
+                    fill
+                    className="object-contain rounded-xl"
+                    unoptimized
                   />
                 </div>
               ) : (

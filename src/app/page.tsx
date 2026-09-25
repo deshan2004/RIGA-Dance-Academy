@@ -20,18 +20,18 @@ export default function Home() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         try {
-          let userData: Record<string, any> | null = null;
+          let userData: Record<string, unknown> | null = null;
           try {
             const userDoc = await getDoc(doc(db, "users", currentUser.uid));
             if (userDoc.exists()) userData = userDoc.data();
-          } catch (e) {}
+          } catch {}
 
           if (!userData && currentUser.email) {
             try {
               const emailDocId = currentUser.email.replace(/[^a-zA-Z0-9]/g, "_");
               const uByEmail = await getDoc(doc(db, "users", emailDocId));
               if (uByEmail.exists()) userData = uByEmail.data();
-            } catch (e) {}
+            } catch {}
           }
 
           if (!userData && currentUser.email) {
@@ -39,7 +39,7 @@ export default function Home() {
               const q = query(collection(db, "users"), where("email", "==", currentUser.email));
               const qSnap = await getDocs(q);
               if (!qSnap.empty) userData = qSnap.docs[0].data();
-            } catch (e) {}
+            } catch {}
           }
 
           if (!userData && (currentUser.email || currentUser.uid)) {
@@ -47,10 +47,11 @@ export default function Home() {
               const res = await fetch(`/api/users?email=${encodeURIComponent(currentUser.email || "")}&uid=${currentUser.uid}`);
               const apiData = await res.json();
               if (apiData.success && apiData.user) userData = apiData.user;
-            } catch (e) {}
+            } catch {}
           }
 
-          if (userData?.role?.toLowerCase() === "admin") {
+          const roleStr = typeof userData?.role === "string" ? userData.role : "";
+          if (roleStr.toLowerCase() === "admin") {
             router.push("/admin");
             return;
           }

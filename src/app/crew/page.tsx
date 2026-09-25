@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowLeft, Users2, Trophy, Flame, Video } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const crewMembers = [
@@ -98,7 +99,7 @@ export default function CrewPage() {
               className="rounded-2xl overflow-hidden bg-[#140924] border border-purple-900/40 group hover:border-purple-500/60 transition-all shadow-[0_0_20px_rgba(9,4,16,0.8)]"
             >
               <div className="relative h-64 overflow-hidden">
-                <img src={team.image} alt={team.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <Image src={team.image} alt={team.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
                 <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-purple-950/80 backdrop-blur-md border border-purple-700/60 text-fuchsia-300 text-[10px] font-black uppercase">
                   {team.tag}
                 </div>

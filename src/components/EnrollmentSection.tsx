@@ -11,6 +11,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "fire
 import { doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const DANCE_STYLES = [
   { id: "Kandyan Traditional", name: "Kandyan Traditional", icon: "🥁", desc: "Heritage traditional drumming & dance" },
@@ -101,14 +102,14 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
       const user = userCredential.user;
 
       // 1. Look up user document using multi-tier fallback (UID doc, Sanitized Email doc, Query, API fallback)
-      let userData: Record<string, any> | null = null;
+      let userData: Record<string, unknown> | null = null;
 
       try {
         const userDocById = await getDoc(doc(db, "users", user.uid));
         if (userDocById.exists()) {
           userData = userDocById.data();
         }
-      } catch (err) {}
+      } catch {}
 
       if (!userData && user.email) {
         try {
@@ -117,7 +118,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
           if (userDocByEmail.exists()) {
             userData = userDocByEmail.data();
           }
-        } catch (err) {}
+        } catch {}
       }
 
       if (!userData && user.email) {
@@ -127,7 +128,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
           if (!qSnap.empty) {
             userData = qSnap.docs[0].data();
           }
-        } catch (err) {}
+        } catch {}
       }
 
       if (!userData && (user.email || user.uid)) {
@@ -137,10 +138,11 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
           if (apiData.success && apiData.user) {
             userData = apiData.user;
           }
-        } catch (err) {}
+        } catch {}
       }
 
-      const userRole = userData?.role?.toLowerCase() || "user";
+      const roleVal = typeof userData?.role === "string" ? userData.role : "";
+      const userRole = roleVal.toLowerCase() || "user";
 
       // ADMIN BYPASSES ALL APPROVAL CHECKS!
       if (userRole === "admin") {
@@ -149,7 +151,8 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
       }
 
       // 2. Check approval status for students
-      const uStatus = userData?.status?.toLowerCase();
+      const statusVal = typeof userData?.status === "string" ? userData.status : "";
+      const uStatus = statusVal.toLowerCase();
       const isDocApproved = uStatus === "approved" || uStatus === "approval";
 
       // Also check enrollment status via API
@@ -922,7 +925,9 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                             <div className="relative rounded-xl overflow-hidden border border-purple-500/60 bg-[#120726] p-3 flex items-center justify-between">
                               <div className="flex items-center gap-3 truncate">
                                 {paymentSlip.startsWith("data:image") ? (
-                                  <img src={paymentSlip} alt="Slip Preview" className="w-10 h-10 object-cover rounded-lg border border-purple-800" />
+                                  <div className="relative w-10 h-10 shrink-0">
+                                    <Image src={paymentSlip} alt="Slip Preview" fill className="object-cover rounded-lg border border-purple-800" unoptimized />
+                                  </div>
                                 ) : (
                                   <div className="w-10 h-10 bg-purple-950 rounded-lg flex items-center justify-center text-fuchsia-400">
                                     <FileText className="w-5 h-5" />

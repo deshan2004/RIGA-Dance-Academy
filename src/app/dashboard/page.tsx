@@ -7,10 +7,11 @@ import type { User } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Calendar, User as UserIcon, Mail, Settings, Phone, LogOut, CheckCircle,
-  CreditCard, Video, Bell, Clock, MapPin, Sparkles, Upload, FileText, Check, Copy,
-  Play, Download, Building, AlertCircle, Eye, ShieldCheck, X, ChevronRight
+  Calendar, User as UserIcon, Mail, Settings, Phone, LogOut,
+  CreditCard, Video, Bell, Clock, MapPin, Sparkles, FileText, Check, Copy,
+  Play, Building, Eye, ShieldCheck, X, ChevronRight
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface Enrollment {
@@ -27,7 +28,7 @@ interface Enrollment {
   payment_slip_name?: string;
   transaction_ref?: string;
   status?: string;
-  createdAt?: any;
+  createdAt?: unknown;
   [key: string]: unknown;
 }
 
@@ -135,24 +136,6 @@ export default function StudentDashboard() {
 
   const router = useRouter();
 
-  const fetchDynamicData = async () => {
-    try {
-      const resV = await fetch("/api/videos");
-      const dataV = await resV.json();
-      if (dataV.success && Array.isArray(dataV.data) && dataV.data.length > 0) {
-        setPracticeVideos(dataV.data);
-      }
-    } catch (err) {}
-
-    try {
-      const resA = await fetch("/api/announcements");
-      const dataA = await resA.json();
-      if (dataA.success && Array.isArray(dataA.data) && dataA.data.length > 0) {
-        setAnnouncementsList(dataA.data);
-      }
-    } catch (err) {}
-  };
-
   const fetchMyEnrollments = async (email: string | null) => {
     if (!email) {
       setLoading(false);
@@ -172,7 +155,28 @@ export default function StudentDashboard() {
   };
 
   useEffect(() => {
-    fetchDynamicData();
+    let isMounted = true;
+    async function loadData() {
+      try {
+        const resV = await fetch("/api/videos");
+        const dataV = await resV.json();
+        if (isMounted && dataV.success && Array.isArray(dataV.data) && dataV.data.length > 0) {
+          setPracticeVideos(dataV.data);
+        }
+      } catch {}
+
+      try {
+        const resA = await fetch("/api/announcements");
+        const dataA = await resA.json();
+        if (isMounted && dataA.success && Array.isArray(dataA.data) && dataA.data.length > 0) {
+          setAnnouncementsList(dataA.data);
+        }
+      } catch {}
+    }
+    loadData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -183,7 +187,7 @@ export default function StudentDashboard() {
         setCurrentUser(user);
         try {
           // Check if admin or if account is approved
-          let data: Record<string, any> | null = null;
+          let data: Record<string, unknown> | null = null;
           const userDoc = await getDoc(doc(db, "users", user.uid));
           if (userDoc.exists()) {
             data = userDoc.data();
@@ -195,12 +199,14 @@ export default function StudentDashboard() {
             }
           }
 
-          if (data?.role?.toLowerCase() === "admin") {
+          const roleVal = typeof data?.role === "string" ? data.role : "";
+          if (roleVal.toLowerCase() === "admin") {
             router.push("/admin");
             return;
           }
 
-          const uStatus = data?.status?.toLowerCase();
+          const statusVal = typeof data?.status === "string" ? data.status : "";
+          const uStatus = statusVal.toLowerCase();
           let isApproved = uStatus === "approved" || uStatus === "approval";
 
           // Double check with enrollment status
@@ -228,10 +234,12 @@ export default function StudentDashboard() {
 
           if (data) {
             setUserData(data);
-            setFirstName(data.firstName || "");
-            setLastName(data.lastName || "");
+            const fName = typeof data.firstName === "string" ? data.firstName : "";
+            const lName = typeof data.lastName === "string" ? data.lastName : "";
+            setFirstName(fName);
+            setLastName(lName);
             
-            const fullPhone = data.phone || "";
+            const fullPhone = typeof data.phone === "string" ? data.phone : "";
             if (fullPhone.startsWith("+") && fullPhone.includes(" ")) {
               const spaceIndex = fullPhone.indexOf(" ");
               setCountryCode(fullPhone.substring(0, spaceIndex));
@@ -584,7 +592,7 @@ export default function StudentDashboard() {
                           onClick={() => setViewSlipImage(enrollment.payment_slip as string)}
                           className="w-14 h-14 rounded-xl overflow-hidden border border-purple-600/60 bg-purple-950 cursor-pointer relative group shrink-0"
                         >
-                          <img src={enrollment.payment_slip as string} alt="Slip" className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                          <Image src={enrollment.payment_slip as string} alt="Slip" fill className="object-cover group-hover:scale-110 transition-transform" unoptimized />
                           <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <Eye className="w-4 h-4 text-white" />
                           </div>
@@ -643,13 +651,13 @@ export default function StudentDashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {practiceVideos.map((vid: any) => (
+              {practiceVideos.map((vid) => (
                 <div 
                   key={vid.id}
                   className="bg-[#120726]/90 border border-purple-900/60 rounded-3xl overflow-hidden shadow-[0_0_30px_rgba(9,4,16,0.9)] group hover:border-purple-600/70 transition-all flex flex-col justify-between"
                 >
                   <div className="relative h-48 w-full overflow-hidden">
-                    <img src={vid.thumbnail} alt={vid.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src={vid.thumbnail} alt={vid.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#120726] via-[#120726]/40 to-transparent" />
                     
                     {/* Play Overlay Button */}
@@ -710,7 +718,7 @@ export default function StudentDashboard() {
             </div>
 
             <div className="space-y-4">
-              {announcementsList.map((ann: any) => (
+              {announcementsList.map((ann) => (
                 <div 
                   key={ann.id}
                   className="p-6 rounded-3xl bg-[#120726]/90 border border-purple-900/60 shadow-[0_0_30px_rgba(9,4,16,0.9)] hover:border-purple-600/70 transition-all"
@@ -904,8 +912,8 @@ export default function StudentDashboard() {
                 </button>
               </div>
 
-              <div className="rounded-2xl overflow-hidden border border-purple-900/60 max-h-[70vh] flex items-center justify-center bg-black">
-                <img src={viewSlipImage} alt="Bank Deposit Slip" className="max-h-[70vh] w-auto object-contain" />
+              <div className="rounded-2xl overflow-hidden border border-purple-900/60 max-h-[70vh] flex items-center justify-center bg-black relative min-h-[300px] w-full">
+                <Image src={viewSlipImage} alt="Bank Deposit Slip" fill className="object-contain" unoptimized />
               </div>
             </motion.div>
           </div>

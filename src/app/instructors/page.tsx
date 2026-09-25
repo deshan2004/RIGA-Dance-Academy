@@ -5,6 +5,7 @@ import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Mail, Video, Music } from "lucide-react";
+import Image from "next/image";
 
 const instructors = [
   {
@@ -98,10 +99,12 @@ export default function InstructorsPage() {
             >
               <div className="h-64 overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-t from-academy-black via-transparent to-transparent z-10" />
-                <img
+                <Image
                   src={instructor.image}
                   alt={instructor.name}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0"
+                  fill
+                  className="object-cover transform group-hover:scale-110 transition-transform duration-700 grayscale group-hover:grayscale-0"
+                  unoptimized
                 />
                 <div className="absolute bottom-4 left-4 z-20">
                   <span className="bg-academy-gold text-black text-xs font-bold px-3 py-1 rounded-full">

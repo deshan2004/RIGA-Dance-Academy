@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Plus, Edit, Trash2, X, Upload, ShoppingBag, Sparkles, Image as ImageIcon } from "lucide-react";
+import Image from "next/image";
 
 export interface RentalItemData {
   _id: string;
@@ -164,7 +165,6 @@ export default function RentalsTab() {
 
   const fetchRentals = async () => {
     try {
-      setLoading(true);
       const res = await fetch("/api/rentals");
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
@@ -178,7 +178,26 @@ export default function RentalsTab() {
   };
 
   useEffect(() => {
-    fetchRentals();
+    let isMounted = true;
+    const initFetch = async () => {
+      try {
+        const res = await fetch("/api/rentals");
+        const json = await res.json();
+        if (isMounted && json.success && Array.isArray(json.data)) {
+          setRentals(json.data);
+        }
+      } catch (err) {
+        console.error("Error fetching rentals in admin:", err);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+    void initFetch();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -382,10 +401,12 @@ export default function RentalsTab() {
             >
               {/* Photo or Fallback Demo Photo */}
               <div className="relative h-44 w-full bg-purple-950/50 overflow-hidden flex items-center justify-center">
-                <img
+                <Image
                   src={item.image || getFallbackImage(item.category)}
                   alt={item.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  unoptimized
                 />
 
                 <span className="absolute top-2 left-2 bg-purple-950/90 text-fuchsia-300 border border-purple-500/50 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
@@ -567,10 +588,12 @@ export default function RentalsTab() {
                   {/* Photo Live Preview */}
                   {formState.image && (
                     <div className="relative w-full h-40 rounded-xl overflow-hidden border border-purple-500/50 mt-2 bg-black">
-                      <img
+                      <Image
                         src={formState.image}
                         alt="Photo Preview"
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        unoptimized
                       />
                       <button
                         type="button"
@@ -611,10 +634,12 @@ export default function RentalsTab() {
                               : "border-purple-900/40 hover:border-purple-500"
                           }`}
                         >
-                          <img
+                          <Image
                             src={preset.image}
                             alt={preset.label}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                            unoptimized
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-1 flex flex-col justify-end">
                             <span className="text-[9px] font-bold text-white line-clamp-1 flex items-center gap-0.5">

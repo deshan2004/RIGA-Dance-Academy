@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Play, Sparkles, Trophy, Flame, Music, Star, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Trophy, ArrowRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
 const troupeStyles = [

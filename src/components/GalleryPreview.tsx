@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Camera, ZoomIn, X } from "lucide-react";
+import Image from "next/image";
 
 interface GalleryPhoto {
   _id?: string;
@@ -141,10 +142,12 @@ export default function GalleryPreview() {
                 onClick={() => setSelectedPhoto(item)}
                 className="group relative rounded-3xl overflow-hidden cursor-pointer border border-purple-900/40 hover:border-purple-500/80 hover:shadow-[0_0_35px_rgba(168,85,247,0.45)] transition-all duration-500 bg-[#140924] h-[280px] flex flex-col justify-end"
               >
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  unoptimized
                 />
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-[#07020e] via-[#07020e]/50 to-transparent opacity-85 group-hover:opacity-70 transition-opacity" />
@@ -200,11 +203,13 @@ export default function GalleryPreview() {
                   <X className="w-5 h-5" />
                 </button>
 
-                <div className="relative w-full max-h-[70vh] bg-black flex items-center justify-center overflow-hidden">
-                  <img
+                <div className="relative w-full h-[60vh] bg-black flex items-center justify-center overflow-hidden">
+                  <Image
                     src={selectedPhoto.image}
                     alt={selectedPhoto.title}
-                    className="w-full h-full max-h-[70vh] object-contain"
+                    fill
+                    className="object-contain"
+                    unoptimized
                   />
                 </div>
 

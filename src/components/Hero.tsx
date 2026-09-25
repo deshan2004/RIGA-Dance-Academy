@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Sparkles, Calendar } from "lucide-react";
 
 const navItems = [
@@ -42,10 +43,13 @@ const Hero = () => {
         >
           {/* Main Troupe Artwork with Radial Edge Vignette to match #04000b */}
           <div className="relative w-full max-w-5xl overflow-hidden [mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)]">
-            <img 
+            <Image 
               src="/images/riga-troupe-hero.jpg" 
               alt="RIGA Dance Troupe" 
+              width={1200}
+              height={700}
               className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 drop-shadow-[0_0_50px_rgba(168,85,247,0.6)]"
+              unoptimized
             />
             {/* Seamless Edge Gradient Overlays matching section background #04000b */}
             <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#04000b] via-[#04000b]/70 to-transparent pointer-events-none z-10" />
@@ -109,7 +113,7 @@ const Hero = () => {
 
           {/* SECONDARY CTA: JOIN ACADEMY CLASSES */}
           <Link
-            href="/classes"
+            href="/login"
             className="group relative inline-flex items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-purple-100 transition-all duration-300 bg-[#130728]/85 hover:bg-purple-900/40 border border-purple-400/40 hover:border-purple-300/80 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.5),0_0_20px_rgba(168,85,247,0.2)] hover:shadow-[0_0_40px_rgba(192,132,252,0.5)] hover:text-white hover:scale-[1.02] active:scale-[0.98]"
           >
             <span className="p-1.5 rounded-full bg-purple-500/20 border border-purple-400/30 mr-3 group-hover:scale-110 group-hover:bg-purple-500/40 group-hover:rotate-12 transition-all shadow-[0_0_10px_rgba(168,85,247,0.3)]">
