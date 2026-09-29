@@ -34,7 +34,7 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (COLOR-HARMONIZED 2K EMBLEM) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (ORIGINAL EMBLEM) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -42,28 +42,28 @@ const Hero = () => {
           className="w-full relative mb-12 sm:mb-16 flex justify-center items-center select-none"
         >
           {/* Soft ambient purple radial glow seamlessly behind logo */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] sm:w-[800px] h-[280px] bg-gradient-to-r from-purple-600/30 via-fuchsia-500/25 to-purple-700/30 rounded-full blur-[150px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] sm:w-[800px] h-[280px] bg-gradient-to-r from-purple-600/25 via-fuchsia-500/20 to-purple-700/25 rounded-full blur-[150px] pointer-events-none" />
 
-          {/* Color-harmonized 2K transparent logo emblem */}
+          {/* Original logo artwork with transparent background */}
           <div className="relative w-full max-w-4xl flex justify-center items-center">
             <Image 
-              src="/images/riga-pure-transparent.png" 
+              src="/images/riga-original-transparent.png" 
               alt="RIGA Dance Academy" 
-              width={2048}
-              height={840}
-              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 pointer-events-none"
+              width={1024}
+              height={390}
+              className="w-full h-auto object-contain block mx-auto opacity-100 pointer-events-none"
               priority
             />
           </div>
         </motion.div>
 
-        {/* --- CATEGORY NAVIGATION LINKS (ELEGANT SPACED GLASSBAR) --- */}
+        {/* --- CATEGORY NAVIGATION LINKS (ACADEMY | CREW | RENTALS | PRODUCTIONS | CHOREOGRAPHY) --- */}
         <motion.nav
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           aria-label="Category Navigation"
-          className="relative inline-flex flex-wrap items-center justify-center gap-y-3 mb-14 sm:mb-20 px-6 py-3 sm:px-9 sm:py-3.5 rounded-full bg-purple-950/40 border border-purple-500/20 backdrop-blur-xl shadow-[0_0_35px_rgba(168,85,247,0.15)] text-purple-200"
+          className="relative inline-flex flex-wrap items-center justify-center gap-y-3 mb-14 sm:mb-20 text-purple-200"
         >
           {navItems.map((item, index) => (
             <React.Fragment key={item.label}>
@@ -72,7 +72,7 @@ const Hero = () => {
               )}
               <Link
                 href={item.href}
-                className="group relative px-2 py-1 text-xs sm:text-sm font-extrabold tracking-[0.25em] text-purple-200/90 uppercase transition-all duration-300 hover:text-white"
+                className="group relative px-2 py-1 text-xs sm:text-sm font-extrabold tracking-[0.22em] text-purple-200/90 uppercase transition-all duration-300 hover:text-white"
               >
                 <span className="relative z-10 drop-shadow-[0_0_8px_rgba(192,132,252,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.95)] group-hover:text-white transition-all">
                   {item.label}
@@ -82,12 +82,12 @@ const Hero = () => {
           ))}
         </motion.nav>
 
-        {/* --- ACTION BUTTONS (LUXURY PROPORTIONED PAIR) --- */}
+        {/* --- ACTION BUTTONS (LUXURY PAIR) --- */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="flex flex-col sm:flex-row justify-center items-center gap-5 sm:gap-8 w-full max-w-2xl mb-8 sm:mb-12"
+          className="flex flex-col sm:flex-row justify-center items-center gap-5 sm:gap-8 w-full max-w-2xl"
         >
           {/* PRIMARY CTA: BOOK DANCE TROUPE */}
           <Link
