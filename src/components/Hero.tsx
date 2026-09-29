@@ -34,24 +34,24 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (PROMINENT 2K EMBLEM) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (ENLARGED ORIGINAL EMBLEM) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.0, ease: "easeOut" }}
           className="w-full relative mb-12 sm:mb-16 flex justify-center items-center select-none"
         >
-          {/* Rich ambient purple & fuchsia light aura directly behind logo */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] sm:w-[950px] h-[320px] sm:h-[420px] bg-gradient-to-r from-purple-600/35 via-fuchsia-500/30 to-purple-700/35 rounded-full blur-[150px] pointer-events-none" />
+          {/* Soft ambient purple radial glow seamlessly behind logo */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] sm:w-[950px] h-[320px] sm:h-[420px] bg-gradient-to-r from-purple-600/25 via-fuchsia-500/20 to-purple-700/25 rounded-full blur-[150px] pointer-events-none" />
 
-          {/* Prominent, enlarged 2K transparent logo emblem */}
+          {/* Prominent, enlarged original logo artwork */}
           <div className="relative w-full max-w-5xl sm:max-w-5xl lg:max-w-6xl flex justify-center items-center px-2">
             <Image 
-              src="/images/riga-pure-transparent.png" 
+              src="/images/riga-original-transparent.png" 
               alt="RIGA Dance Academy" 
-              width={2048}
-              height={840}
-              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 drop-shadow-[0_0_35px_rgba(168,85,247,0.45)] drop-shadow-[0_0_75px_rgba(217,70,239,0.2)] pointer-events-none"
+              width={1024}
+              height={390}
+              className="w-full h-auto object-contain block mx-auto opacity-100 pointer-events-none"
               priority
             />
           </div>
