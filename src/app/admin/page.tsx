@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import EventsTab from "@/components/admin/EventsTab";
 import RentalsTab from "@/components/admin/RentalsTab";
 import StatsTab from "@/components/admin/StatsTab";
@@ -632,10 +633,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex space-x-2 mb-8 border-b border-gray-800 pb-px">
+        <div className="flex space-x-2 mb-8 border-b border-gray-800 pb-px overflow-x-auto whitespace-nowrap no-scrollbar scroll-smooth">
           <button
             onClick={() => setActiveTab("enrollments")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "enrollments" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -648,7 +649,7 @@ export default function AdminDashboard() {
           </button>
           <button
             onClick={() => setActiveTab("users")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "users" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -661,7 +662,7 @@ export default function AdminDashboard() {
           </button>
           <button
             onClick={() => setActiveTab("classes")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "classes" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -674,7 +675,7 @@ export default function AdminDashboard() {
           </button>
           <button
             onClick={() => setActiveTab("inquiries")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "inquiries" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -688,7 +689,7 @@ export default function AdminDashboard() {
 
           <button
             onClick={() => setActiveTab("events")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "events" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -701,7 +702,7 @@ export default function AdminDashboard() {
           </button>
           <button
             onClick={() => setActiveTab("gallery")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "gallery" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -709,12 +710,12 @@ export default function AdminDashboard() {
           >
             <div className="flex items-center gap-2">
               <Camera className="w-4 h-4" />
-              Gallery & Photos
+              Gallery &amp; Photos
             </div>
           </button>
           <button
             onClick={() => setActiveTab("rentals")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "rentals" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -722,12 +723,12 @@ export default function AdminDashboard() {
           >
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-4 h-4" />
-              Rentals & Wardrobe
+              Rentals &amp; Wardrobe
             </div>
           </button>
           <button
             onClick={() => setActiveTab("announcements")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "announcements" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -740,7 +741,7 @@ export default function AdminDashboard() {
           </button>
           <button
             onClick={() => setActiveTab("videos")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "videos" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -753,7 +754,7 @@ export default function AdminDashboard() {
           </button>
           <button
             onClick={() => setActiveTab("stats")}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
               activeTab === "stats" 
                 ? "text-academy-gold border-academy-gold" 
                 : "text-gray-500 border-transparent hover:text-gray-300"
@@ -875,9 +876,26 @@ export default function AdminDashboard() {
           key="users"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-academy-gray border border-gray-800 rounded-3xl shadow-2xl overflow-hidden"
+          className="bg-academy-gray border border-gray-800 rounded-3xl shadow-2xl overflow-hidden p-6"
         >
-          <div className="overflow-x-auto">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <Users className="w-5 h-5 text-academy-gold" />
+                Registered Users &amp; Administrators
+              </h2>
+              <p className="text-xs text-gray-400 mt-1">Manage student roles, approvals, and administrator accounts</p>
+            </div>
+            <Link
+              href="/admin/setup"
+              className="bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-500/40 hover:border-purple-400 font-bold py-2.5 px-5 rounded-xl flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(168,85,247,0.3)] shrink-0 text-xs uppercase tracking-wider"
+            >
+              <Shield className="w-4 h-4 text-fuchsia-300" />
+              Setup Admin Account
+            </Link>
+          </div>
+
+          <div className="overflow-x-auto rounded-2xl border border-gray-800">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-black/50 text-gray-400 text-sm uppercase tracking-wider">

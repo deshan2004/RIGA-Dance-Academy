@@ -34,29 +34,24 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (RIGA EMBLEM - SEAMLESS INTEGRATION) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (SEAMLESS BLENDED LOGO EMBLEM) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* RIGA Dance Academy Logo Emblem with Radial Edge Vignette to match #04000b */}
-          <div className="relative w-full max-w-4xl overflow-hidden [mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)]">
+          {/* Logo Emblem with mix-blend-screen to make black background 100% transparent */}
+          <div className="relative w-full max-w-4xl flex justify-center items-center">
             <Image 
               src="/images/riga-logo-only.png" 
               alt="RIGA Dance Academy - Dance Beyond Limits" 
               width={1200}
               height={700}
-              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-110 brightness-110 drop-shadow-[0_0_60px_rgba(168,85,247,0.75)]"
+              className="w-full h-auto object-contain block mx-auto mix-blend-screen opacity-100 filter contrast-125 brightness-110 drop-shadow-[0_0_60px_rgba(168,85,247,0.85)] pointer-events-none"
               unoptimized
               priority
             />
-            {/* Seamless Edge Gradient Overlays matching section background #04000b */}
-            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#04000b] via-[#04000b]/70 to-transparent pointer-events-none z-10" />
-            <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#04000b] via-[#04000b]/70 to-transparent pointer-events-none z-10" />
-            <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#04000b] via-[#04000b]/70 to-transparent pointer-events-none z-10" />
-            <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#04000b] via-[#04000b]/90 to-transparent pointer-events-none z-10" />
           </div>
         </motion.div>
 
