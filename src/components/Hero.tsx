@@ -16,7 +16,7 @@ const navItems = [
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-[#04000b] text-white pt-12 pb-16">
+    <section id="home" className="relative min-h-[92vh] flex flex-col justify-center items-center overflow-hidden bg-[#04000b] text-white pt-20 pb-24 sm:pt-28 sm:pb-32">
       
       {/* Background Ambient Lights & Swirling Purple Smoke */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -25,7 +25,7 @@ const Hero = () => {
         <div className="absolute top-0 right-4 sm:right-12 w-1 h-full bg-gradient-to-b from-transparent via-purple-500/70 to-transparent opacity-70 blur-[2px] shadow-[0_0_20px_#a855f7]" />
 
         {/* Ambient Glows Positioned Seamlessly Behind Center Artwork */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-purple-900/25 rounded-full blur-[140px] mix-blend-screen pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-purple-900/25 rounded-full blur-[150px] mix-blend-screen pointer-events-none" />
         <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-purple-950/40 rounded-full blur-[150px] pointer-events-none" />
         <div className="absolute -bottom-36 right-0 w-[500px] h-[500px] bg-purple-950/40 rounded-full blur-[150px] pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#04000b]/80 via-transparent to-[#04000b]" />
@@ -34,36 +34,36 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (UNTOUCHED ORIGINAL LOGO EMBLEM) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (COLOR-HARMONIZED 2K EMBLEM) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
-          className="w-full relative mb-8 flex justify-center items-center select-none"
+          className="w-full relative mb-12 sm:mb-16 flex justify-center items-center select-none"
         >
           {/* Soft ambient purple radial glow seamlessly behind logo */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[750px] h-[250px] bg-gradient-to-r from-purple-600/25 via-fuchsia-500/20 to-purple-700/25 rounded-full blur-[140px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] sm:w-[800px] h-[280px] bg-gradient-to-r from-purple-600/30 via-fuchsia-500/25 to-purple-700/30 rounded-full blur-[150px] pointer-events-none" />
 
-          {/* Exact original logo colors with 100% transparent background */}
+          {/* Color-harmonized 2K transparent logo emblem */}
           <div className="relative w-full max-w-4xl flex justify-center items-center">
             <Image 
-              src="/images/riga-original-transparent.png" 
+              src="/images/riga-pure-transparent.png" 
               alt="RIGA Dance Academy" 
-              width={1024}
-              height={390}
-              className="w-full h-auto object-contain block mx-auto opacity-100 pointer-events-none"
+              width={2048}
+              height={840}
+              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 pointer-events-none"
               priority
             />
           </div>
         </motion.div>
 
-        {/* --- CATEGORY NAVIGATION LINKS (ACADEMY | CREW | RENTALS | PRODUCTIONS | CHOREOGRAPHY) --- */}
+        {/* --- CATEGORY NAVIGATION LINKS (ELEGANT SPACED GLASSBAR) --- */}
         <motion.nav
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           aria-label="Category Navigation"
-          className="relative inline-flex flex-wrap items-center justify-center gap-y-3 mb-10 text-purple-200"
+          className="relative inline-flex flex-wrap items-center justify-center gap-y-3 mb-14 sm:mb-20 px-6 py-3 sm:px-9 sm:py-3.5 rounded-full bg-purple-950/40 border border-purple-500/20 backdrop-blur-xl shadow-[0_0_35px_rgba(168,85,247,0.15)] text-purple-200"
         >
           {navItems.map((item, index) => (
             <React.Fragment key={item.label}>
@@ -72,7 +72,7 @@ const Hero = () => {
               )}
               <Link
                 href={item.href}
-                className="group relative px-2 py-1 text-xs sm:text-sm font-extrabold tracking-[0.22em] text-purple-200/90 uppercase transition-all duration-300 hover:text-white"
+                className="group relative px-2 py-1 text-xs sm:text-sm font-extrabold tracking-[0.25em] text-purple-200/90 uppercase transition-all duration-300 hover:text-white"
               >
                 <span className="relative z-10 drop-shadow-[0_0_8px_rgba(192,132,252,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.95)] group-hover:text-white transition-all">
                   {item.label}
@@ -82,17 +82,17 @@ const Hero = () => {
           ))}
         </motion.nav>
 
-        {/* --- ACTION BUTTONS (COLOR-HARMONIZED PAIR) --- */}
+        {/* --- ACTION BUTTONS (LUXURY PROPORTIONED PAIR) --- */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 w-full max-w-xl"
+          className="flex flex-col sm:flex-row justify-center items-center gap-5 sm:gap-8 w-full max-w-2xl mb-8 sm:mb-12"
         >
           {/* PRIMARY CTA: BOOK DANCE TROUPE */}
           <Link
             href="/events"
-            className="group relative overflow-hidden inline-flex items-center justify-between px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-purple-700 via-[#9333ea] to-fuchsia-700 hover:from-purple-600 hover:via-purple-500 hover:to-fuchsia-600 shadow-[0_0_30px_rgba(168,85,247,0.5)] hover:shadow-[0_0_45px_rgba(168,85,247,0.8)] border border-purple-400/40 hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative overflow-hidden inline-flex items-center justify-between px-7 py-4 sm:px-9 sm:py-4.5 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-purple-700 via-[#9333ea] to-fuchsia-700 hover:from-purple-600 hover:via-purple-500 hover:to-fuchsia-600 shadow-[0_0_30px_rgba(168,85,247,0.5)] hover:shadow-[0_0_45px_rgba(168,85,247,0.8)] border border-purple-400/40 hover:scale-[1.02] active:scale-[0.98]"
           >
             {/* Shimmer Light Sweep */}
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
@@ -112,7 +112,7 @@ const Hero = () => {
           {/* SECONDARY CTA: JOIN ACADEMY CLASSES */}
           <Link
             href="/login"
-            className="group relative inline-flex items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-purple-100 transition-all duration-300 bg-purple-950/70 hover:bg-purple-900/60 border border-purple-500/50 hover:border-purple-300/80 backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.25)] hover:shadow-[0_0_35px_rgba(192,132,252,0.5)] hover:text-white hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative inline-flex items-center justify-center px-7 py-4 sm:px-9 sm:py-4.5 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-purple-100 transition-all duration-300 bg-purple-950/70 hover:bg-purple-900/60 border border-purple-500/50 hover:border-purple-300/80 backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.25)] hover:shadow-[0_0_35px_rgba(192,132,252,0.5)] hover:text-white hover:scale-[1.02] active:scale-[0.98]"
           >
             <span className="p-1.5 rounded-full bg-purple-500/25 border border-purple-400/40 mr-3 group-hover:scale-110 group-hover:bg-purple-500/40 group-hover:rotate-12 transition-all shadow-[0_0_10px_rgba(168,85,247,0.4)]">
               <Sparkles className="w-3.5 h-3.5 text-fuchsia-300" />
@@ -124,7 +124,7 @@ const Hero = () => {
       </div>
 
       {/* --- FLOOR LIGHT BEAM REFLECTION --- */}
-      <div className="w-full max-w-5xl mt-12 px-4 relative flex flex-col items-center pointer-events-none">
+      <div className="w-full max-w-5xl mt-16 sm:mt-24 px-4 relative flex flex-col items-center pointer-events-none">
         <div className="w-3/4 sm:w-1/2 h-[2px] bg-gradient-to-r from-transparent via-fuchsia-400 to-transparent shadow-[0_0_30px_#c084fc,0_0_10px_#a855f7] rounded-full" />
         <div className="w-full h-16 bg-gradient-to-t from-purple-600/20 via-fuchsia-500/5 to-transparent blur-xl -mt-4" />
       </div>
