@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const troupeStyles = [
   {
-    id: "kandyan",
+    id: "traditional",
     title: "Traditional & Kandyan Fusion",
     badge: "Heritage & Beats",
     description: "Authentic Sri Lankan cultural heritage infused with electronic beats and high-energy percussion.",
@@ -15,12 +15,20 @@ const troupeStyles = [
     color: "from-purple-600 to-purple-800",
   },
   {
-    id: "hiphop",
-    title: "Urban & Street Hip-Hop",
-    badge: "High-Voltage Power",
-    description: "Hard-hitting popping, locking, breaking, and modern commercial urban hip-hop choreographies.",
-    tags: ["Hip Hop", "Breakdance", "Popping", "Street Jam"],
-    color: "from-purple-700 to-purple-900",
+    id: "latin",
+    title: "Latin & Commercial Fusion",
+    badge: "Salsa & Passion",
+    description: "Sizzling Latin rhythms, Salsa, Bachata, and explosive high-tempo Latin commercial fusion stage acts.",
+    tags: ["Latin", "Salsa", "Bachata", "Rumba", "Commercial Fusion"],
+    color: "from-fuchsia-700 to-purple-900",
+  },
+  {
+    id: "freestyle",
+    title: "Freestyle & Open Expression",
+    badge: "Dynamic Energy",
+    description: "Unbound creative choreography mixing popping, tutting, waacking, and high-impact freestyle stage battles.",
+    tags: ["Freestyle", "Popping", "Open Style", "Expressive"],
+    color: "from-purple-700 to-indigo-900",
   },
   {
     id: "bollywood",
@@ -31,19 +39,11 @@ const troupeStyles = [
     color: "from-purple-800 to-purple-600",
   },
   {
-    id: "contemporary",
-    title: "Classical & Contemporary Fusion",
-    badge: "Fluid Elegance",
-    description: "Breath-taking acrobatic lifts, emotional storytelling, and expressive lyrical contemporary motion.",
-    tags: ["Contemporary", "Ballet Fusion", "Lyrical", "Acrobatic"],
-    color: "from-indigo-700 to-purple-800",
-  },
-  {
-    id: "extravaganza",
-    title: "Live Concert & Award Shows",
-    badge: "Mega Production",
-    description: "Full-scale concert backing dancers, pyrotechnic synced acts, and star event performances.",
-    tags: ["Concerts", "Award Shows", "TV Broadcast", "Mega Stage"],
+    id: "hiphop",
+    title: "Urban & Street Hip-Hop",
+    badge: "High-Voltage Power",
+    description: "Hard-hitting popping, locking, breaking, and modern commercial urban hip-hop choreographies.",
+    tags: ["Hip Hop", "Breakdance", "Popping", "Street Jam"],
     color: "from-purple-900 to-purple-700",
   },
 ];

@@ -451,23 +451,52 @@ export default function EventsPage() {
             Book Sri Lanka&apos;s premier dance ensemble for Weddings, Corporate Events, and Music Video Shoots. Explore our official rates with customized choreography, authentic stage regalia, and high-energy troupe performances.
           </motion.p>
 
-          {/* --- MAIN TROUPE VISUAL ARTWORK --- */}
+          {/* --- MAIN TROUPE VISUAL ARTWORK (ZERO BOX OUTLINE - SEAMLESS INTEGRATION) --- */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-            className="w-full relative mt-8 flex justify-center items-center select-none"
+            transition={{ duration: 0.9, ease: "easeOut", delay: 0.3 }}
+            className="w-full relative mt-6 flex justify-center items-center select-none"
           >
-            <div className="relative w-full max-w-5xl rounded-3xl overflow-hidden border border-purple-500/40 shadow-[0_0_50px_rgba(168,85,247,0.45)]">
+            {/* Main Troupe Artwork with Radial Edge Vignette to match #07020e */}
+            <div className="relative w-full max-w-5xl overflow-hidden [mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)]">
               <Image 
-                src="/images/riga-troupe-hero.jpg" 
+                src="/riga.jpeg" 
                 alt="RIGA Dance Troupe" 
                 width={1200}
                 height={700}
-                className="w-full h-auto object-cover block mx-auto rounded-3xl"
+                className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 drop-shadow-[0_0_50px_rgba(168,85,247,0.6)]"
                 unoptimized
               />
+              {/* Seamless Edge Gradient Overlays matching section background #07020e */}
+              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#07020e] via-[#07020e]/70 to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#07020e] via-[#07020e]/70 to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#07020e] via-[#07020e]/70 to-transparent pointer-events-none z-10" />
+              <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#07020e] via-[#07020e]/90 to-transparent pointer-events-none z-10" />
             </div>
+          </motion.div>
+
+          {/* Performance Genres Bar matching Poster Artwork */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6 relative z-20"
+          >
+            {[
+              { label: "TRADITIONAL", icon: "✨" },
+              { label: "LATIN", icon: "💃" },
+              { label: "FREESTYLE", icon: "🔥" },
+              { label: "BOLLYWOOD", icon: "👑" },
+              { label: "HIP HOP", icon: "⚡" },
+            ].map((genre) => (
+              <span
+                key={genre.label}
+                className="px-4 py-2 rounded-xl bg-purple-950/70 border border-purple-500/40 text-purple-200 text-xs font-black tracking-widest uppercase shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:border-purple-400 hover:text-white transition-all backdrop-blur-md"
+              >
+                {genre.icon} {genre.label}
+              </span>
+            ))}
           </motion.div>
         </div>
       </section>
