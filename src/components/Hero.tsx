@@ -34,24 +34,24 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (2K ULTRA-HD HARMONIZED METALLIC LOGO EMBLEM) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (SEAMLESS PURE TRANSPARENT 2K LOGO EMBLEM) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* Ambient Purple & Fuchsia Backdrop Glow matching Site Palette */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[320px] bg-gradient-to-r from-purple-600/35 via-fuchsia-500/30 to-purple-700/35 rounded-full blur-[140px] mix-blend-screen pointer-events-none" />
+          {/* Soft ambient purple radial glow seamlessly behind logo */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[750px] h-[250px] bg-gradient-to-r from-purple-600/30 via-fuchsia-500/25 to-purple-700/30 rounded-full blur-[140px] pointer-events-none" />
 
-          {/* 2K Ultra-HD Logo Emblem with razor-sharp resolution and vibrant neon violet tone */}
+          {/* Pure transparent 2K logo emblem with NO box edges or background borders */}
           <div className="relative w-full max-w-4xl flex justify-center items-center">
             <Image 
-              src="/images/riga-hero-emblem-hd.png" 
+              src="/images/riga-pure-transparent.png" 
               alt="RIGA Dance Academy" 
-              width={2048}
-              height={840}
-              className="w-full h-auto object-contain block mx-auto opacity-100 mix-blend-screen filter contrast-110 brightness-105 drop-shadow-[0_0_50px_rgba(168,85,247,0.75)] drop-shadow-[0_0_100px_rgba(217,70,239,0.4)] pointer-events-none"
+              width={1989}
+              height={776}
+              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 pointer-events-none"
               priority
             />
           </div>
