@@ -140,36 +140,41 @@ export default function GalleryPreview() {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.08 }}
                 onClick={() => setSelectedPhoto(item)}
-                className="group relative rounded-3xl overflow-hidden cursor-pointer border border-purple-900/40 hover:border-purple-500/80 hover:shadow-[0_0_35px_rgba(168,85,247,0.45)] transition-all duration-500 bg-[#140924] h-[280px] flex flex-col justify-end"
+                className="group relative rounded-3xl overflow-hidden cursor-pointer border border-purple-500/35 hover:border-purple-400 hover:shadow-[0_0_40px_rgba(168,85,247,0.55)] transition-all duration-500 bg-[#120726] h-[300px] flex flex-col justify-end transform hover:-translate-y-1.5"
               >
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   unoptimized
                 />
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07020e] via-[#07020e]/50 to-transparent opacity-85 group-hover:opacity-70 transition-opacity" />
+                {/* Gradient Overlays */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#07020e] via-[#07020e]/40 to-transparent opacity-90 group-hover:opacity-75 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-purple-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                <div className="absolute top-3 left-3 z-10">
-                  <span className="px-3 py-1 bg-purple-950/90 backdrop-blur-md rounded-full text-[10px] font-bold text-purple-200 tracking-wider uppercase border border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]">
+                {/* Top Category Badge */}
+                <div className="absolute top-3.5 left-3.5 z-10">
+                  <span className="px-3.5 py-1 bg-purple-950/90 backdrop-blur-md rounded-full text-[10px] font-extrabold text-purple-200 tracking-wider uppercase border border-purple-400/50 shadow-[0_0_12px_rgba(168,85,247,0.4)]">
                     {item.category}
                   </span>
                 </div>
 
-                <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-8 h-8 rounded-full bg-purple-950/90 border border-purple-500/60 flex items-center justify-center text-purple-200 shadow-lg">
-                    <ZoomIn className="w-3.5 h-3.5" />
+                {/* Top Zoom Icon */}
+                <div className="absolute top-3.5 right-3.5 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-110">
+                  <div className="w-9 h-9 rounded-full bg-purple-950/90 border border-purple-400/70 flex items-center justify-center text-purple-200 shadow-[0_0_15px_rgba(168,85,247,0.5)] backdrop-blur-md">
+                    <ZoomIn className="w-4 h-4 text-fuchsia-300" />
                   </div>
                 </div>
 
+                {/* Content Details */}
                 <div className="relative z-10 p-5 transform group-hover:-translate-y-1 transition-transform duration-300">
-                  <h3 className="text-lg font-bold text-white mb-1 group-hover:text-purple-300 transition-colors line-clamp-1">
+                  <h3 className="text-lg font-black text-white mb-1.5 group-hover:text-purple-300 transition-colors line-clamp-1 uppercase tracking-tight">
                     {item.title}
                   </h3>
                   {item.description && (
-                    <p className="text-xs text-purple-200/70 font-light line-clamp-1">
+                    <p className="text-xs text-purple-200/80 font-light line-clamp-2 leading-relaxed">
                       {item.description}
                     </p>
                   )}

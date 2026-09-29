@@ -5,10 +5,11 @@ import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video } from "lucide-react";
+import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy } from "lucide-react";
 import Image from "next/image";
 import EventsTab from "@/components/admin/EventsTab";
 import RentalsTab from "@/components/admin/RentalsTab";
+import StatsTab from "@/components/admin/StatsTab";
 
 interface FirestoreTimestamp {
   seconds: number;
@@ -109,7 +110,7 @@ export default function AdminDashboard() {
   const [announcements, setAnnouncements] = useState<AnnouncementItem[]>([]);
   const [practiceVideos, setPracticeVideos] = useState<VideoItem[]>([]);
 
-  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery" | "rentals" | "announcements" | "videos">("enrollments");
+  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery" | "rentals" | "announcements" | "videos" | "stats">("enrollments");
   const [loading, setLoading] = useState(true);
   const [selectedSlip, setSelectedSlip] = useState<EnrollmentItem | null>(null);
 
@@ -750,6 +751,19 @@ export default function AdminDashboard() {
               Practice Videos
             </div>
           </button>
+          <button
+            onClick={() => setActiveTab("stats")}
+            className={`px-6 py-3 font-medium transition-colors border-b-2 ${
+              activeTab === "stats" 
+                ? "text-academy-gold border-academy-gold" 
+                : "text-gray-500 border-transparent hover:text-gray-300"
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              Troupe Stats
+            </div>
+          </button>
         </div>
 
         {activeTab === "enrollments" ? (
@@ -1315,6 +1329,14 @@ export default function AdminDashboard() {
               ))
             )}
           </div>
+        </motion.div>
+        ) : activeTab === "stats" ? (
+        <motion.div
+          key="stats"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <StatsTab />
         </motion.div>
         ) : null}
 
