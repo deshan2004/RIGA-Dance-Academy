@@ -34,25 +34,24 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (HARMONIZED METALLIC LOGO EMBLEM) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (2K ULTRA-HD HARMONIZED METALLIC LOGO EMBLEM) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* Ambient Purple Backdrop Glow matching Logo Tone */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[280px] bg-gradient-to-r from-purple-700/25 via-fuchsia-600/20 to-purple-800/25 rounded-full blur-[140px] pointer-events-none" />
+          {/* Ambient Purple & Fuchsia Backdrop Glow matching Site Palette */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[320px] bg-gradient-to-r from-purple-600/35 via-fuchsia-500/30 to-purple-700/35 rounded-full blur-[140px] mix-blend-screen pointer-events-none" />
 
-          {/* Logo Emblem tuned to match site color palette */}
+          {/* 2K Ultra-HD Logo Emblem with razor-sharp resolution and vibrant neon violet tone */}
           <div className="relative w-full max-w-4xl flex justify-center items-center">
             <Image 
-              src="/images/riga-transparent.png" 
+              src="/images/riga-hero-emblem-hd.png" 
               alt="RIGA Dance Academy" 
-              width={1200}
-              height={550}
-              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-110 brightness-105 drop-shadow-[0_0_40px_rgba(168,85,247,0.7)] drop-shadow-[0_0_80px_rgba(192,132,252,0.3)] pointer-events-none"
-              unoptimized
+              width={2048}
+              height={840}
+              className="w-full h-auto object-contain block mx-auto opacity-100 mix-blend-screen filter contrast-110 brightness-105 drop-shadow-[0_0_50px_rgba(168,85,247,0.75)] drop-shadow-[0_0_100px_rgba(217,70,239,0.4)] pointer-events-none"
               priority
             />
           </div>
