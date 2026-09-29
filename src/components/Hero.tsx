@@ -34,21 +34,24 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (WORDMARK TEXT ONLY) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (COLOR-HARMONIZED RIGA EMBLEM) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* Logo Wordmark Text Only */}
+          {/* Color-Harmonized Ambient Backdrop Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[280px] bg-gradient-to-r from-purple-600/30 via-fuchsia-500/25 to-violet-600/30 rounded-full blur-[130px] pointer-events-none" />
+
+          {/* Logo Emblem tuned to match site color palette */}
           <div className="relative w-full max-w-4xl flex justify-center items-center">
             <Image 
-              src="/images/riga-wordmark-transparent.png" 
-              alt="RIGA Dance Academy - Dance Beyond Limits" 
+              src="/images/riga-transparent.png" 
+              alt="RIGA Dance Academy" 
               width={1200}
-              height={500}
-              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-125 brightness-110 drop-shadow-[0_0_50px_rgba(168,85,247,0.85)] pointer-events-none"
+              height={550}
+              className="w-full h-auto object-contain block mx-auto opacity-100 filter saturate-125 contrast-115 brightness-105 drop-shadow-[0_0_45px_rgba(168,85,247,0.8)] drop-shadow-[0_0_90px_rgba(217,70,239,0.4)] pointer-events-none"
               unoptimized
               priority
             />
