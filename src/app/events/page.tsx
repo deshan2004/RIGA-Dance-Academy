@@ -453,25 +453,20 @@ export default function EventsPage() {
 
           {/* --- MAIN TROUPE VISUAL ARTWORK --- */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, ease: "easeOut", delay: 0.3 }}
-            className="w-full relative mt-4 flex justify-center items-center select-none"
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+            className="w-full relative mt-8 flex justify-center items-center select-none"
           >
-            <div className="relative w-full max-w-5xl overflow-hidden [mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)]">
+            <div className="relative w-full max-w-5xl rounded-3xl overflow-hidden border border-purple-500/40 shadow-[0_0_50px_rgba(168,85,247,0.45)]">
               <Image 
                 src="/images/riga-troupe-hero.jpg" 
                 alt="RIGA Dance Troupe" 
                 width={1200}
                 height={700}
-                className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 drop-shadow-[0_0_50px_rgba(168,85,247,0.6)]"
+                className="w-full h-auto object-cover block mx-auto rounded-3xl"
                 unoptimized
               />
-              {/* Seamless Edge Gradient Overlays matching section background #07020e */}
-              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#07020e] via-[#07020e]/70 to-transparent pointer-events-none z-10" />
-              <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#07020e] via-[#07020e]/70 to-transparent pointer-events-none z-10" />
-              <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#07020e] via-[#07020e]/70 to-transparent pointer-events-none z-10" />
-              <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#07020e] via-[#07020e]/90 to-transparent pointer-events-none z-10" />
             </div>
           </motion.div>
         </div>
