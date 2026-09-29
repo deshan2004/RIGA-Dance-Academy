@@ -34,24 +34,24 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (RAZOR-SHARP 2K CRISP LOGO EMBLEM) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (UNTOUCHED ORIGINAL LOGO EMBLEM) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* Ambient Purple Backdrop Glow matching Site Palette */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] bg-gradient-to-r from-purple-600/30 via-fuchsia-500/25 to-purple-700/30 rounded-full blur-[140px] mix-blend-screen pointer-events-none" />
+          {/* Soft ambient purple radial glow seamlessly behind logo */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[750px] h-[250px] bg-gradient-to-r from-purple-600/25 via-fuchsia-500/20 to-purple-700/25 rounded-full blur-[140px] pointer-events-none" />
 
-          {/* Razor-sharp 2K metallic logo emblem with zero blur and perfect screen blend */}
+          {/* Exact original logo colors with 100% transparent background */}
           <div className="relative w-full max-w-4xl flex justify-center items-center">
             <Image 
-              src="/images/riga-logo-crisp.png" 
+              src="/images/riga-original-transparent.png" 
               alt="RIGA Dance Academy" 
-              width={2048}
-              height={840}
-              className="w-full h-auto object-contain block mx-auto opacity-100 mix-blend-screen filter contrast-110 brightness-105 pointer-events-none"
+              width={1024}
+              height={390}
+              className="w-full h-auto object-contain block mx-auto opacity-100 pointer-events-none"
               priority
             />
           </div>
