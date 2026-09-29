@@ -57,29 +57,26 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        {/* --- CATEGORY NAVIGATION LINKS (PROMINENT GLOWING TEXT: ACADEMY | CREW | RENTALS | PRODUCTIONS | CHOREOGRAPHY) --- */}
+        {/* --- CATEGORY NAVIGATION LINKS (ACADEMY | CREW | RENTALS | PRODUCTIONS | CHOREOGRAPHY) --- */}
         <motion.nav
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           aria-label="Category Navigation"
-          className="relative inline-flex flex-wrap items-center justify-center gap-y-4 mb-14 sm:mb-20 text-purple-100"
+          className="relative inline-flex flex-wrap items-center justify-center gap-y-3 mb-14 sm:mb-20 text-purple-200"
         >
           {navItems.map((item, index) => (
             <React.Fragment key={item.label}>
               {index > 0 && (
-                <span className="h-5 sm:h-6 w-[2px] bg-gradient-to-b from-transparent via-fuchsia-400/60 to-transparent shadow-[0_0_10px_rgba(217,70,239,0.8)] mx-4 sm:mx-7 hidden sm:inline-block pointer-events-none" />
+                <span className="h-3.5 w-[1.5px] bg-purple-500/40 shadow-[0_0_6px_rgba(168,85,247,0.6)] mx-3.5 sm:mx-6 hidden sm:inline-block pointer-events-none" />
               )}
               <Link
                 href={item.href}
-                className="group relative px-2.5 py-1.5 text-sm sm:text-base md:text-lg font-black tracking-[0.25em] sm:tracking-[0.28em] text-purple-100 uppercase transition-all duration-300 hover:text-white"
+                className="group relative px-2 py-1 text-xs sm:text-sm font-extrabold tracking-[0.22em] text-purple-200/90 uppercase transition-all duration-300 hover:text-white"
               >
-                <span className="relative z-10 drop-shadow-[0_0_12px_rgba(192,132,252,0.5)] group-hover:drop-shadow-[0_0_20px_rgba(236,72,153,0.95)] group-hover:text-fuchsia-200 transition-all">
+                <span className="relative z-10 drop-shadow-[0_0_8px_rgba(192,132,252,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.95)] group-hover:text-white transition-all">
                   {item.label}
                 </span>
-                
-                {/* Glowing neon hover underline indicator */}
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-fuchsia-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-full shadow-[0_0_12px_#d946ef]" />
               </Link>
             </React.Fragment>
           ))}
