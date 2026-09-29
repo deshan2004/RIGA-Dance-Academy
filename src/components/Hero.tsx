@@ -34,22 +34,23 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (ZERO BOX OUTLINE - SEAMLESS INTEGRATION) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (RIGA EMBLEM - SEAMLESS INTEGRATION) --- */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* Main Troupe Artwork with Radial Edge Vignette to match #04000b */}
-          <div className="relative w-full max-w-5xl overflow-hidden [mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)]">
+          {/* RIGA Dance Academy Logo Emblem with Radial Edge Vignette to match #04000b */}
+          <div className="relative w-full max-w-4xl overflow-hidden [mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_85%_85%_at_50%_50%,black_65%,transparent_100%)]">
             <Image 
-              src="/images/riga-troupe-hero.jpg" 
-              alt="RIGA Dance Troupe" 
+              src="/images/riga-logo-only.png" 
+              alt="RIGA Dance Academy - Dance Beyond Limits" 
               width={1200}
               height={700}
-              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-105 brightness-105 drop-shadow-[0_0_50px_rgba(168,85,247,0.6)]"
+              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-110 brightness-110 drop-shadow-[0_0_60px_rgba(168,85,247,0.75)]"
               unoptimized
+              priority
             />
             {/* Seamless Edge Gradient Overlays matching section background #04000b */}
             <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#04000b] via-[#04000b]/70 to-transparent pointer-events-none z-10" />
