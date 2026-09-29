@@ -11,7 +11,7 @@ const navItems = [
   { label: "CREW", href: "/crew" },
   { label: "RENTALS", href: "/rentals" },
   { label: "PRODUCTIONS", href: "/productions" },
-  { label: "CHOREOGRAPHY", href: "/events" },
+  { label: "EVENTS", href: "/events" },
 ];
 
 const Hero = () => {
@@ -55,24 +55,24 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        {/* --- CATEGORY NAVIGATION LINKS (ACADEMY • CREW • RENTALS • PRODUCTIONS • EVENTS) --- */}
+        {/* --- CATEGORY NAVIGATION LINKS (ACADEMY | CREW | RENTALS | PRODUCTIONS | EVENTS) --- */}
         <motion.nav
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           aria-label="Category Navigation"
-          className="relative inline-flex flex-wrap items-center justify-center gap-1 sm:gap-1.5 p-1.5 sm:p-2 mb-10 rounded-full bg-[#120626]/75 border border-purple-500/35 backdrop-blur-xl shadow-[0_10px_35px_rgba(0,0,0,0.6),0_0_25px_rgba(168,85,247,0.25)] ring-1 ring-white/10"
+          className="relative inline-flex flex-wrap items-center justify-center gap-y-3 mb-10 text-purple-300"
         >
           {navItems.map((item, index) => (
             <React.Fragment key={item.label}>
               {index > 0 && (
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-400/50 shadow-[0_0_8px_rgba(192,132,252,0.8)] mx-1 hidden sm:inline-block pointer-events-none" />
+                <span className="h-4 w-[1.5px] bg-purple-500/60 shadow-[0_0_8px_rgba(168,85,247,0.8)] mx-3.5 sm:mx-6 hidden sm:inline-block pointer-events-none" />
               )}
               <Link
                 href={item.href}
-                className="group relative px-4 py-2 rounded-full text-[11px] sm:text-xs font-bold tracking-[0.22em] text-purple-200/90 uppercase transition-all duration-300 hover:text-white hover:bg-gradient-to-r hover:from-purple-600/30 hover:to-fuchsia-600/30 hover:shadow-[0_0_20px_rgba(168,85,247,0.45)] hover:border-purple-400/40 border border-transparent"
+                className="group relative px-2 py-1 text-xs sm:text-sm font-extrabold tracking-[0.25em] text-purple-200/90 uppercase transition-all duration-300 hover:text-white"
               >
-                <span className="relative z-10 drop-shadow-[0_0_8px_rgba(192,132,252,0.4)] group-hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]">
+                <span className="relative z-10 drop-shadow-[0_0_8px_rgba(192,132,252,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.95)] group-hover:text-white transition-all">
                   {item.label}
                 </span>
               </Link>
