@@ -34,15 +34,15 @@ const Hero = () => {
       {/* Main Hero Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center">
         
-        {/* --- MAIN HERO VISUAL ARTWORK (COLOR-HARMONIZED RIGA EMBLEM) --- */}
+        {/* --- MAIN HERO VISUAL ARTWORK (HARMONIZED METALLIC LOGO EMBLEM) --- */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           className="w-full relative mb-8 flex justify-center items-center select-none"
         >
-          {/* Color-Harmonized Ambient Backdrop Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[280px] bg-gradient-to-r from-purple-600/30 via-fuchsia-500/25 to-violet-600/30 rounded-full blur-[130px] pointer-events-none" />
+          {/* Ambient Purple Backdrop Glow matching Logo Tone */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[280px] bg-gradient-to-r from-purple-700/25 via-fuchsia-600/20 to-purple-800/25 rounded-full blur-[140px] pointer-events-none" />
 
           {/* Logo Emblem tuned to match site color palette */}
           <div className="relative w-full max-w-4xl flex justify-center items-center">
@@ -51,29 +51,29 @@ const Hero = () => {
               alt="RIGA Dance Academy" 
               width={1200}
               height={550}
-              className="w-full h-auto object-contain block mx-auto opacity-100 filter saturate-125 contrast-115 brightness-105 drop-shadow-[0_0_45px_rgba(168,85,247,0.8)] drop-shadow-[0_0_90px_rgba(217,70,239,0.4)] pointer-events-none"
+              className="w-full h-auto object-contain block mx-auto opacity-100 filter contrast-110 brightness-105 drop-shadow-[0_0_40px_rgba(168,85,247,0.7)] drop-shadow-[0_0_80px_rgba(192,132,252,0.3)] pointer-events-none"
               unoptimized
               priority
             />
           </div>
         </motion.div>
 
-        {/* --- CATEGORY NAVIGATION LINKS (ACADEMY | CREW | RENTALS | PRODUCTIONS | EVENTS) --- */}
+        {/* --- CATEGORY NAVIGATION LINKS (ACADEMY | CREW | RENTALS | PRODUCTIONS | CHOREOGRAPHY) --- */}
         <motion.nav
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           aria-label="Category Navigation"
-          className="relative inline-flex flex-wrap items-center justify-center gap-y-3 mb-10 text-purple-300"
+          className="relative inline-flex flex-wrap items-center justify-center gap-y-3 mb-10 text-purple-200"
         >
           {navItems.map((item, index) => (
             <React.Fragment key={item.label}>
               {index > 0 && (
-                <span className="h-4 w-[1.5px] bg-purple-500/60 shadow-[0_0_8px_rgba(168,85,247,0.8)] mx-3.5 sm:mx-6 hidden sm:inline-block pointer-events-none" />
+                <span className="h-3.5 w-[1.5px] bg-purple-500/40 shadow-[0_0_6px_rgba(168,85,247,0.6)] mx-3.5 sm:mx-6 hidden sm:inline-block pointer-events-none" />
               )}
               <Link
                 href={item.href}
-                className="group relative px-2 py-1 text-xs sm:text-sm font-extrabold tracking-[0.25em] text-purple-200/90 uppercase transition-all duration-300 hover:text-white"
+                className="group relative px-2 py-1 text-xs sm:text-sm font-extrabold tracking-[0.22em] text-purple-200/90 uppercase transition-all duration-300 hover:text-white"
               >
                 <span className="relative z-10 drop-shadow-[0_0_8px_rgba(192,132,252,0.4)] group-hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.95)] group-hover:text-white transition-all">
                   {item.label}
@@ -83,7 +83,7 @@ const Hero = () => {
           ))}
         </motion.nav>
 
-        {/* --- ACTION BUTTONS --- */}
+        {/* --- ACTION BUTTONS (COLOR-HARMONIZED PAIR) --- */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
@@ -93,10 +93,10 @@ const Hero = () => {
           {/* PRIMARY CTA: BOOK DANCE TROUPE */}
           <Link
             href="/events"
-            className="group relative overflow-hidden inline-flex items-center justify-between px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-purple-700 via-fuchsia-600 to-violet-700 hover:from-purple-600 hover:via-fuchsia-500 hover:to-violet-600 shadow-[0_0_35px_rgba(168,85,247,0.55),0_0_60px_rgba(192,132,252,0.25)] hover:shadow-[0_0_50px_rgba(168,85,247,0.85),0_0_80px_rgba(232,121,249,0.4)] border border-purple-300/40 hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative overflow-hidden inline-flex items-center justify-between px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-purple-700 via-[#9333ea] to-fuchsia-700 hover:from-purple-600 hover:via-purple-500 hover:to-fuchsia-600 shadow-[0_0_30px_rgba(168,85,247,0.5)] hover:shadow-[0_0_45px_rgba(168,85,247,0.8)] border border-purple-400/40 hover:scale-[1.02] active:scale-[0.98]"
           >
             {/* Shimmer Light Sweep */}
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
 
             <div className="relative z-10 flex items-center">
               <span className="p-1.5 rounded-full bg-white/15 border border-white/25 mr-3 group-hover:scale-110 group-hover:bg-white/25 transition-all shadow-[0_0_10px_rgba(255,255,255,0.3)]">
@@ -113,9 +113,9 @@ const Hero = () => {
           {/* SECONDARY CTA: JOIN ACADEMY CLASSES */}
           <Link
             href="/login"
-            className="group relative inline-flex items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-purple-100 transition-all duration-300 bg-[#130728]/85 hover:bg-purple-900/40 border border-purple-400/40 hover:border-purple-300/80 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.5),0_0_20px_rgba(168,85,247,0.2)] hover:shadow-[0_0_40px_rgba(192,132,252,0.5)] hover:text-white hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative inline-flex items-center justify-center px-6 py-3.5 sm:px-8 sm:py-4 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-purple-100 transition-all duration-300 bg-purple-950/70 hover:bg-purple-900/60 border border-purple-500/50 hover:border-purple-300/80 backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.25)] hover:shadow-[0_0_35px_rgba(192,132,252,0.5)] hover:text-white hover:scale-[1.02] active:scale-[0.98]"
           >
-            <span className="p-1.5 rounded-full bg-purple-500/20 border border-purple-400/30 mr-3 group-hover:scale-110 group-hover:bg-purple-500/40 group-hover:rotate-12 transition-all shadow-[0_0_10px_rgba(168,85,247,0.3)]">
+            <span className="p-1.5 rounded-full bg-purple-500/25 border border-purple-400/40 mr-3 group-hover:scale-110 group-hover:bg-purple-500/40 group-hover:rotate-12 transition-all shadow-[0_0_10px_rgba(168,85,247,0.4)]">
               <Sparkles className="w-3.5 h-3.5 text-fuchsia-300" />
             </span>
             <span>Join Academy Classes</span>
