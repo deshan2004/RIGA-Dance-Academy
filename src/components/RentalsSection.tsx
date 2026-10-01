@@ -21,7 +21,11 @@ import {
   BadgePercent,
   Zap,
   CheckCircle2,
-  Sparkle
+  Sparkle,
+  Flame,
+  Crown,
+  Music,
+  Feather
 } from "lucide-react";
 
 interface RentalItem {
@@ -41,19 +45,19 @@ interface RentalItem {
 }
 
 const rentalCategories = [
-  { id: "all", label: "All Rental Items", icon: "✨" },
-  { id: "costumes", label: "Costumes", icon: "👗" },
-  { id: "props", label: "Props", icon: "🎭" },
-  { id: "accessories", label: "Performance Accessories", icon: "👑" },
+  { id: "all", label: "All Rental Items", icon: Sparkles },
+  { id: "costumes", label: "Costumes", icon: ShoppingBag },
+  { id: "props", label: "Props", icon: Sparkles },
+  { id: "accessories", label: "Performance Accessories", icon: Crown },
 ];
 
 const quickTagFilters = [
-  { id: "all", label: "All Types" },
-  { id: "Popular", label: "🔥 Popular" },
-  { id: "Trending", label: "⚡ Trending" },
-  { id: "Heritage", label: "🥁 Heritage" },
-  { id: "High-Tech", label: "💡 High-Tech" },
-  { id: "Bulk Sets", label: "👥 Troupe Sets" },
+  { id: "all", label: "All Types", icon: null, color: "" },
+  { id: "Popular", label: "Popular", icon: Flame, color: "text-amber-400" },
+  { id: "Trending", label: "Trending", icon: Zap, color: "text-fuchsia-400" },
+  { id: "Heritage", label: "Heritage", icon: Music, color: "text-purple-400" },
+  { id: "High-Tech", label: "High-Tech", icon: Sparkles, color: "text-cyan-400" },
+  { id: "Bulk Sets", label: "Troupe Sets", icon: Users, color: "text-emerald-400" },
 ];
 
 const defaultRentalItems: RentalItem[] = [
@@ -1103,6 +1107,7 @@ export default function RentalsSection() {
               {rentalCategories.map((cat) => {
                 const isActive = activeCategory === cat.id;
                 const count = categoryCounts[cat.id] || 0;
+                const IconComponent = cat.icon;
                 return (
                   <button
                     key={cat.id}
@@ -1113,7 +1118,7 @@ export default function RentalsSection() {
                         : "bg-[#140926]/90 text-purple-300/70 border border-purple-900/40 hover:border-purple-600/50 hover:text-white"
                     }`}
                   >
-                    <span>{cat.icon}</span>
+                    <IconComponent className="w-4 h-4 text-fuchsia-400 shrink-0" />
                     <span>{cat.label}</span>
                     <span
                       className={`ml-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${
@@ -1155,19 +1160,23 @@ export default function RentalsSection() {
             <span className="text-xs text-purple-400/60 font-medium flex items-center gap-1 mr-2">
               <Filter className="w-3 h-3" /> Quick Filter:
             </span>
-            {quickTagFilters.map((tag) => (
-              <button
-                key={tag.id}
-                onClick={() => setActiveTag(tag.id)}
-                className={`px-3 py-1.5 rounded-xl text-[11px] font-semibold transition-all ${
-                  activeTag === tag.id
-                    ? "bg-purple-900 border border-purple-500 text-fuchsia-200 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
-                    : "bg-[#140926]/60 border border-purple-900/40 text-purple-400/70 hover:text-white hover:border-purple-700/50"
-                }`}
-              >
-                {tag.label}
-              </button>
-            ))}
+            {quickTagFilters.map((tag) => {
+              const TagIcon = tag.icon;
+              return (
+                <button
+                  key={tag.id}
+                  onClick={() => setActiveTag(tag.id)}
+                  className={`px-3 py-1.5 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1.5 ${
+                    activeTag === tag.id
+                      ? "bg-purple-900 border border-purple-500 text-fuchsia-200 shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                      : "bg-[#140926]/60 border border-purple-900/40 text-purple-400/70 hover:text-white hover:border-purple-700/50"
+                  }`}
+                >
+                  {TagIcon && <TagIcon className={`w-3 h-3 ${tag.color || "text-fuchsia-400"}`} />}
+                  <span>{tag.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 

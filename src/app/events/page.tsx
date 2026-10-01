@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Bus, Video, PartyPopper } from "lucide-react";
+import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Bus, Video, PartyPopper, Flame, Zap, Crown, Users, Radio } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
@@ -484,19 +484,23 @@ export default function EventsPage() {
             className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6 relative z-20"
           >
             {[
-              { label: "TRADITIONAL", icon: "✨" },
-              { label: "LATIN", icon: "💃" },
-              { label: "FREESTYLE", icon: "🔥" },
-              { label: "BOLLYWOOD", icon: "👑" },
-              { label: "HIP HOP", icon: "⚡" },
-            ].map((genre) => (
-              <span
-                key={genre.label}
-                className="px-4 py-2 rounded-xl bg-purple-950/70 border border-purple-500/40 text-purple-200 text-xs font-black tracking-widest uppercase shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:border-purple-400 hover:text-white transition-all backdrop-blur-md"
-              >
-                {genre.icon} {genre.label}
-              </span>
-            ))}
+              { label: "TRADITIONAL", icon: Sparkles, color: "text-amber-400" },
+              { label: "LATIN", icon: Flame, color: "text-rose-400" },
+              { label: "FREESTYLE", icon: Zap, color: "text-fuchsia-400" },
+              { label: "BOLLYWOOD", icon: Crown, color: "text-yellow-400" },
+              { label: "HIP HOP", icon: Radio, color: "text-purple-400" },
+            ].map((genre) => {
+              const IconComponent = genre.icon;
+              return (
+                <span
+                  key={genre.label}
+                  className="px-4 py-2 rounded-xl bg-purple-950/70 border border-purple-500/40 text-purple-200 text-xs font-black tracking-widest uppercase shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:border-purple-400 hover:text-white transition-all backdrop-blur-md flex items-center gap-2"
+                >
+                  <IconComponent className={`w-3.5 h-3.5 ${genre.color}`} />
+                  <span>{genre.label}</span>
+                </span>
+              );
+            })}
           </motion.div>
         </div>
       </section>
@@ -550,10 +554,25 @@ export default function EventsPage() {
             </button>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-wide uppercase mb-6">
-            {selectedCategory === "weddings" && "💍 Wedding Troupe Packages"}
-            {selectedCategory === "events" && "🎭 Event & Stage Acts Packages"}
-            {selectedCategory === "music_video" && "🎬 Music Video Choreography Packages"}
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-wide uppercase mb-6 flex items-center justify-center gap-3">
+            {selectedCategory === "weddings" && (
+              <>
+                <Heart className="w-8 h-8 text-pink-500 fill-pink-500/20 drop-shadow-[0_0_15px_rgba(236,72,153,0.6)] shrink-0" />
+                <span>Wedding Troupe Packages</span>
+              </>
+            )}
+            {selectedCategory === "events" && (
+              <>
+                <PartyPopper className="w-8 h-8 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.6)] shrink-0" />
+                <span>Event & Stage Acts Packages</span>
+              </>
+            )}
+            {selectedCategory === "music_video" && (
+              <>
+                <Video className="w-8 h-8 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.6)] shrink-0" />
+                <span>Music Video Choreography Packages</span>
+              </>
+            )}
           </h2>
 
           {/* Secondary Dancer Filter Tabs */}
@@ -613,7 +632,8 @@ export default function EventsPage() {
                 {/* Header Info */}
                 <div className="mb-6 border-b border-purple-500/20 pb-6">
                   <div className="flex items-center gap-2 text-fuchsia-400 text-xs font-bold uppercase tracking-wider mb-2">
-                    <span>💃 {pkg.dancersLabel}</span>
+                    <Users className="w-4 h-4 text-fuchsia-400 shrink-0" />
+                    <span>{pkg.dancersLabel}</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide mb-3">
                     {pkg.actsLabel}
