@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, X, ZoomIn } from "lucide-react";
+import { Camera, X, ZoomIn, ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface GalleryPhoto {
   _id?: string;
@@ -93,12 +94,24 @@ export default function GalleryPage() {
     : photos.filter(p => p.category?.toLowerCase() === activeCategory.toLowerCase());
 
   return (
-    <div className="min-h-screen bg-[#090410] text-white pt-28 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-[#090410] text-white pt-8 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Lighting */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-900/20 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-10 w-[400px] h-[400px] bg-fuchsia-900/15 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
+        
+        {/* Back Button */}
+        <div className="mb-8">
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-300 hover:text-white hover:border-purple-500/60 hover:bg-purple-900/80 transition-all shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:scale-105"
+            aria-label="Back to Home"
+            title="Back to Home"
+          >
+            <ArrowLeft className="w-5 h-5 text-fuchsia-400" />
+          </Link>
+        </div>
         
         {/* Page Header */}
         <div className="text-center mb-16">

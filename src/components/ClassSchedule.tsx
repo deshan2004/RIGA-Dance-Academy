@@ -57,7 +57,7 @@ const ClassSchedule = () => {
   };
 
   return (
-    <section id="classes" className="py-24 bg-[#090410] relative overflow-hidden">
+    <section id="classes" className="pt-8 pb-24 bg-[#090410] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <motion.h2 

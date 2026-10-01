@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Mail, Video, Music } from "lucide-react";
+import { Mail, Video, Music, ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const instructors = [
   {
@@ -62,8 +63,19 @@ export default function InstructorsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-academy-black pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#090410] pt-8 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
+        {/* Back Button */}
+        <div className="mb-8">
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-purple-950/60 border border-purple-800/40 text-purple-300 hover:text-white hover:border-purple-500/60 hover:bg-purple-900/80 transition-all shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:scale-105"
+            aria-label="Back to Home"
+            title="Back to Home"
+          >
+            <ArrowLeft className="w-5 h-5 text-fuchsia-400" />
+          </Link>
+        </div>
         <div className="text-center mb-16">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
