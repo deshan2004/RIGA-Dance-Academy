@@ -5,29 +5,47 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 export async function GET(request: NextRequest) {
   try {
     const email = request.nextUrl.searchParams.get("email");
+    const uid = request.nextUrl.searchParams.get("uid");
     
-    if (!email) {
-      return NextResponse.json({ success: false, error: "Email is required" }, { status: 400 });
+    if (!email && !uid) {
+      return NextResponse.json({ success: false, error: "Email or UID is required" }, { status: 400 });
     }
 
     const enrollRef = collection(db, "enrollments");
-    const q = query(enrollRef, where("email", "==", email));
+    const snapshot = await getDocs(enrollRef);
     
-    const snapshot = await getDocs(q);
-    const enrollments = snapshot.docs.map(doc => ({
-      _id: doc.id,
-      ...doc.data()
-    }));
+    const targetEmail = (email || "").toLowerCase().trim();
+
+    const enrollments = snapshot.docs
+      .map(doc => ({
+        _id: doc.id,
+        ...doc.data()
+      }))
+      .filter((item: Record<string, unknown>) => {
+        const itemEmail = (typeof item.email === "string" ? item.email : "").toLowerCase().trim();
+        const itemUserEmail = (typeof item.userEmail === "string" ? item.userEmail : "").toLowerCase().trim();
+        const itemUid = typeof item.uid === "string" ? item.uid : typeof item.user_id === "string" ? item.user_id : "";
+
+        if (uid && itemUid === uid) return true;
+        if (targetEmail && (itemEmail === targetEmail || itemUserEmail === targetEmail)) return true;
+        return false;
+      });
 
     interface EnrollmentRecord {
-      createdAt?: { toMillis: () => number };
+      createdAt?: { toMillis: () => number } | number | string;
       [key: string]: unknown;
     }
 
-    // Optionally sort by createdAt manually if compound index is missing
     (enrollments as EnrollmentRecord[]).sort((a, b) => {
-      if (!a.createdAt || !b.createdAt) return 0;
-      return b.createdAt.toMillis() - a.createdAt.toMillis();
+      const getMillis = (val: unknown) => {
+        if (!val) return 0;
+        if (typeof val === "object" && val !== null && "toMillis" in val && typeof (val as { toMillis: () => number }).toMillis === "function") {
+          return (val as { toMillis: () => number }).toMillis();
+        }
+        if (typeof val === "number") return val;
+        return 0;
+      };
+      return getMillis(b.createdAt) - getMillis(a.createdAt);
     });
 
     return NextResponse.json({ success: true, data: enrollments }, { status: 200 });

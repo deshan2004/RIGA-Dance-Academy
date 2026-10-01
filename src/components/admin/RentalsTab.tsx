@@ -358,14 +358,6 @@ export default function RentalsTab() {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={seedDemoData}
-            disabled={seeding}
-            className="bg-purple-950/80 hover:bg-purple-900 border border-purple-700/60 text-fuchsia-300 font-semibold text-xs py-2.5 px-4 rounded-xl flex items-center gap-2 transition-all disabled:opacity-50"
-          >
-            <Sparkles className="w-4 h-4 text-fuchsia-400" />
-            {seeding ? "Seeding..." : "Seed Demo Photos Items"}
-          </button>
-          <button
             onClick={openModalForNew}
             className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-bold py-2.5 px-5 rounded-xl flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] shrink-0"
           >

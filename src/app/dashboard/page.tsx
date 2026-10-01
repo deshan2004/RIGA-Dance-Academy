@@ -117,7 +117,8 @@ export default function StudentDashboard() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [activeTab, setActiveTab] = useState<"classes" | "payments" | "videos" | "announcements" | "profile">("classes");
   
-  // Dynamic Videos & Announcements state
+  // Dynamic Videos, Announcements & Admin Classes state
+  const [adminClasses, setAdminClasses] = useState<Array<{ title: string; style: string; day: string; time: string; instructor_name: string; hall_no: string; }>>([]);
   const [practiceVideos, setPracticeVideos] = useState<typeof MOCK_PRACTICE_VIDEOS>(MOCK_PRACTICE_VIDEOS);
   const [announcementsList, setAnnouncementsList] = useState<typeof MOCK_ANNOUNCEMENTS>(MOCK_ANNOUNCEMENTS);
 
@@ -136,13 +137,13 @@ export default function StudentDashboard() {
 
   const router = useRouter();
 
-  const fetchMyEnrollments = async (email: string | null) => {
-    if (!email) {
+  const fetchMyEnrollments = async (email: string | null, uid?: string | null) => {
+    if (!email && !uid) {
       setLoading(false);
       return;
     }
     try {
-      const res = await fetch(`/api/enroll/user?email=${encodeURIComponent(email)}`);
+      const res = await fetch(`/api/enroll/user?email=${encodeURIComponent(email || "")}&uid=${uid || ""}`);
       const data = await res.json();
       if (data.success) {
         setEnrollments(data.data);
@@ -157,6 +158,14 @@ export default function StudentDashboard() {
   useEffect(() => {
     let isMounted = true;
     async function loadData() {
+      try {
+        const resC = await fetch("/api/classes");
+        const dataC = await resC.json();
+        if (isMounted && dataC.success && Array.isArray(dataC.data)) {
+          setAdminClasses(dataC.data);
+        }
+      } catch {}
+
       try {
         const resV = await fetch("/api/videos");
         const dataV = await resV.json();
@@ -249,10 +258,10 @@ export default function StudentDashboard() {
             }
           }
 
-          fetchMyEnrollments(user.email);
+          fetchMyEnrollments(user.email, user.uid);
         } catch (error) {
           console.error(error);
-          fetchMyEnrollments(user.email);
+          fetchMyEnrollments(user.email, user.uid);
         }
       }
     });
@@ -467,62 +476,82 @@ export default function StudentDashboard() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {enrollments.map((enrollment, index) => (
-                  <motion.div
-                    key={enrollment._id || index}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-[#120726]/90 border border-purple-900/60 rounded-3xl p-6 shadow-[0_0_30px_rgba(9,4,16,0.9)] relative overflow-hidden group hover:border-purple-600/70 transition-all"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <span className="text-[10px] text-purple-400 uppercase font-bold tracking-widest block mb-1">
-                          Enrolled Program
+                {enrollments.map((enrollment, index) => {
+                  const styleVal = typeof enrollment.preferred_style === "string" ? enrollment.preferred_style : typeof enrollment.classTitle === "string" ? enrollment.classTitle : "";
+                  const styleLower = styleVal.toLowerCase();
+                  const matchedClass = adminClasses.find(c => 
+                    (c.style && styleLower.includes(c.style.toLowerCase())) ||
+                    (c.title && styleLower.includes(c.title.toLowerCase())) ||
+                    (c.style && c.style.toLowerCase().includes(styleLower))
+                  );
+
+                  const scheduleText = matchedClass
+                    ? `${matchedClass.day} ${matchedClass.time ? `(${matchedClass.time})` : ""}`
+                    : "Saturdays & Sundays (10:00 AM – 12:00 PM)";
+
+                  const hallText = matchedClass?.hall_no
+                    ? `Hall ${matchedClass.hall_no}`
+                    : "Studio Hall A (Main Stage Floor)";
+
+                  const instructorText = matchedClass?.instructor_name || "Guru K. Jayawardena";
+
+                  return (
+                    <motion.div
+                      key={enrollment._id || index}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="bg-[#120726]/90 border border-purple-900/60 rounded-3xl p-6 shadow-[0_0_30px_rgba(9,4,16,0.9)] relative overflow-hidden group hover:border-purple-600/70 transition-all"
+                    >
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <span className="text-[10px] text-purple-400 uppercase font-bold tracking-widest block mb-1">
+                            Enrolled Program
+                          </span>
+                          <h3 className="text-xl font-black text-white group-hover:text-fuchsia-300 transition-colors uppercase tracking-wide">
+                            {enrollment.preferred_style || "Dance Class"}
+                          </h3>
+                        </div>
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${getStatusColor(enrollment.status || "pending")}`}>
+                          {(enrollment.status || "PENDING").toUpperCase()}
                         </span>
-                        <h3 className="text-xl font-black text-white group-hover:text-fuchsia-300 transition-colors uppercase tracking-wide">
-                          {enrollment.preferred_style || "Dance Class"}
-                        </h3>
-                      </div>
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${getStatusColor(enrollment.status || "pending")}`}>
-                        {(enrollment.status || "PENDING").toUpperCase()}
-                      </span>
-                    </div>
-
-                    <div className="space-y-3 pt-2 border-t border-purple-900/50 text-xs text-purple-200/90">
-                      <div className="flex items-center gap-3">
-                        <UserIcon className="w-4 h-4 text-fuchsia-400 shrink-0" />
-                        <span>Student: <strong className="text-white">{enrollment.student_name}</strong> ({enrollment.age} yrs)</span>
                       </div>
 
-                      <div className="flex items-center gap-3">
-                        <MapPin className="w-4 h-4 text-fuchsia-400 shrink-0" />
-                        <span>Branch & Session: <strong className="text-white">{enrollment.preferred_branch || "Colombo Main Studio"}</strong></span>
+                      <div className="space-y-3 pt-2 border-t border-purple-900/50 text-xs text-purple-200/90">
+                        <div className="flex items-center gap-3">
+                          <UserIcon className="w-4 h-4 text-fuchsia-400 shrink-0" />
+                          <span>Student: <strong className="text-white">{enrollment.student_name}</strong> ({enrollment.age} yrs)</span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <MapPin className="w-4 h-4 text-fuchsia-400 shrink-0" />
+                          <span>Branch & Session: <strong className="text-white">{enrollment.preferred_branch || "Colombo Main Studio"}</strong></span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <Clock className="w-4 h-4 text-fuchsia-400 shrink-0" />
+                          <span>Schedule: <strong className="text-white">{scheduleText}</strong></span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <Building className="w-4 h-4 text-fuchsia-400 shrink-0" />
+                          <span>Studio Hall: <strong className="text-white">{hallText}</strong></span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-3">
-                        <Clock className="w-4 h-4 text-fuchsia-400 shrink-0" />
-                        <span>Schedule: <strong className="text-white">Saturdays & Sundays (10:00 AM – 12:00 PM)</strong></span>
+                      <div className="mt-5 pt-4 border-t border-purple-900/50 flex items-center justify-between text-[11px]">
+                        <span className="text-purple-400/80 font-medium">Instructor: {instructorText}</span>
+                        <button
+                          onClick={() => setActiveTab("videos")}
+                          className="text-fuchsia-400 font-bold hover:text-fuchsia-300 flex items-center gap-1 transition-colors"
+                        >
+                          <span>Access Practice Lessons</span>
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
                       </div>
-
-                      <div className="flex items-center gap-3">
-                        <Building className="w-4 h-4 text-fuchsia-400 shrink-0" />
-                        <span>Studio Hall: <strong className="text-white">Studio Hall A (Main Stage Floor)</strong></span>
-                      </div>
-                    </div>
-
-                    <div className="mt-5 pt-4 border-t border-purple-900/50 flex items-center justify-between text-[11px]">
-                      <span className="text-purple-400/80 font-medium">Instructor: Guru K. Jayawardena</span>
-                      <button
-                        onClick={() => setActiveTab("videos")}
-                        className="text-fuchsia-400 font-bold hover:text-fuchsia-300 flex items-center gap-1 transition-colors"
-                      >
-                        <span>Access Practice Lessons</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             )}
           </motion.div>
