@@ -16,7 +16,7 @@ const crewMembers = [
     name: "RIGA Mega Crew",
     role: "Hip-Hop & Urban Street",
     image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80",
-    tag: "International Showcase"
+    tag: "Sri Lankan Showcase"
   },
   {
     name: "Lyrical & Contemporary Team",
@@ -27,8 +27,8 @@ const crewMembers = [
 ];
 
 const achievements = [
-  { icon: <Flame className="w-6 h-6 text-purple-400" />, title: "20+ Live Stage Shows", desc: "Toured major concerts, award ceremonies & music festivals." },
-  { icon: <Video className="w-6 h-6 text-fuchsia-400" />, title: "Featured in Music Videos", desc: "Professional choreography for top South Asian recording artists." },
+  { icon: <Flame className="w-6 h-6 text-purple-400" />, title: "20+ Live Stage Shows", desc: "Toured major Sri Lankan concerts, award ceremonies & music festivals." },
+  { icon: <Video className="w-6 h-6 text-fuchsia-400" />, title: "Featured in Music Videos", desc: "Professional choreography for top Sri Lankan recording artists." },
 ];
 
 export default function CrewPage() {
@@ -69,7 +69,7 @@ export default function CrewPage() {
           transition={{ delay: 0.1 }}
           className="text-purple-200/70 max-w-3xl mx-auto text-base sm:text-lg font-light leading-relaxed mb-12"
         >
-          Sri Lanka&apos;s elite dance ensemble blending Kandyan traditional mastery with modern Hip-Hop, Latin, and Contemporary stage showmanship. Available for concerts, brand launches, and international tours.
+          Sri Lanka&apos;s elite dance ensemble blending Kandyan traditional mastery with modern Hip-Hop, Latin, and Contemporary stage showmanship. Available for concerts, brand launches, and island-wide tours across Sri Lanka.
         </motion.p>
 
         {/* Achievements Grid */}
