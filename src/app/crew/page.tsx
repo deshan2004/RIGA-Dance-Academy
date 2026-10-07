@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Users2, Trophy, Flame, Video } from "lucide-react";
+import { ArrowLeft, Users2, Flame, Video } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -27,8 +27,7 @@ const crewMembers = [
 ];
 
 const achievements = [
-  { icon: <Trophy className="w-6 h-6 text-fuchsia-400" />, title: "1st Place National Dance Cup", desc: "Recognized as Sri Lanka's premier pro performance ensemble." },
-  { icon: <Flame className="w-6 h-6 text-purple-400" />, title: "50+ Live Stage Shows", desc: "Toured major concerts, award ceremonies & music festivals." },
+  { icon: <Flame className="w-6 h-6 text-purple-400" />, title: "20+ Live Stage Shows", desc: "Toured major concerts, award ceremonies & music festivals." },
   { icon: <Video className="w-6 h-6 text-fuchsia-400" />, title: "Featured in Music Videos", desc: "Professional choreography for top South Asian recording artists." },
 ];
 
@@ -74,7 +73,7 @@ export default function CrewPage() {
         </motion.p>
 
         {/* Achievements Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-6 mb-16">
           {achievements.map((item, idx) => (
             <div key={idx} className="p-6 rounded-2xl bg-[#140924] border border-purple-900/40 text-left">
               <div className="w-12 h-12 rounded-xl bg-purple-950 border border-purple-800/40 flex items-center justify-center mb-4">
