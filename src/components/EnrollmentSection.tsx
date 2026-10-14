@@ -348,7 +348,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-950/80 border border-purple-800/60 text-fuchsia-300 text-xs font-bold uppercase tracking-widest mb-4 shadow-[0_0_20px_rgba(168,85,247,0.25)]"
           >
             <Sparkles className="w-4 h-4 text-fuchsia-400" />
-            RIGA Student & Member Portal
+            RIGA Member Portal
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -442,7 +442,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
               className="space-y-5 max-w-md mx-auto"
             >
               <div className="text-center mb-6">
-                <h3 className="text-xl font-black uppercase text-white mb-1">Student & Staff Portal Sign In</h3>
+                <h3 className="text-xl font-black uppercase text-white mb-1">Member Portal Sign In</h3>
                 <p className="text-xs text-purple-300/70 font-light">Enter your credentials to access your portal</p>
               </div>
 
@@ -458,7 +458,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
                     className="w-full bg-[#080312] border border-purple-900/60 rounded-xl pl-10 pr-4 py-3.5 text-white text-sm focus:outline-none focus:border-purple-500/90 focus:ring-2 focus:ring-purple-500/30 transition-all placeholder:text-purple-400/40"
-                    placeholder="student@example.com"
+                    placeholder="you@example.com"
                   />
                 </div>
               </div>
