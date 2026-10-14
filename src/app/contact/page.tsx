@@ -137,7 +137,11 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-white font-medium mb-1">Email Address</h3>
-                    <p className="text-gray-400">info@rigadance.com<br />support@rigadance.com</p>
+                    <p className="text-gray-400">
+                      <a href="mailto:inforigadance@gmail.com" className="hover:text-purple-300 transition-colors">
+                        inforigadance@gmail.com
+                      </a>
+                    </p>
                   </div>
                 </div>
 

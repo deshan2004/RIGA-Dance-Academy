@@ -7,7 +7,14 @@ import {
   CreditCard, Building, Eye, EyeOff, Lock, Mail, Copy, Check, 
   ChevronRight, ChevronLeft, Sparkles, User, MapPin, X, FileText
 } from "lucide-react";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  GoogleAuthProvider,
+  signInWithPopup,
+  User as FirebaseUser
+} from "firebase/auth";
 import { doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
@@ -32,6 +39,16 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
   const [loginPassword, setLoginPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  // Forgot Password State
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetMessage, setResetMessage] = useState<{ type: "success" | "error" | null; message: string }>({
+    type: null,
+    message: "",
+  });
 
   // Sign Up State
   const [formData, setFormData] = useState({
@@ -91,74 +108,87 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
     setPaymentSlipName("");
   };
 
-  // Sign In Submission (with pending admin approval check)
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginLoading(true);
-    setStatus({ type: null, message: "" });
+  // Verify user role & approval, then redirect appropriately
+  const verifyAndRedirectUser = async (user: FirebaseUser, emailForEnrollmentCheck: string) => {
+    let userData: Record<string, unknown> | null = null;
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      const user = userCredential.user;
+      const userDocById = await getDoc(doc(db, "users", user.uid));
+      if (userDocById.exists()) {
+        userData = userDocById.data();
+      }
+    } catch {}
 
-      // 1. Look up user document using multi-tier fallback (UID doc, Sanitized Email doc, Query, API fallback)
-      let userData: Record<string, unknown> | null = null;
-
+    if (!userData && user.email) {
       try {
-        const userDocById = await getDoc(doc(db, "users", user.uid));
-        if (userDocById.exists()) {
-          userData = userDocById.data();
+        const emailDocId = user.email.replace(/[^a-zA-Z0-9]/g, "_");
+        const userDocByEmail = await getDoc(doc(db, "users", emailDocId));
+        if (userDocByEmail.exists()) {
+          userData = userDocByEmail.data();
         }
       } catch {}
+    }
 
-      if (!userData && user.email) {
-        try {
-          const emailDocId = user.email.replace(/[^a-zA-Z0-9]/g, "_");
-          const userDocByEmail = await getDoc(doc(db, "users", emailDocId));
-          if (userDocByEmail.exists()) {
-            userData = userDocByEmail.data();
-          }
-        } catch {}
-      }
-
-      if (!userData && user.email) {
-        try {
-          const q = query(collection(db, "users"), where("email", "==", user.email));
-          const qSnap = await getDocs(q);
-          if (!qSnap.empty) {
-            userData = qSnap.docs[0].data();
-          }
-        } catch {}
-      }
-
-      if (!userData && (user.email || user.uid)) {
-        try {
-          const res = await fetch(`/api/users?email=${encodeURIComponent(user.email || "")}&uid=${user.uid}`);
-          const apiData = await res.json();
-          if (apiData.success && apiData.user) {
-            userData = apiData.user;
-          }
-        } catch {}
-      }
-
-      const roleVal = typeof userData?.role === "string" ? userData.role : "";
-      const userRole = roleVal.toLowerCase() || "user";
-
-      // ADMIN BYPASSES ALL APPROVAL CHECKS!
-      if (userRole === "admin") {
-        router.push("/admin");
-        return;
-      }
-
-      // 2. Check approval status for students
-      const statusVal = typeof userData?.status === "string" ? userData.status : "";
-      const uStatus = statusVal.toLowerCase();
-      const isDocApproved = uStatus === "approved" || uStatus === "approval";
-
-      // Also check enrollment status via API
-      let isEnrollmentApproved = false;
+    if (!userData && user.email) {
       try {
-        const res = await fetch(`/api/enroll/user?email=${encodeURIComponent(loginEmail)}`);
+        const q = query(collection(db, "users"), where("email", "==", user.email));
+        const qSnap = await getDocs(q);
+        if (!qSnap.empty) {
+          userData = qSnap.docs[0].data();
+        }
+      } catch {}
+    }
+
+    if (!userData && (user.email || user.uid)) {
+      try {
+        const res = await fetch(`/api/users?email=${encodeURIComponent(user.email || "")}&uid=${user.uid}`);
+        const apiData = await res.json();
+        if (apiData.success && apiData.user) {
+          userData = apiData.user;
+        }
+      } catch {}
+    }
+
+    // Auto-create user document if it's a new Google sign in
+    if (!userData && user.email) {
+      try {
+        const newRecord = {
+          uid: user.uid,
+          email: user.email,
+          firstName: user.displayName?.split(" ")[0] || "Member",
+          lastName: user.displayName?.split(" ").slice(1).join(" ") || "",
+          photoURL: user.photoURL || "",
+          role: "user",
+          status: "pending_approval",
+          createdAt: new Date(),
+        };
+        await setDoc(doc(db, "users", user.uid), newRecord, { merge: true });
+        userData = newRecord;
+      } catch (err) {
+        console.error("Error creating user record for Google sign in:", err);
+      }
+    }
+
+    const roleVal = typeof userData?.role === "string" ? userData.role : "";
+    const userRole = roleVal.toLowerCase() || "user";
+
+    // ADMIN BYPASSES ALL APPROVAL CHECKS!
+    if (userRole === "admin") {
+      router.push("/admin");
+      return;
+    }
+
+    // 2. Check approval status for students/members
+    const statusVal = typeof userData?.status === "string" ? userData.status : "";
+    const uStatus = statusVal.toLowerCase();
+    const isDocApproved = uStatus === "approved" || uStatus === "approval";
+
+    // Also check enrollment status via API
+    let isEnrollmentApproved = false;
+    const targetEmail = emailForEnrollmentCheck || user.email || "";
+    if (targetEmail) {
+      try {
+        const res = await fetch(`/api/enroll/user?email=${encodeURIComponent(targetEmail)}`);
         const data = await res.json();
         if (data.success && Array.isArray(data.data)) {
           isEnrollmentApproved = data.data.some((item: { status?: string }) => {
@@ -169,19 +199,31 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
       } catch (err) {
         console.error("Error checking user approval:", err);
       }
+    }
 
-      if (!isDocApproved && !isEnrollmentApproved) {
-        // Block sign in for unapproved students!
-        await auth.signOut();
-        setStatus({
-          type: "error",
-          message: "🚫 Account Pending Approval: Admin eken approve krnakal log wenn baha. Your registration & bank slip are pending Admin verification. Please wait for approval.",
-        });
-        return;
-      }
+    if (!isDocApproved && !isEnrollmentApproved) {
+      // Block sign in for unapproved members
+      await auth.signOut();
+      setStatus({
+        type: "error",
+        message: "🚫 Account Pending Approval: Admin eken approve krnakal log wenn baha. Your registration & bank slip are pending Admin verification. Please wait for approval.",
+      });
+      return;
+    }
 
-      // Account is approved!
-      router.push("/dashboard");
+    // Account is approved!
+    router.push("/dashboard");
+  };
+
+  // Sign In with Email & Password
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginLoading(true);
+    setStatus({ type: null, message: "" });
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      await verifyAndRedirectUser(userCredential.user, loginEmail);
     } catch (err: unknown) {
       console.error(err);
       const errorObj = err as { code?: string; message?: string };
@@ -196,6 +238,80 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
       }
     } finally {
       setLoginLoading(false);
+    }
+  };
+
+  // Sign In with Google
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    setStatus({ type: null, message: "" });
+
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      const result = await signInWithPopup(auth, provider);
+      await verifyAndRedirectUser(result.user, result.user.email || "");
+    } catch (err: unknown) {
+      console.error(err);
+      const errorObj = err as { code?: string; message?: string };
+      if (errorObj.code === "auth/popup-closed-by-user") {
+        return;
+      }
+      setStatus({
+        type: "error",
+        message: errorObj.message || "Google sign-in could not be completed. Please try again.",
+      });
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+  // Send Password Reset Email
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const targetEmail = resetEmail.trim();
+    if (!targetEmail) {
+      setResetMessage({
+        type: "error",
+        message: "Please enter your registered email address.",
+      });
+      return;
+    }
+
+    setResetLoading(true);
+    setResetMessage({ type: null, message: "" });
+
+    try {
+      await sendPasswordResetEmail(auth, targetEmail);
+      setResetMessage({
+        type: "success",
+        message: `Password reset link sent to ${targetEmail}! Please check your email inbox (and spam folder).`,
+      });
+      setStatus({
+        type: "success",
+        message: `Password reset email sent to ${targetEmail}! Please check your inbox.`,
+      });
+    } catch (err: unknown) {
+      console.error(err);
+      const errorObj = err as { code?: string; message?: string };
+      if (errorObj.code === "auth/user-not-found") {
+        setResetMessage({
+          type: "error",
+          message: "No registered account found with this email address.",
+        });
+      } else if (errorObj.code === "auth/invalid-email") {
+        setResetMessage({
+          type: "error",
+          message: "Please enter a valid email address.",
+        });
+      } else {
+        setResetMessage({
+          type: "error",
+          message: errorObj.message || "Failed to send reset email. Please try again.",
+        });
+      }
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -464,9 +580,22 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-purple-300/90 mb-2">
-                  Password *
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-purple-300/90">
+                    Password *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setResetEmail(loginEmail);
+                      setResetMessage({ type: null, message: "" });
+                      setShowForgotModal(true);
+                    }}
+                    className="text-xs text-fuchsia-400 hover:text-fuchsia-300 transition-colors font-medium hover:underline"
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
                 <div className="relative">
                   <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-fuchsia-400" />
                   <input
@@ -498,6 +627,52 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                   <>
                     <span>Sign In to Portal</span>
                     <LogIn className="w-4 h-4 text-fuchsia-300" />
+                  </>
+                )}
+              </button>
+
+              {/* OR DIVIDER */}
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-purple-900/60" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-[#120726] px-3 text-purple-400/60 font-semibold tracking-wider">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+
+              {/* GOOGLE SIGN IN BUTTON */}
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                disabled={googleLoading}
+                className="w-full py-3.5 px-6 rounded-xl bg-white hover:bg-zinc-100 text-zinc-900 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.25)] border border-white/20 disabled:opacity-50 transform hover:-translate-y-0.5 active:translate-y-0"
+              >
+                {googleLoading ? (
+                  <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-zinc-900" />
+                ) : (
+                  <>
+                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+                      <path
+                        fill="#4285F4"
+                        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z"
+                      />
+                      <path
+                        fill="#34A853"
+                        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"
+                      />
+                      <path
+                        fill="#FBBC05"
+                        d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.03 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+                      />
+                      <path
+                        fill="#EA4335"
+                        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+                      />
+                    </svg>
+                    <span>Sign in with Google</span>
                   </>
                 )}
               </button>
@@ -1008,6 +1183,97 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
           )}
         </motion.div>
       </div>
+
+      {/* FORGOT PASSWORD MODAL */}
+      <AnimatePresence>
+        {showForgotModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 10 }}
+              transition={{ type: "spring", duration: 0.3 }}
+              className="bg-[#120726] border border-purple-800/80 p-6 sm:p-8 rounded-3xl max-w-md w-full shadow-[0_0_60px_rgba(168,85,247,0.35)] relative overflow-hidden"
+            >
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setShowForgotModal(false)}
+                className="absolute top-4 right-4 p-2 text-purple-400 hover:text-white rounded-full hover:bg-purple-900/40 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="text-center mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-purple-900/60 border border-purple-700/60 flex items-center justify-center mx-auto mb-3 shadow-[0_0_20px_rgba(168,85,247,0.4)]">
+                  <Lock className="w-6 h-6 text-fuchsia-400" />
+                </div>
+                <h3 className="text-xl font-black uppercase text-white mb-1">Reset Password</h3>
+                <p className="text-xs text-purple-300/70 font-light">
+                  Enter your registered email address and we will send you a password reset link.
+                </p>
+              </div>
+
+              {/* Reset Alert Message inside modal */}
+              {resetMessage.type && (
+                <div
+                  className={`mb-4 p-3.5 rounded-xl flex items-start gap-2.5 text-xs font-medium ${
+                    resetMessage.type === "success"
+                      ? "bg-green-950/80 border border-green-500/50 text-green-300 shadow-[0_0_15px_rgba(34,197,94,0.2)]"
+                      : "bg-red-950/80 border border-red-500/50 text-red-300 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+                  }`}
+                >
+                  {resetMessage.type === "success" ? (
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 text-green-400 mt-0.5" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-400 mt-0.5" />
+                  )}
+                  <p className="leading-relaxed">{resetMessage.message}</p>
+                </div>
+              )}
+
+              <form onSubmit={handleForgotPassword} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-purple-300/90 mb-2">
+                    Registered Email Address *
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-fuchsia-400" />
+                    <input
+                      type="email"
+                      required
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      className="w-full bg-[#080312] border border-purple-900/60 rounded-xl pl-10 pr-4 py-3.5 text-white text-sm focus:outline-none focus:border-purple-500/90 focus:ring-2 focus:ring-purple-500/30 transition-all placeholder:text-purple-400/40"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={resetLoading}
+                  className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(168,85,247,0.5)] border border-fuchsia-400/40 disabled:opacity-50 flex items-center justify-center gap-2 mt-2"
+                >
+                  {resetLoading ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white" />
+                  ) : (
+                    <span>Send Password Reset Link</span>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowForgotModal(false)}
+                  className="w-full py-2 text-xs text-purple-300/80 hover:text-white transition-colors text-center font-medium"
+                >
+                  Cancel & Back to Sign In
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
