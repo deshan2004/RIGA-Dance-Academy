@@ -82,7 +82,7 @@ const Footer = () => {
             <h4 className="text-white font-extrabold text-sm uppercase tracking-widest mb-6 text-purple-300">Divisions & Links</h4>
             <ul className="space-y-3 font-medium text-xs tracking-wider uppercase">
               <li>
-                <Link href="/classes" className="text-purple-200/70 hover:text-fuchsia-300 transition-colors">Academy</Link>
+                <Link href="/login" className="text-purple-200/70 hover:text-fuchsia-300 transition-colors">Academy</Link>
               </li>
               <li>
                 <Link href="/crew" className="text-purple-200/70 hover:text-fuchsia-300 transition-colors">Crew</Link>

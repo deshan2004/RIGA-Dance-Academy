@@ -7,7 +7,7 @@ import Image from "next/image";
 import { ArrowRight, Sparkles, Calendar } from "lucide-react";
 
 const navItems = [
-  { label: "ACADEMY", href: "/classes" },
+  { label: "ACADEMY", href: "/login" },
   { label: "CREW", href: "/crew" },
   { label: "RENTALS", href: "/rentals" },
   { label: "PRODUCTIONS", href: "/productions" },

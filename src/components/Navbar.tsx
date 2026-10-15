@@ -22,8 +22,8 @@ import {
 const navItems = [
   { 
     label: "ACADEMY", 
-    href: "/classes", 
-    desc: "Dance Classes & Programs",
+    href: "/login", 
+    desc: "Student Portal & Enrollment",
     icon: Sparkles
   },
   { 
@@ -171,11 +171,11 @@ const Navbar = () => {
             {/* DESKTOP RIGHT CTA */}
             <div className="hidden md:flex items-center gap-3 pointer-events-auto">
               <Link
-                href="/events"
+                href="/login"
                 className="group relative overflow-hidden inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.16em] text-white bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 hover:from-purple-600 hover:to-fuchsia-500 shadow-[0_0_20px_rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] border border-purple-400/40 hover:scale-[1.03] active:scale-[0.98] transition-all"
               >
-                <Calendar className="w-3.5 h-3.5 text-white" />
-                <span>Book Troupe</span>
+                <Sparkles className="w-3.5 h-3.5 text-fuchsia-300" />
+                <span>Join Classes</span>
                 <ArrowRight className="w-3 h-3 text-white group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
@@ -327,22 +327,22 @@ const Navbar = () => {
               {/* Drawer Bottom Action Buttons & WhatsApp */}
               <div className="relative z-10 px-6 pb-8 pt-4 border-t border-purple-900/40 flex flex-col gap-3">
                 <Link
-                  href="/events"
+                  href="/login"
                   onClick={() => setIsOpen(false)}
                   className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 text-white font-extrabold text-xs uppercase tracking-[0.2em] shadow-[0_0_25px_rgba(168,85,247,0.5)] border border-purple-400/40 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
-                  <Calendar className="w-4 h-4 text-white" />
-                  <span>Book Dance Troupe</span>
+                  <Sparkles className="w-4 h-4 text-fuchsia-300" />
+                  <span>Join Academy Classes</span>
                   <ArrowRight className="w-4 h-4 ml-auto text-white" />
                 </Link>
 
                 <Link
-                  href="/login"
+                  href="/events"
                   onClick={() => setIsOpen(false)}
                   className="w-full py-3.5 px-5 rounded-2xl bg-purple-950/80 border border-purple-600/40 text-purple-100 font-extrabold text-xs uppercase tracking-[0.2em] shadow-[0_0_15px_rgba(168,85,247,0.2)] flex items-center justify-center gap-2 hover:border-purple-300 hover:text-white transition-all"
                 >
-                  <Sparkles className="w-4 h-4 text-fuchsia-400" />
-                  <span>Join Academy Classes</span>
+                  <Calendar className="w-4 h-4 text-white" />
+                  <span>Book Dance Troupe</span>
                   <ChevronRight className="w-4 h-4 ml-auto text-purple-300/60" />
                 </Link>
 
