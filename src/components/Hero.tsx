@@ -16,7 +16,7 @@ const navItems = [
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-[92vh] flex flex-col justify-center items-center overflow-hidden bg-[#04000b] text-white pt-20 pb-24 sm:pt-28 sm:pb-32">
+    <section id="home" className="relative min-h-[92vh] flex flex-col justify-center items-center overflow-hidden bg-[#04000b] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
       
       {/* Background Ambient Lights & Swirling Purple Smoke */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -63,7 +63,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           aria-label="Category Navigation"
-          className="relative inline-flex flex-wrap items-center justify-center gap-y-3 mb-14 sm:mb-20 text-purple-200"
+          className="relative hidden md:inline-flex flex-wrap items-center justify-center gap-y-3 mb-14 sm:mb-20 text-purple-200"
         >
           {navItems.map((item, index) => (
             <React.Fragment key={item.label}>

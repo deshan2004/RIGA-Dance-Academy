@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Bus, Video, PartyPopper, Flame, Zap, Crown, Users, Radio } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import Navbar from "@/components/Navbar";
 
 interface EventItem {
   _id: string;
@@ -400,7 +399,6 @@ export default function EventsPage() {
 
   return (
     <main className="min-h-screen bg-[#07020e] text-white">
-      <Navbar />
       
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
