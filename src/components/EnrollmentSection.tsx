@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   CheckCircle, AlertCircle, UserPlus, LogIn, Send, Upload, 
   CreditCard, Building, Eye, EyeOff, Lock, Mail, Copy, Check, 
-  ChevronRight, ChevronLeft, Sparkles, User, MapPin, X, FileText
+  ChevronRight, ChevronLeft, Sparkles, User, MapPin, X, FileText,
+  ShieldCheck, RotateCw
 } from "lucide-react";
 import { 
   signInWithEmailAndPassword, 
@@ -49,6 +50,28 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
     type: null,
     message: "",
   });
+
+  // Two-Factor Authentication (2FA) State
+  const [showTwoFactorModal, setShowTwoFactorModal] = useState(false);
+  const [twoFactorEmail, setTwoFactorEmail] = useState("");
+  const [twoFactorName, setTwoFactorName] = useState("");
+  const [twoFactorTargetUrl, setTwoFactorTargetUrl] = useState("/dashboard");
+  const [twoFactorOtp, setTwoFactorOtp] = useState<string[]>(["", "", "", "", "", ""]);
+  const [twoFactorLoading, setTwoFactorLoading] = useState(false);
+  const [twoFactorSending, setTwoFactorSending] = useState(false);
+  const [twoFactorMessage, setTwoFactorMessage] = useState<{ type: "success" | "error" | null; message: string }>({
+    type: null,
+    message: "",
+  });
+  const [resendCountdown, setResendCountdown] = useState(0);
+  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => {
+    if (resendCountdown > 0) {
+      const timer = setTimeout(() => setResendCountdown(resendCountdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCountdown]);
 
   // Sign Up State
   const [formData, setFormData] = useState({
@@ -108,7 +131,124 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
     setPaymentSlipName("");
   };
 
-  // Verify user role & approval, then redirect appropriately
+  // 2FA OTP Functions
+  const triggerSendOtp = async (email: string, name: string) => {
+    setTwoFactorSending(true);
+    setTwoFactorMessage({ type: null, message: "" });
+    try {
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, name }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setTwoFactorMessage({
+          type: "success",
+          message: `Verification code sent to ${email}`,
+        });
+        setResendCountdown(30);
+      } else {
+        setTwoFactorMessage({
+          type: "error",
+          message: data.message || "Failed to send verification code.",
+        });
+      }
+    } catch {
+      setTwoFactorMessage({
+        type: "error",
+        message: "Error sending verification code. Please check your connection.",
+      });
+    } finally {
+      setTwoFactorSending(false);
+    }
+  };
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (value.length > 1) {
+      const digits = value.replace(/\D/g, "").slice(0, 6).split("");
+      if (digits.length > 0) {
+        const next = [...twoFactorOtp];
+        digits.forEach((d, i) => {
+          if (i < 6) next[i] = d;
+        });
+        setTwoFactorOtp(next);
+        const focusIdx = Math.min(digits.length, 5);
+        otpInputRefs.current[focusIdx]?.focus();
+      }
+      return;
+    }
+
+    const digit = value.replace(/\D/g, "");
+    const next = [...twoFactorOtp];
+    next[index] = digit;
+    setTwoFactorOtp(next);
+
+    if (digit && index < 5) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !twoFactorOtp[index] && index > 0) {
+      otpInputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleVerifyOtp = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const fullCode = twoFactorOtp.join("").trim();
+    if (fullCode.length !== 6) {
+      setTwoFactorMessage({
+        type: "error",
+        message: "Please enter all 6 digits of the verification code.",
+      });
+      return;
+    }
+
+    setTwoFactorLoading(true);
+    setTwoFactorMessage({ type: null, message: "" });
+
+    try {
+      const res = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: twoFactorEmail, otp: fullCode }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setTwoFactorMessage({
+          type: "success",
+          message: "Email verified successfully! Redirecting...",
+        });
+        setTimeout(() => {
+          setShowTwoFactorModal(false);
+          router.push(twoFactorTargetUrl);
+        }, 700);
+      } else {
+        setTwoFactorMessage({
+          type: "error",
+          message: data.message || "Invalid or expired verification code.",
+        });
+      }
+    } catch {
+      setTwoFactorMessage({
+        type: "error",
+        message: "Verification failed. Please try again.",
+      });
+    } finally {
+      setTwoFactorLoading(false);
+    }
+  };
+
+  const handleCancelTwoFactor = async () => {
+    setShowTwoFactorModal(false);
+    setTwoFactorOtp(["", "", "", "", "", ""]);
+    await auth.signOut();
+  };
+
+  // Verify user role & approval, then redirect appropriately through 2FA
   const verifyAndRedirectUser = async (user: FirebaseUser, emailForEnrollmentCheck: string) => {
     let userData: Record<string, unknown> | null = null;
 
@@ -172,47 +312,52 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
     const roleVal = typeof userData?.role === "string" ? userData.role : "";
     const userRole = roleVal.toLowerCase() || "user";
 
-    // ADMIN BYPASSES ALL APPROVAL CHECKS!
-    if (userRole === "admin") {
-      router.push("/admin");
-      return;
-    }
+    // 2. Check approval status for students/members (Admin bypasses approval check)
+    if (userRole !== "admin") {
+      const statusVal = typeof userData?.status === "string" ? userData.status : "";
+      const uStatus = statusVal.toLowerCase();
+      const isDocApproved = uStatus === "approved" || uStatus === "approval";
 
-    // 2. Check approval status for students/members
-    const statusVal = typeof userData?.status === "string" ? userData.status : "";
-    const uStatus = statusVal.toLowerCase();
-    const isDocApproved = uStatus === "approved" || uStatus === "approval";
-
-    // Also check enrollment status via API
-    let isEnrollmentApproved = false;
-    const targetEmail = emailForEnrollmentCheck || user.email || "";
-    if (targetEmail) {
-      try {
-        const res = await fetch(`/api/enroll/user?email=${encodeURIComponent(targetEmail)}`);
-        const data = await res.json();
-        if (data.success && Array.isArray(data.data)) {
-          isEnrollmentApproved = data.data.some((item: { status?: string }) => {
-            const s = item.status?.toLowerCase();
-            return s === "approved" || s === "approval";
-          });
+      // Also check enrollment status via API
+      let isEnrollmentApproved = false;
+      const targetEmail = emailForEnrollmentCheck || user.email || "";
+      if (targetEmail) {
+        try {
+          const res = await fetch(`/api/enroll/user?email=${encodeURIComponent(targetEmail)}`);
+          const data = await res.json();
+          if (data.success && Array.isArray(data.data)) {
+            isEnrollmentApproved = data.data.some((item: { status?: string }) => {
+              const s = item.status?.toLowerCase();
+              return s === "approved" || s === "approval";
+            });
+          }
+        } catch (err) {
+          console.error("Error checking user approval:", err);
         }
-      } catch (err) {
-        console.error("Error checking user approval:", err);
+      }
+
+      if (!isDocApproved && !isEnrollmentApproved) {
+        // Block sign in for unapproved members
+        await auth.signOut();
+        setStatus({
+          type: "error",
+          message: "🚫 Account Pending Approval: Admin eken approve krnakal log wenn baha. Your registration & bank slip are pending Admin verification. Please wait for approval.",
+        });
+        return;
       }
     }
 
-    if (!isDocApproved && !isEnrollmentApproved) {
-      // Block sign in for unapproved members
-      await auth.signOut();
-      setStatus({
-        type: "error",
-        message: "🚫 Account Pending Approval: Admin eken approve krnakal log wenn baha. Your registration & bank slip are pending Admin verification. Please wait for approval.",
-      });
-      return;
-    }
+    // Account is approved (or admin)! Launch 2FA OTP verification via official email
+    const targetUrl = userRole === "admin" ? "/admin" : "/dashboard";
+    const userEmail = emailForEnrollmentCheck || user.email || "";
+    const userName = (userData?.firstName as string) || user.displayName?.split(" ")[0] || "Member";
 
-    // Account is approved!
-    router.push("/dashboard");
+    setTwoFactorEmail(userEmail);
+    setTwoFactorName(userName);
+    setTwoFactorTargetUrl(targetUrl);
+    setTwoFactorOtp(["", "", "", "", "", ""]);
+    setShowTwoFactorModal(true);
+    await triggerSendOtp(userEmail, userName);
   };
 
   // Sign In with Email & Password
@@ -1268,6 +1413,134 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                   className="w-full py-2 text-xs text-purple-300/80 hover:text-white transition-colors text-center font-medium"
                 >
                   Cancel & Back to Sign In
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* TWO-FACTOR AUTHENTICATION (2FA) OTP MODAL */}
+      <AnimatePresence>
+        {showTwoFactorModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 15 }}
+              transition={{ type: "spring", duration: 0.35 }}
+              className="bg-[#0e041d] border border-purple-500/60 p-6 sm:p-8 rounded-3xl max-w-md w-full shadow-[0_0_80px_rgba(168,85,247,0.4)] relative overflow-hidden"
+            >
+              {/* Subtle ambient lighting */}
+              <div className="absolute -top-20 -right-20 w-44 h-44 bg-purple-600/25 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-20 -left-20 w-44 h-44 bg-fuchsia-600/20 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={handleCancelTwoFactor}
+                className="absolute top-4 right-4 p-2 text-purple-400 hover:text-white rounded-full hover:bg-purple-900/40 transition-colors"
+                title="Cancel"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="text-center mb-6 relative z-10">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-800/80 to-fuchsia-900/80 border border-purple-400/60 flex items-center justify-center mx-auto mb-3.5 shadow-[0_0_30px_rgba(168,85,247,0.6)]">
+                  <ShieldCheck className="w-7 h-7 text-fuchsia-300" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black uppercase text-white tracking-tight mb-1">
+                  Security Verification
+                </h3>
+                <p className="text-xs text-purple-200/80 font-light leading-relaxed">
+                  We sent a 6-digit verification code to
+                </p>
+                <div className="inline-block mt-1 px-3 py-1 rounded-full bg-purple-950/90 border border-purple-600/40 text-purple-200 font-bold text-xs tracking-wide">
+                  {twoFactorEmail}
+                </div>
+                <p className="text-[11px] text-purple-400/70 mt-1.5">
+                  Sent from <span className="text-purple-300 font-semibold">inforigadance@gmail.com</span>
+                </p>
+              </div>
+
+              {/* 2FA Alert Status */}
+              {twoFactorMessage.type && (
+                <div
+                  className={`mb-4 p-3.5 rounded-xl flex items-start gap-2.5 text-xs font-medium relative z-10 ${
+                    twoFactorMessage.type === "success"
+                      ? "bg-green-950/80 border border-green-500/50 text-green-300 shadow-[0_0_15px_rgba(34,197,94,0.2)]"
+                      : "bg-red-950/80 border border-red-500/50 text-red-300 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+                  }`}
+                >
+                  {twoFactorMessage.type === "success" ? (
+                    <CheckCircle className="w-4 h-4 flex-shrink-0 text-green-400 mt-0.5" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-400 mt-0.5" />
+                  )}
+                  <p className="leading-relaxed">{twoFactorMessage.message}</p>
+                </div>
+              )}
+
+              <form onSubmit={handleVerifyOtp} className="relative z-10">
+                {/* 6 Digit OTP Inputs */}
+                <div className="grid grid-cols-6 gap-2 sm:gap-2.5 my-6">
+                  {twoFactorOtp.map((digit, idx) => (
+                    <input
+                      key={idx}
+                      ref={(el) => {
+                        otpInputRefs.current[idx] = el;
+                      }}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={idx === 0 ? 6 : 1}
+                      value={digit}
+                      onChange={(e) => handleOtpChange(idx, e.target.value)}
+                      onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                      className="w-full h-12 sm:h-14 text-center text-xl sm:text-2xl font-black text-white bg-[#06010e] border border-purple-700/60 rounded-xl focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all font-mono"
+                      autoFocus={idx === 0}
+                    />
+                  ))}
+                </div>
+
+                {/* Verify Button */}
+                <button
+                  type="submit"
+                  disabled={twoFactorLoading || twoFactorOtp.join("").length !== 6}
+                  className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_30px_rgba(168,85,247,0.5)] border border-fuchsia-400/40 disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  {twoFactorLoading ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white" />
+                  ) : (
+                    <span>Verify & Continue</span>
+                  )}
+                </button>
+
+                {/* Resend Code Action */}
+                <div className="mt-4 flex items-center justify-between text-xs text-purple-300/80">
+                  <span className="font-light">Didn&apos;t get the code?</span>
+                  {resendCountdown > 0 ? (
+                    <span className="text-purple-400 font-semibold">Resend in {resendCountdown}s</span>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={twoFactorSending}
+                      onClick={() => triggerSendOtp(twoFactorEmail, twoFactorName)}
+                      className="text-fuchsia-300 hover:text-white font-bold flex items-center gap-1 transition-colors disabled:opacity-50"
+                    >
+                      <RotateCw className={`w-3.5 h-3.5 ${twoFactorSending ? "animate-spin" : ""}`} />
+                      <span>Resend Code</span>
+                    </button>
+                  )}
+                </div>
+
+                {/* Cancel Button */}
+                <button
+                  type="button"
+                  onClick={handleCancelTwoFactor}
+                  className="w-full mt-3 py-2 text-xs text-purple-400/70 hover:text-white transition-colors text-center font-medium"
+                >
+                  Cancel & Return to Sign In
                 </button>
               </form>
             </motion.div>
