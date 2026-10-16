@@ -270,10 +270,6 @@ const Navbar = () => {
 
               {/* Drawer Navigation Links */}
               <div className="relative z-10 px-6 py-6 flex-1 flex flex-col justify-center gap-3">
-                <span className="text-[11px] font-black uppercase tracking-[0.25em] text-purple-400/70 px-2 mb-1">
-                  Menu Navigation
-                </span>
-
                 {navItems.map((item, index) => {
                   const Icon = item.icon;
                   const isActive = pathname === item.href;
