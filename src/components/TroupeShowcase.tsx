@@ -78,7 +78,7 @@ export default function TroupeShowcase() {
   }, []);
 
   return (
-    <section className="pt-8 pb-20 sm:py-24 bg-[#07020e] relative overflow-hidden border-t border-purple-900/30">
+    <section className="pt-16 pb-20 sm:py-24 bg-[#07020e] relative overflow-hidden border-t border-purple-900/30">
       {/* Background Lighting & Ambient Smoke */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-purple-900/20 rounded-full blur-[180px] pointer-events-none" />
       <div className="absolute -top-32 -left-32 w-80 h-80 bg-fuchsia-900/15 rounded-full blur-[140px] pointer-events-none" />
