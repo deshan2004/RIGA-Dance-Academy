@@ -171,7 +171,7 @@ export default function TroupeShowcase() {
             initial={{ opacity: 0, scale: 0.96, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.45, ease: "easeOut" }}
-            className="lg:col-span-7 rounded-3xl bg-gradient-to-b from-[#14082b] via-[#100624] to-[#0d041c] border border-purple-500/40 p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden shadow-[0_0_60px_rgba(168,85,247,0.35)] backdrop-blur-xl"
+            className="lg:col-span-7 rounded-3xl bg-gradient-to-b from-[#14082b] via-[#100624] to-[#0d041c] border border-purple-500/40 p-5 sm:p-10 flex flex-col justify-between relative overflow-hidden shadow-[0_0_60px_rgba(168,85,247,0.35)] backdrop-blur-xl"
           >
             {/* Background Light Beam Accent */}
             <div className={`absolute -top-24 -right-24 w-80 h-80 rounded-full bg-gradient-to-br ${selectedStyle.color} opacity-25 blur-[100px] pointer-events-none`} />
@@ -215,17 +215,17 @@ export default function TroupeShowcase() {
               </div>
             </div>
 
-            <div className="relative z-10 pt-6 border-t border-purple-900/60 flex flex-wrap items-center justify-between gap-4">
+            <div className="relative z-10 pt-6 border-t border-purple-900/60 flex flex-col sm:flex-row items-center sm:justify-between gap-4 w-full">
               <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 text-white font-extrabold text-xs uppercase tracking-widest hover:shadow-[0_0_35px_rgba(168,85,247,0.85)] hover:scale-[1.02] transition-all border border-purple-300/40"
+                href="/login"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 text-white font-extrabold text-xs uppercase tracking-widest hover:shadow-[0_0_35px_rgba(168,85,247,0.85)] hover:scale-[1.02] active:scale-[0.98] transition-all border border-purple-300/40 text-center"
               >
                 Inquire For Booking
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/crew"
-                className="text-xs uppercase tracking-widest font-extrabold text-purple-300 hover:text-white transition-colors flex items-center gap-1.5"
+                className="text-xs uppercase tracking-widest font-extrabold text-purple-300 hover:text-white transition-colors flex items-center justify-center gap-1.5 py-1 text-center"
               >
                 Meet Troupe Dancers &rarr;
               </Link>
