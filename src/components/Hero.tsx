@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Sparkles, Calendar } from "lucide-react";
+import { ArrowRight, GraduationCap, Calendar } from "lucide-react";
 
 const navItems = [
   { label: "ACADEMY", href: "/login" },
@@ -115,7 +115,7 @@ const Hero = () => {
             className="group relative inline-flex items-center justify-center px-5 py-3.5 sm:px-9 sm:py-4.5 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.16em] sm:tracking-[0.2em] text-purple-100 transition-all duration-300 bg-purple-950/70 hover:bg-purple-900/60 border border-purple-500/50 hover:border-purple-300/80 backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.25)] hover:shadow-[0_0_35px_rgba(192,132,252,0.5)] hover:text-white hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
           >
             <span className="p-1 sm:p-1.5 rounded-full bg-purple-500/25 border border-purple-400/40 mr-2.5 sm:mr-3 group-hover:scale-110 group-hover:bg-purple-500/40 group-hover:rotate-12 transition-all shadow-[0_0_10px_rgba(168,85,247,0.4)]">
-              <Sparkles className="w-3.5 h-3.5 text-fuchsia-300" />
+              <GraduationCap className="w-3.5 h-3.5 text-fuchsia-300" />
             </span>
             <span>Join Academy Classes</span>
           </Link>
