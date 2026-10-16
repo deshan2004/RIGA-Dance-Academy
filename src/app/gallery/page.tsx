@@ -94,7 +94,7 @@ export default function GalleryPage() {
     : photos.filter(p => p.category?.toLowerCase() === activeCategory.toLowerCase());
 
   return (
-    <div className="min-h-screen bg-[#090410] text-white pt-8 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-[#090410] text-white pt-24 sm:pt-28 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Lighting */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-900/20 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-10 w-[400px] h-[400px] bg-fuchsia-900/15 rounded-full blur-[150px] pointer-events-none" />

@@ -90,7 +90,7 @@ export default function AdminSetupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#090410] text-white flex flex-col justify-between p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-[#090410] text-white flex flex-col justify-between pt-24 sm:pt-28 pb-8 px-4 sm:px-6 lg:px-8">
       {/* Top Header */}
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         <Link

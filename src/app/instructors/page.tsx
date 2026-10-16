@@ -63,7 +63,7 @@ export default function InstructorsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#090410] pt-8 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#090410] pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Back Button */}
         <div className="mb-8">
