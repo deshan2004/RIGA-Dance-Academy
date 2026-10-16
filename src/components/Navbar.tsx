@@ -8,14 +8,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Menu, 
   X, 
-  Calendar, 
   Sparkles, 
   Users, 
   ShoppingBag, 
   Clapperboard, 
   Music, 
   ArrowRight,
-  MessageCircle,
   ChevronRight
 } from "lucide-react";
 
@@ -324,44 +322,11 @@ const Navbar = () => {
                 })}
               </div>
 
-              {/* Drawer Bottom Action Buttons & WhatsApp */}
-              <div className="relative z-10 px-6 pb-8 pt-4 border-t border-purple-900/40 flex flex-col gap-3">
-                <Link
-                  href="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 text-white font-extrabold text-xs uppercase tracking-[0.2em] shadow-[0_0_25px_rgba(168,85,247,0.5)] border border-purple-400/40 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all"
-                >
-                  <Sparkles className="w-4 h-4 text-fuchsia-300" />
-                  <span>Join Academy Classes</span>
-                  <ArrowRight className="w-4 h-4 ml-auto text-white" />
-                </Link>
-
-                <Link
-                  href="/events"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full py-3.5 px-5 rounded-2xl bg-purple-950/80 border border-purple-600/40 text-purple-100 font-extrabold text-xs uppercase tracking-[0.2em] shadow-[0_0_15px_rgba(168,85,247,0.2)] flex items-center justify-center gap-2 hover:border-purple-300 hover:text-white transition-all"
-                >
-                  <Calendar className="w-4 h-4 text-white" />
-                  <span>Book Dance Troupe</span>
-                  <ChevronRight className="w-4 h-4 ml-auto text-purple-300/60" />
-                </Link>
-
-                <a
-                  href="https://wa.me/94777123456?text=Hello%20RIGA%20Dance%20Academy!%20I%20would%20like%20to%20get%20more%20information."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2.5 px-4 rounded-xl bg-[#25D366]/10 border border-[#25D366]/30 hover:border-[#25D366]/70 text-[#25D366] font-bold text-xs flex items-center justify-center gap-2 transition-all mt-1"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>WhatsApp Inquiry</span>
-                </a>
-
-                {/* Footer copyright note */}
-                <div className="text-center pt-2">
-                  <p className="text-[10px] text-purple-300/40 tracking-wider">
-                    © {new Date().getFullYear()} RIGA Dance Academy. All rights reserved.
-                  </p>
-                </div>
+              {/* Drawer Bottom Footer */}
+              <div className="relative z-10 px-6 pb-6 text-center">
+                <p className="text-[10px] text-purple-300/40 tracking-wider">
+                  © {new Date().getFullYear()} RIGA Dance Academy. All rights reserved.
+                </p>
               </div>
 
             </motion.div>
