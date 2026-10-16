@@ -104,7 +104,7 @@ const Navbar = () => {
             : "md:-translate-y-full md:opacity-0 pointer-events-none md:pointer-events-none"
         }`}
       >
-        <div className="w-full bg-[#04000b]/85 backdrop-blur-xl border-b border-purple-500/20 shadow-[0_4px_30px_rgba(0,0,0,0.6)]">
+        <div className="w-full bg-gradient-to-r from-[#130427]/75 via-[#0a0117]/65 to-[#16042e]/75 backdrop-blur-2xl border-b border-purple-500/30 shadow-[inset_0_1px_0_0_rgba(192,132,252,0.18),0_10px_35px_-5px_rgba(147,51,234,0.25)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             
             {/* BRAND LOGO */}

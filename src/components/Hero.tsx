@@ -16,7 +16,7 @@ const navItems = [
 
 const Hero = () => {
   return (
-    <section id="home" className="relative sm:min-h-[92vh] flex flex-col justify-center items-center overflow-hidden bg-[#04000b] text-white pt-20 pb-8 sm:pt-28 sm:pb-32">
+    <section id="home" className="relative sm:min-h-[92vh] flex flex-col justify-center items-center overflow-hidden bg-[#04000b] text-white pt-28 pb-8 sm:pt-32 sm:pb-32">
       
       {/* Background Ambient Lights & Swirling Purple Smoke */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -87,35 +87,35 @@ const Hero = () => {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="flex flex-col sm:flex-row justify-center items-center gap-5 sm:gap-8 w-full max-w-2xl"
+          className="flex flex-col sm:flex-row justify-center items-center gap-3.5 sm:gap-8 w-full max-w-xs sm:max-w-2xl"
         >
           {/* PRIMARY CTA: BOOK DANCE TROUPE */}
           <Link
             href="/events"
-            className="group relative overflow-hidden inline-flex items-center justify-between px-7 py-4 sm:px-9 sm:py-4.5 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-purple-700 via-[#9333ea] to-fuchsia-700 hover:from-purple-600 hover:via-purple-500 hover:to-fuchsia-600 shadow-[0_0_30px_rgba(168,85,247,0.5)] hover:shadow-[0_0_45px_rgba(168,85,247,0.8)] border border-purple-400/40 hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative overflow-hidden inline-flex items-center justify-between px-5 py-3 sm:px-9 sm:py-4.5 rounded-full text-[11px] sm:text-sm font-extrabold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-white transition-all duration-300 bg-gradient-to-r from-purple-700 via-[#9333ea] to-fuchsia-700 hover:from-purple-600 hover:via-purple-500 hover:to-fuchsia-600 shadow-[0_0_25px_rgba(168,85,247,0.45)] hover:shadow-[0_0_45px_rgba(168,85,247,0.8)] border border-purple-400/40 hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
           >
             {/* Shimmer Light Sweep */}
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
 
             <div className="relative z-10 flex items-center">
-              <span className="p-1.5 rounded-full bg-white/15 border border-white/25 mr-3 group-hover:scale-110 group-hover:bg-white/25 transition-all shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                <Calendar className="w-3.5 h-3.5 text-white" />
+              <span className="p-1 sm:p-1.5 rounded-full bg-white/15 border border-white/25 mr-2.5 sm:mr-3 group-hover:scale-110 group-hover:bg-white/25 transition-all shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                <Calendar className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-white" />
               </span>
               <span className="drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Book Dance Troupe</span>
             </div>
 
-            <span className="relative z-10 p-1.5 rounded-full bg-white/15 border border-white/25 ml-3.5 group-hover:translate-x-1 group-hover:bg-white/25 transition-all shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-              <ArrowRight className="w-3.5 h-3.5 text-white" />
+            <span className="relative z-10 p-1 sm:p-1.5 rounded-full bg-white/15 border border-white/25 ml-3 sm:ml-3.5 group-hover:translate-x-1 group-hover:bg-white/25 transition-all shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+              <ArrowRight className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-white" />
             </span>
           </Link>
 
           {/* SECONDARY CTA: JOIN ACADEMY CLASSES */}
           <Link
             href="/login"
-            className="group relative inline-flex items-center justify-center px-7 py-4 sm:px-9 sm:py-4.5 rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] text-purple-100 transition-all duration-300 bg-purple-950/70 hover:bg-purple-900/60 border border-purple-500/50 hover:border-purple-300/80 backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.25)] hover:shadow-[0_0_35px_rgba(192,132,252,0.5)] hover:text-white hover:scale-[1.02] active:scale-[0.98]"
+            className="group relative inline-flex items-center justify-center px-5 py-3 sm:px-9 sm:py-4.5 rounded-full text-[11px] sm:text-sm font-extrabold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-purple-100 transition-all duration-300 bg-purple-950/70 hover:bg-purple-900/60 border border-purple-500/50 hover:border-purple-300/80 backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.25)] hover:shadow-[0_0_35px_rgba(192,132,252,0.5)] hover:text-white hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
           >
-            <span className="p-1.5 rounded-full bg-purple-500/25 border border-purple-400/40 mr-3 group-hover:scale-110 group-hover:bg-purple-500/40 group-hover:rotate-12 transition-all shadow-[0_0_10px_rgba(168,85,247,0.4)]">
-              <Sparkles className="w-3.5 h-3.5 text-fuchsia-300" />
+            <span className="p-1 sm:p-1.5 rounded-full bg-purple-500/25 border border-purple-400/40 mr-2.5 sm:mr-3 group-hover:scale-110 group-hover:bg-purple-500/40 group-hover:rotate-12 transition-all shadow-[0_0_10px_rgba(168,85,247,0.4)]">
+              <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-fuchsia-300" />
             </span>
             <span>Join Academy Classes</span>
           </Link>
