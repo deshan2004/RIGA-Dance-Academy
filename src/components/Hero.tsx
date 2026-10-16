@@ -16,7 +16,7 @@ const navItems = [
 
 const Hero = () => {
   return (
-    <section id="home" className="relative min-h-[92vh] flex flex-col justify-center items-center overflow-hidden bg-[#04000b] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
+    <section id="home" className="relative sm:min-h-[92vh] flex flex-col justify-center items-center overflow-hidden bg-[#04000b] text-white pt-20 pb-8 sm:pt-28 sm:pb-32">
       
       {/* Background Ambient Lights & Swirling Purple Smoke */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -39,7 +39,7 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.0, ease: "easeOut" }}
-          className="w-full relative mb-12 sm:mb-16 flex justify-center items-center select-none"
+          className="w-full relative mb-8 sm:mb-16 flex justify-center items-center select-none"
         >
           {/* Soft ambient purple radial glow seamlessly behind logo */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] sm:w-[950px] h-[320px] sm:h-[420px] bg-gradient-to-r from-purple-600/25 via-fuchsia-500/20 to-purple-700/25 rounded-full blur-[150px] pointer-events-none" />
@@ -124,7 +124,7 @@ const Hero = () => {
       </div>
 
       {/* --- FLOOR LIGHT BEAM REFLECTION --- */}
-      <div className="w-full max-w-5xl mt-16 sm:mt-24 px-4 relative flex flex-col items-center pointer-events-none">
+      <div className="w-full max-w-5xl mt-8 sm:mt-24 px-4 relative flex flex-col items-center pointer-events-none">
         <div className="w-3/4 sm:w-1/2 h-[2px] bg-gradient-to-r from-transparent via-fuchsia-400 to-transparent shadow-[0_0_30px_#c084fc,0_0_10px_#a855f7] rounded-full" />
         <div className="w-full h-16 bg-gradient-to-t from-purple-600/20 via-fuchsia-500/5 to-transparent blur-xl -mt-4" />
       </div>
