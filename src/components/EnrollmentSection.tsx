@@ -1016,7 +1016,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                             value={formData.phone}
                             onChange={handleChange}
                             className="w-2/3 bg-[#080312] border border-purple-900/60 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-purple-500/90 focus:ring-2 focus:ring-purple-500/30 transition-all placeholder:text-purple-400/40"
-                            placeholder="77 123 4567"
+                            placeholder="76 340 1285"
                           />
                         </div>
                       </div>

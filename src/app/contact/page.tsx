@@ -127,7 +127,11 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-white font-medium mb-1">Phone Number</h3>
-                    <p className="text-gray-400">+94 77 123 4567<br />+94 11 234 5678</p>
+                    <p className="text-gray-400">
+                      <a href="tel:+94763401285" className="hover:text-purple-300 transition-colors">
+                        +94 (76) 340 1285
+                      </a>
+                    </p>
                   </div>
                 </div>
 

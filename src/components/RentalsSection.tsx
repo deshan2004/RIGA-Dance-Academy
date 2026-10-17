@@ -914,7 +914,7 @@ function RentalDetailModal({
             {inquiryType === "whatsapp" ? (
               <div className="space-y-3">
                 <a
-                  href={`https://wa.me/94777123456?text=${whatsappMessage}`}
+                  href={`https://wa.me/94763401285?text=${whatsappMessage}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-3 shadow-[0_0_25px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-0.5"
@@ -1054,7 +1054,7 @@ export default function RentalsSection() {
       `📋 *Selected Items (${selectedLikedItems.length}):* ${itemNames}\n\n` +
       `Could you please let me know availability and multi-item package pricing?`
     );
-    window.open(`https://wa.me/94777123456?text=${text}`, "_blank");
+    window.open(`https://wa.me/94763401285?text=${text}`, "_blank");
   };
 
   return (
@@ -1250,7 +1250,7 @@ export default function RentalsSection() {
           </div>
 
           <a
-            href="https://wa.me/94777123456?text=Hi%20RIGA%20Dance%20Academy%2C%20I%20need%20a%20custom%20troupe%20costume%20rental%20quote!"
+            href="https://wa.me/94763401285?text=Hi%20RIGA%20Dance%20Academy%2C%20I%20need%20a%20custom%20troupe%20costume%20rental%20quote!"
             target="_blank"
             rel="noopener noreferrer"
             className="relative z-10 px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black text-xs uppercase tracking-widest shadow-[0_0_30px_rgba(168,85,247,0.6)] hover:shadow-[0_0_40px_rgba(232,121,249,0.8)] transition-all transform hover:-translate-y-1 whitespace-nowrap flex items-center gap-2"

@@ -854,7 +854,7 @@ export default function StudentDashboard() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="w-full bg-[#080312] border border-purple-900/60 rounded-xl pl-10 pr-4 py-3 text-white text-sm focus:outline-none focus:border-purple-500/90"
-                      placeholder="77 123 4567"
+                      placeholder="76 340 1285"
                     />
                   </div>
                 </div>

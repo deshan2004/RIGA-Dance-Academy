@@ -394,7 +394,7 @@ export default function EventsPage() {
   const getWhatsAppLink = (pkg: ChoreographyPackage) => {
     const categoryName = pkg.category === "weddings" ? "Weddings" : pkg.category === "events" ? "Events" : "Music Video";
     const message = `Hi RIGA Dance Academy! I would like to inquire about booking the ${categoryName} Package: ${pkg.dancersLabel} - ${pkg.actsLabel} (${pkg.priceFormatted}). Please share availability and details!`;
-    return `https://wa.me/94777123456?text=${encodeURIComponent(message)}`;
+    return `https://wa.me/94763401285?text=${encodeURIComponent(message)}`;
   };
 
   return (
@@ -699,7 +699,7 @@ export default function EventsPage() {
             <h3 className="text-xl font-bold text-white mb-2">No Scheduled Public Workshops Right Now</h3>
             <p className="text-sm text-purple-200/70 mb-6">Contact our Troupe team directly for private bookings and masterclasses!</p>
             <a
-              href="https://wa.me/94777123456?text=Hi%20RIGA%20Dance%20Academy%2C%20I%20want%20to%20inquire%20about%20upcoming%20workshops%20or%20troupe%20shows!"
+              href="https://wa.me/94763401285?text=Hi%20RIGA%20Dance%20Academy%2C%20I%20want%20to%20inquire%20about%20upcoming%20workshops%20or%20troupe%20shows!"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-purple-600/30 border border-purple-400/40 text-purple-200 hover:text-white hover:bg-purple-600 transition-all text-xs font-bold uppercase tracking-widest"
