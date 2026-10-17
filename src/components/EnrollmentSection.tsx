@@ -20,14 +20,57 @@ import { doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase
 import { auth, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { DanceStyleIcon } from "@/components/DanceStyleIcons";
 
 const DANCE_STYLES = [
-  { id: "Kandyan Traditional", name: "Kandyan Traditional", icon: "🥁", desc: "Heritage traditional drumming & dance" },
-  { id: "Pahatharata Low-Country", name: "Pahatharata Low-Country", icon: "🔥", desc: "Ritualistic low-country dance traditions" },
-  { id: "Sabaragamuwa Dance", name: "Sabaragamuwa Dance", icon: "✨", desc: "Central Sri Lankan ritual dance styles" },
-  { id: "Urban Hip-Hop", name: "Urban Hip-Hop", icon: "🎧", desc: "Street grooves, isolation & choreography" },
-  { id: "Contemporary Flow", name: "Contemporary Flow", icon: "🩰", desc: "Fluid lyrical & emotional stage dance" },
-  { id: "Latin & Ballroom", name: "Latin & Ballroom", icon: "💃", desc: "Salsa, Cha-Cha & partner routines" },
+  {
+    id: "Kandyan Traditional",
+    name: "Kandyan Traditional",
+    badge: "Heritage Drums",
+    badgeColor: "bg-gradient-to-r from-amber-500 to-purple-600 border-amber-400/40 text-amber-200",
+    desc: "Classical up-country Ves rituals, sacred Geta Beraya drumming & royal pageantry.",
+    tags: ["Geta Bera", "Ves Dance", "Heritage"],
+  },
+  {
+    id: "Pahatharata Low-Country",
+    name: "Pahatharata Low-Country",
+    badge: "Ritual Fire",
+    badgeColor: "bg-gradient-to-r from-orange-500 to-red-600 border-orange-400/40 text-orange-200",
+    desc: "Vibrant Southern ritualistic traditions, ceremonial flame torches & mask beats.",
+    tags: ["Yakun Natuma", "Pandam Fire", "Mask Beats"],
+  },
+  {
+    id: "Sabaragamuwa Dance",
+    name: "Sabaragamuwa Dance",
+    badge: "Mystic Rhythm",
+    badgeColor: "bg-gradient-to-r from-purple-500 to-fuchsia-600 border-purple-400/40 text-purple-200",
+    desc: "Sacred Davula rhythms & ritualistic movements dedicated to the deity of Sri Pada.",
+    tags: ["Davula Drum", "Saman Devala", "Ritual"],
+  },
+  {
+    id: "Urban Hip-Hop",
+    name: "Urban Hip-Hop",
+    badge: "Street Grooves",
+    badgeColor: "bg-gradient-to-r from-cyan-500 to-blue-600 border-cyan-400/40 text-cyan-200",
+    desc: "Hard-hitting popping, locking, breaking, isolation grooves & high-energy stage choreo.",
+    tags: ["Popping", "Freestyle", "Stage Choreo"],
+  },
+  {
+    id: "Contemporary Flow",
+    name: "Contemporary Flow",
+    badge: "Fluid Expression",
+    badgeColor: "bg-gradient-to-r from-fuchsia-500 to-pink-600 border-pink-400/40 text-pink-200",
+    desc: "Fluid lyrical movement, floorwork, emotional storytelling & stage presence.",
+    tags: ["Lyrical", "Stage Flow", "Flexibility"],
+  },
+  {
+    id: "Latin & Ballroom",
+    name: "Latin & Ballroom",
+    badge: "Salsa & Passion",
+    badgeColor: "bg-gradient-to-r from-rose-500 to-red-600 border-rose-400/40 text-rose-200",
+    desc: "Sizzling Latin rhythms, partner coordination, Salsa, Bachata & Ballroom routines.",
+    tags: ["Salsa", "Bachata", "Partner Moves"],
+  },
 ];
 
 export default function EnrollmentSection({ initialMode = "signup" }: { initialMode?: "signin" | "signup" }) {
@@ -1090,35 +1133,88 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                     className="space-y-6"
                   >
                     <div className="text-center mb-4">
-                      <h3 className="text-xl font-black uppercase text-white mb-1">Step 2: Choose Dance Program</h3>
-                      <p className="text-xs text-purple-300/70 font-light">Select your preferred style and studio branch</p>
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/80 border border-purple-500/40 text-purple-300 text-xs font-bold tracking-widest uppercase mb-2 shadow-[0_0_15px_rgba(168,85,247,0.25)]">
+                        <Sparkles className="w-3.5 h-3.5 text-fuchsia-400" />
+                        <span>Select Your Program</span>
+                      </div>
+                      <h3 className="text-xl font-black uppercase text-white mb-1 tracking-tight">Step 2: Choose Dance Program</h3>
+                      <p className="text-xs text-purple-300/70 font-light">Select your preferred style and studio branch timetable</p>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-purple-300/90 mb-3">
-                        Preferred Dance Style *
-                      </label>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                        {DANCE_STYLES.map((style) => (
-                          <div
-                            key={style.id}
-                            onClick={() => setFormData({ ...formData, preferred_style: style.id })}
-                            className={`p-4 rounded-2xl border cursor-pointer transition-all ${
-                              formData.preferred_style === style.id
-                                ? "bg-gradient-to-br from-purple-950 via-purple-900/60 to-fuchsia-950 border-fuchsia-500 shadow-[0_0_20px_rgba(232,121,249,0.35)]"
-                                : "bg-[#080312] border-purple-900/60 hover:border-purple-600/60"
-                            }`}
-                          >
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-2xl">{style.icon}</span>
-                              {formData.preferred_style === style.id && (
-                                <Check className="w-4 h-4 text-fuchsia-400" />
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="block text-xs font-bold uppercase tracking-wider text-purple-300/90">
+                          Preferred Dance Style *
+                        </label>
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-fuchsia-400/90">
+                          6 Official Disciplines
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+                        {DANCE_STYLES.map((style) => {
+                          const isSelected = formData.preferred_style === style.id;
+                          return (
+                            <div
+                              key={style.id}
+                              onClick={() => setFormData({ ...formData, preferred_style: style.id })}
+                              className={`relative p-4 rounded-2xl border cursor-pointer transition-all duration-300 group overflow-hidden flex flex-col justify-between ${
+                                isSelected
+                                  ? "bg-gradient-to-b from-[#240c4a] via-[#180632] to-[#0e021f] border-2 border-fuchsia-400 shadow-[0_0_30px_rgba(232,121,249,0.45)] scale-[1.02]"
+                                  : "bg-gradient-to-b from-[#130728]/90 via-[#0d041c]/90 to-[#07020e]/95 border-purple-900/60 hover:border-purple-500/60 hover:bg-[#180932]/90 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(168,85,247,0.25)] hover:-translate-y-0.5"
+                              }`}
+                            >
+                              {/* Glowing Active Indicator Strip */}
+                              {isSelected && (
+                                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-purple-400 via-fuchsia-400 to-purple-600 shadow-[0_0_12px_#e879f9]" />
                               )}
+
+                              {/* Card Top: Choreography-Style Badge & Selection Status */}
+                              <div className="flex items-center justify-between mb-3 pl-1">
+                                <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider border shadow-sm ${style.badgeColor}`}>
+                                  {style.badge}
+                                </span>
+                                {isSelected ? (
+                                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white text-[10px] font-black shadow-[0_0_12px_rgba(232,121,249,0.9)] animate-pulse">
+                                    <Check className="w-3 h-3 stroke-[3]" />
+                                    <span>SELECTED</span>
+                                  </div>
+                                ) : (
+                                  <div className="w-4 h-4 rounded-full border border-purple-700/60 group-hover:border-purple-400/80 transition-colors" />
+                                )}
+                              </div>
+
+                              {/* Card Middle: Dedicated Vector Icon & Details */}
+                              <div className="flex items-start gap-3 mb-3 pl-1">
+                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center p-1.5 bg-gradient-to-br from-purple-950 via-[#180632] to-[#0b0217] border ${
+                                  isSelected ? "border-fuchsia-400/80 shadow-[0_0_20px_rgba(232,121,249,0.5)]" : "border-purple-700/50 group-hover:border-purple-400/70"
+                                } group-hover:scale-105 transition-all shrink-0`}>
+                                  <DanceStyleIcon styleId={style.id} className="w-8 h-8" />
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="text-sm font-extrabold text-white group-hover:text-fuchsia-200 transition-colors leading-tight mb-1 truncate">
+                                    {style.name}
+                                  </h4>
+                                  <p className="text-[11px] text-purple-200/70 font-light leading-snug line-clamp-2">
+                                    {style.desc}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {/* Card Bottom: Choreography Feature Tags */}
+                              <div className="flex flex-wrap gap-1.5 pt-2.5 border-t border-purple-900/40 pl-1">
+                                {style.tags.map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-purple-950/70 border border-purple-800/40 text-purple-300"
+                                  >
+                                    #{tag}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
-                            <h4 className="text-sm font-bold text-white mb-0.5">{style.name}</h4>
-                            <p className="text-[11px] text-purple-300/60 font-light">{style.desc}</p>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -1126,25 +1222,28 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                       <label className="block text-xs font-bold uppercase tracking-wider text-purple-300/90 mb-2">
                         Preferred Branch & Timetable *
                       </label>
-                      <select
-                        name="preferred_branch"
-                        required
-                        value={formData.preferred_branch}
-                        onChange={handleChange}
-                        className="w-full bg-[#080312] border border-purple-900/60 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-purple-500/90"
-                      >
-                        <option value="Colombo Main Studio - Weekend Morning">Colombo Main Studio - Weekend Morning</option>
-                        <option value="Colombo Main Studio - Weekday Evening">Colombo Main Studio - Weekday Evening</option>
-                        <option value="Kandy Studio - Saturday Morning">Kandy Studio - Saturday Morning</option>
-                        <option value="Galle Studio - Sunday Afternoon">Galle Studio - Sunday Afternoon</option>
-                      </select>
+                      <div className="relative">
+                        <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-fuchsia-400 pointer-events-none" />
+                        <select
+                          name="preferred_branch"
+                          required
+                          value={formData.preferred_branch}
+                          onChange={handleChange}
+                          className="w-full bg-[#080312] border border-purple-900/60 rounded-xl pl-10 pr-8 py-3.5 text-white text-sm focus:outline-none focus:border-purple-500/90 shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all"
+                        >
+                          <option value="Colombo Main Studio - Weekend Morning">Colombo Main Studio - Weekend Morning</option>
+                          <option value="Colombo Main Studio - Weekday Evening">Colombo Main Studio - Weekday Evening</option>
+                          <option value="Kandy Studio - Saturday Morning">Kandy Studio - Saturday Morning</option>
+                          <option value="Galle Studio - Sunday Afternoon">Galle Studio - Sunday Afternoon</option>
+                        </select>
+                      </div>
                     </div>
 
                     <div className="flex gap-3 pt-2">
                       <button
                         type="button"
                         onClick={() => setSignupStep(1)}
-                        className="py-4 px-6 rounded-xl bg-purple-950/80 hover:bg-purple-900 border border-purple-800/60 text-purple-200 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+                        className="py-4 px-6 rounded-xl bg-purple-950/80 hover:bg-purple-900 border border-purple-800/60 text-purple-200 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 hover:border-purple-500/60"
                       >
                         <ChevronLeft className="w-4 h-4" />
                         <span>Back</span>
@@ -1153,7 +1252,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                       <button
                         type="button"
                         onClick={() => setSignupStep(3)}
-                        className="flex-1 py-4 px-8 rounded-xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2"
+                        className="flex-1 py-4 px-8 rounded-xl bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:shadow-[0_0_35px_rgba(232,121,249,0.7)] flex items-center justify-center gap-2 border border-fuchsia-400/30"
                       >
                         <span>Next: Bank Deposit & Slip</span>
                         <ChevronRight className="w-4 h-4 text-fuchsia-300" />
