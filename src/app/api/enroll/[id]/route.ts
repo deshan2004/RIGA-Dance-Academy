@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 import { doc, getDoc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { sendAccountApprovedEmail } from "@/lib/mailer";
 
 export async function PATCH(
   request: Request,
@@ -21,8 +22,8 @@ export async function PATCH(
     const docRef = doc(db, "enrollments", id);
     const snap = await getDoc(docRef);
     if (snap.exists()) {
-      await updateDoc(docRef, { status: newStatus });
       const data = snap.data();
+      await updateDoc(docRef, { status: newStatus });
       if (data.email) {
         // Also update matching user in users collection
         const usersRef = collection(db, "users");
@@ -30,6 +31,15 @@ export async function PATCH(
         const userSnap = await getDocs(q);
         for (const uDoc of userSnap.docs) {
           await updateDoc(doc(db, "users", uDoc.id), { status: newStatus });
+        }
+
+        // If newly approved, send congratulatory approval email
+        if (newStatus === "approved" && data.status !== "approved") {
+          try {
+            await sendAccountApprovedEmail(data.email, data.student_name || "Student");
+          } catch (mailErr) {
+            console.error("Failed to send approval email:", mailErr);
+          }
         }
       }
     }

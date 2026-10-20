@@ -382,10 +382,9 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
       if (!isDocApproved && !isEnrollmentApproved) {
         // Block sign in for unapproved members
         await auth.signOut();
-        setStatus({
-          type: "error",
-          message: "🚫 Account Pending Approval: Admin eken approve krnakal log wenn baha. Your registration & bank slip are pending Admin verification. Please wait for approval.",
-        });
+        const userEmail = emailForEnrollmentCheck || user.email || "";
+        const userName = (userData?.firstName as string) || user.displayName?.split(" ")[0] || "Student";
+        router.push(`/pending-approval?email=${encodeURIComponent(userEmail)}&name=${encodeURIComponent(userName)}`);
         return;
       }
     }
@@ -565,6 +564,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
           phone: `${countryCode} ${formData.phone}`,
           role: "user",
           status: "pending_approval",
+          emailVerified: false,
           createdAt: new Date(),
         });
       } catch (authErr: unknown) {
@@ -575,6 +575,9 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
           throw authErr;
         }
       }
+
+      const savedEmail = formData.email;
+      const savedName = formData.student_name;
 
       // 2. Submit enrollment record to Firestore
       const res = await fetch("/api/enroll", {
@@ -587,19 +590,30 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
           payment_slip: paymentSlip,
           payment_slip_name: paymentSlipName,
           status: "pending_approval",
+          emailVerified: false,
         }),
       });
 
       const data = await res.json();
 
-      // 3. Immediately Sign Out so the user cannot log in until Admin approves!
+      // 3. Trigger sending of email verification link to student's Gmail
+      try {
+        await fetch("/api/auth/send-verification-link", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: savedEmail,
+            name: savedName,
+          }),
+        });
+      } catch (mailErr) {
+        console.warn("Could not dispatch verification email:", mailErr);
+      }
+
+      // 4. Immediately Sign Out so the user cannot log in until Admin approves!
       await auth.signOut();
 
       if (res.ok && data.success) {
-        setStatus({
-          type: "success",
-          message: "Account created & Bank Slip submitted! Account status: 'Pending Admin Approval'. Admin dashboard eken approve krnakal account ekt log wenn baha.",
-        });
         setFormData({
           student_name: "",
           age: "",
@@ -618,6 +632,9 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
         setPaymentSlip("");
         setPaymentSlipName("");
         setSignupStep(1);
+
+        // Redirect directly to the dedicated Pending Approval & Email Verification Status screen!
+        router.push(`/pending-approval?email=${encodeURIComponent(savedEmail)}&name=${encodeURIComponent(savedName)}`);
       } else {
         setStatus({
           type: "error",

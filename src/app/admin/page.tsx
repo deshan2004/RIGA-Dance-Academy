@@ -58,6 +58,7 @@ interface UserItem {
   email?: string;
   role?: string;
   status?: string;
+  emailVerified?: boolean;
   phone?: string;
   createdAt?: FirestoreTimestamp | string | number | null;
 }
@@ -930,8 +931,19 @@ export default function AdminDashboard() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-gray-300 flex items-center gap-2 mb-1">
-                          <Mail className="w-4 h-4 text-gray-500" /> {user.email}
+                        <div className="text-sm text-gray-300 flex items-center gap-2 mb-1 flex-wrap">
+                          <span className="flex items-center gap-2">
+                            <Mail className="w-4 h-4 text-gray-500" /> {user.email}
+                          </span>
+                          {user.emailVerified ? (
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-500/40">
+                              Verified ✓
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-950/60 text-amber-400 border border-amber-500/40">
+                              Unverified
+                            </span>
+                          )}
                         </div>
                         {user.phone && (
                           <div className="text-sm text-gray-300 flex items-center gap-2">
