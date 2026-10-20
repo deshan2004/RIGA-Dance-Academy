@@ -288,7 +288,7 @@ function VerifyEmailContent() {
                           </span>
                         </div>
                         <p className="text-xs text-amber-200/80 leading-relaxed">
-                          Admin approval eka labenakal account ekt login wenna baha. අපගේ පරිපාලක මණ්ඩලය (Admin) ඔබගේ ලියාපදිංචිය හා බැංකු ගෙවීම් රිසිට්පත පරීක්ෂා කරමින් පවතී.
+                          Your registration and bank payment receipt are currently under review by our administration. You will be notified via email once your account has been approved and activated.
                         </p>
                       </div>
                     </div>

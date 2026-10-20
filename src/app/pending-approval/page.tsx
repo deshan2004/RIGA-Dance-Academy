@@ -191,7 +191,7 @@ function PendingApprovalContent() {
                   </div>
                   <div className="text-xs text-purple-200/90 leading-relaxed">
                     <strong className="text-amber-200 block mb-1">Admin Approval Processing:</strong>
-                    Admin approval eka labenakal account ekt log wenna baha. RIGA Dance Academy පරිපාලනය විසින් ඔබගේ admission details හා bank payment slip පරීක්ෂා කර අනුමත කළ වහාම ඔබට Gmail හරහා confirmation email එකක් ලැබෙනු ඇත.
+                    Your registration and bank payment receipt are currently being verified by the RIGA Dance Academy Administration. You will receive an automated confirmation email as soon as your account is approved and activated.
                   </div>
                 </div>
               </div>
