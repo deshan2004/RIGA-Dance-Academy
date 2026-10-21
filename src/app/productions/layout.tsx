@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Productions & Showcases | RIGA Dance Academy",
     description:
       "World-class dance productions combining traditional Sri Lankan heritage with modern visual storytelling.",
-    url: "https://rigadance.com/productions",
+    url: "/productions",
   },
 };
 

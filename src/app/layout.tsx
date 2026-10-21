@@ -9,8 +9,14 @@ import JsonLd from "@/components/JsonLd";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_APP_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "") ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "") ||
+  "https://riga-dance-academy-rust.vercel.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://rigadance.com"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "RIGA Dance Academy | Premier Dance Education in Sri Lanka",
     template: "%s | RIGA Dance Academy",
@@ -40,7 +46,7 @@ export const metadata: Metadata = {
     title: "RIGA Dance Academy | Premier Dance Education in Sri Lanka",
     description:
       "Transform your passion into movement. Join Sri Lanka's leading dance academy for Kandyan, Hip-Hop, Contemporary, and Classical styles.",
-    url: "https://rigadance.com",
+    url: "/",
     siteName: "RIGA Dance Academy",
     images: [
       {

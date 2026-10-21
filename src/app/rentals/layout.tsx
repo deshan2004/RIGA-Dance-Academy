@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Dance Studio Space Rental | RIGA Dance Academy",
     description:
       "Premium wooden flooring, sound systems, and full-length mirrors available for hire in Colombo 07.",
-    url: "https://rigadance.com/rentals",
+    url: "/rentals",
   },
 };
 

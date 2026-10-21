@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Dance Classes & Schedule | RIGA Dance Academy",
     description:
       "Join world-class dance classes in Colombo. From beginners to advanced performers in Kandyan, Hip-Hop, and Contemporary dance styles.",
-    url: "https://rigadance.com/classes",
+    url: "/classes",
   },
 };
 

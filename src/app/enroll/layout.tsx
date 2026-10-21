@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Enroll in Dance Classes | RIGA Dance Academy",
     description:
       "Begin your dance journey with RIGA Dance Academy. Fast and simple online class registration.",
-    url: "https://rigadance.com/enroll",
+    url: "/enroll",
   },
 };
 

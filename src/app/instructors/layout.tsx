@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Our Instructors | RIGA Dance Academy",
     description:
       "Learn from Sri Lanka's leading dance educators and celebrated international choreographers.",
-    url: "https://rigadance.com/instructors",
+    url: "/instructors",
   },
 };
 

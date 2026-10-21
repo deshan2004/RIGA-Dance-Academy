@@ -1,5 +1,9 @@
 export default function JsonLd() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://rigadance.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "") ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "") ||
+    "https://riga-dance-academy-rust.vercel.app";
 
   const structuredData = {
     "@context": "https://schema.org",

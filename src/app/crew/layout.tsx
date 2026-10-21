@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "RIGA Dance Crew | Elite Dance Troupe",
     description:
       "Witness high-octane choreography and cutting-edge performances by the official RIGA Dance Crew.",
-    url: "https://rigadance.com/crew",
+    url: "/crew",
   },
 };
 

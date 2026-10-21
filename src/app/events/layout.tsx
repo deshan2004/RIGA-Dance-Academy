@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Events & Choreography Services | RIGA Dance Academy",
     description:
       "Make your special occasion unforgettable with custom dance performances and award-winning choreography.",
-    url: "https://rigadance.com/events",
+    url: "/events",
   },
 };
 

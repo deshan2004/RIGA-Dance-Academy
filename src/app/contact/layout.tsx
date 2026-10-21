@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Contact RIGA Dance Academy | Colombo, Sri Lanka",
     description:
       "Get in touch with us at 123 Dance Studio Road, Colombo 07. Call +94 76 340 1285 or email inforigadance@gmail.com.",
-    url: "https://rigadance.com/contact",
+    url: "/contact",
   },
 };
 

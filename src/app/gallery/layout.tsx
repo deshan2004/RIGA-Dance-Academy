@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Media Gallery | RIGA Dance Academy",
     description:
       "Explore highlights, recitals, and behind-the-scenes moments from RIGA Dance Academy.",
-    url: "https://rigadance.com/gallery",
+    url: "/gallery",
   },
 };
 
