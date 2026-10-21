@@ -1,30 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Users2, Phone, PhoneCall, MessageSquare, Calendar, ArrowRight } from "lucide-react";
-import Image from "next/image";
+import { ArrowLeft, Users2, Phone, PhoneCall, MessageSquare, Calendar, ArrowRight, Sparkles, MapPin, Music } from "lucide-react";
 import Link from "next/link";
-
-const crewMembers = [
-  {
-    name: "Sri Lankan Fusion Troupe",
-    role: "Kandyan & Modern Fusion",
-    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&q=80",
-    tag: "Championship Winner"
-  },
-  {
-    name: "RIGA Mega Crew",
-    role: "Hip-Hop & Urban Street",
-    image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80",
-    tag: "Sri Lankan Showcase"
-  },
-  {
-    name: "Lyrical & Contemporary Team",
-    role: "Stage & Theatre Drama",
-    image: "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?auto=format&fit=crop&q=80",
-    tag: "Award Winning"
-  }
-];
 
 export default function CrewPage() {
   return (
@@ -42,7 +20,7 @@ export default function CrewPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="pt-6 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+      <section className="pt-6 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -62,13 +40,13 @@ export default function CrewPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-purple-200/70 max-w-3xl mx-auto text-base sm:text-lg font-light leading-relaxed mb-10"
+          className="text-purple-200/70 max-w-3xl mx-auto text-base sm:text-lg font-light leading-relaxed mb-12"
         >
           Sri Lanka&apos;s elite dance ensemble blending Kandyan traditional mastery with modern Hip-Hop, Latin, and Contemporary stage showmanship. Available for concerts, brand launches, and island-wide tours across Sri Lanka.
         </motion.p>
 
         {/* Crew Contact & Booking Options */}
-        <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-6 mb-16 text-left">
+        <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-6 mb-12 text-left">
           {/* WhatsApp & Phone Direct Contact */}
           <div className="p-6 sm:p-7 rounded-2xl bg-[#140924] border border-purple-900/50 hover:border-emerald-500/50 transition-all shadow-[0_0_20px_rgba(9,4,16,0.6)] flex flex-col justify-between group">
             <div>
@@ -137,45 +115,20 @@ export default function CrewPage() {
           </div>
         </div>
 
-        {/* Troupe Showcase */}
-        <div className="text-left mb-8">
-          <h2 className="text-2xl font-black uppercase text-white tracking-wider">Performance Troupes</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {crewMembers.map((team, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="rounded-2xl overflow-hidden bg-[#140924] border border-purple-900/40 group hover:border-purple-500/60 transition-all shadow-[0_0_20px_rgba(9,4,16,0.8)]"
-            >
-              <div className="relative h-64 overflow-hidden">
-                <Image src={team.image} alt={team.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
-                <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-purple-950/80 backdrop-blur-md border border-purple-700/60 text-fuchsia-300 text-[10px] font-black uppercase">
-                  {team.tag}
-                </div>
-              </div>
-              <div className="p-6 text-left">
-                <h3 className="text-xl font-bold text-white mb-1">{team.name}</h3>
-                <p className="text-xs text-purple-300/70 uppercase tracking-widest font-semibold">{team.role}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div className="p-8 rounded-2xl bg-gradient-to-r from-purple-900/40 via-fuchsia-900/30 to-purple-900/40 border border-purple-800/50 flex flex-col md:flex-row items-center justify-between gap-6 text-left">
-          <div>
-            <h3 className="text-2xl font-black text-white mb-2">Book RIGA Pro Crew For Your Next Event</h3>
-            <p className="text-xs sm:text-sm text-purple-200/70 font-light">Custom stage choreography, backup dancers, award show openers & TV commercials.</p>
+        {/* Quick Crew Booking Perks */}
+        <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div className="p-4 rounded-xl bg-purple-950/30 border border-purple-900/30 flex items-center justify-center gap-3 text-purple-300 text-xs font-medium">
+            <Sparkles className="w-4 h-4 text-fuchsia-400 flex-shrink-0" />
+            <span>Custom Show Choreography</span>
           </div>
-          <Link
-            href="/contact"
-            className="px-8 py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs uppercase tracking-widest shadow-[0_0_25px_rgba(168,85,247,0.5)] whitespace-nowrap"
-          >
-            Hire RIGA Crew
-          </Link>
+          <div className="p-4 rounded-xl bg-purple-950/30 border border-purple-900/30 flex items-center justify-center gap-3 text-purple-300 text-xs font-medium">
+            <MapPin className="w-4 h-4 text-fuchsia-400 flex-shrink-0" />
+            <span>Available Island-wide in Sri Lanka</span>
+          </div>
+          <div className="p-4 rounded-xl bg-purple-950/30 border border-purple-900/30 flex items-center justify-center gap-3 text-purple-300 text-xs font-medium">
+            <Music className="w-4 h-4 text-fuchsia-400 flex-shrink-0" />
+            <span>Concerts, Videos & Stage Shows</span>
+          </div>
         </div>
       </section>
     </div>
