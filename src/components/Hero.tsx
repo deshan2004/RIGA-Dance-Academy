@@ -48,7 +48,7 @@ const Hero = () => {
           <div className="relative w-full max-w-5xl sm:max-w-5xl lg:max-w-6xl flex justify-center items-center px-2">
             <Image 
               src="/images/riga-original-transparent.png" 
-              alt="RIGA Dance Academy - Premier Dance Classes and Performance Troupe in Sri Lanka" 
+              alt="RIGA Dance Academy" 
               width={1024}
               height={390}
               className="w-full h-auto object-contain block mx-auto opacity-100 pointer-events-none"
@@ -56,16 +56,6 @@ const Hero = () => {
             />
           </div>
         </motion.div>
-
-        {/* Semantic H1 for SEO with Sri Lanka dance keywords */}
-        <h1 className="sr-only">
-          RIGA Dance Academy - Sri Lanka&apos;s Premier Dance Classes, Troupe & Choreography
-        </h1>
-
-        {/* Tagline / Subtitle */}
-        <p className="hidden sm:block text-xs sm:text-sm tracking-[0.25em] uppercase text-purple-300/80 font-semibold mb-8 sm:mb-10 text-center drop-shadow-[0_2px_10px_rgba(168,85,247,0.3)]">
-          Sri Lanka&apos;s Next Generation of Professional Dancers &bull; Colombo
-        </p>
 
         {/* --- CATEGORY NAVIGATION LINKS (ACADEMY | CREW | RENTALS | PRODUCTIONS | CHOREOGRAPHY) --- */}
         <motion.nav
