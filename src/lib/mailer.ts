@@ -19,7 +19,7 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://rigadanceacademy.com
 export async function sendOtpEmail(toEmail: string, otpCode: string, recipientName?: string) {
   const nameDisplay = recipientName ? recipientName.trim() : "Student";
 
-  const plainText = `Hello ${nameDisplay},\n\nYour security verification code for RIGA Dance Academy is: ${otpCode}\n\nThis verification code will expire in 5 minutes.\n\nIf you did not request this code, please ignore this email or contact support.\n\nWarm regards,\nRIGA Dance Academy Sri Lanka\nColombo, Sri Lanka\nEmail: ${SENDER_EMAIL}`;
+  const plainText = `Hello ${nameDisplay},\n\nYour security verification code for RIGA Dance Academy is: ${otpCode}\n\nThis verification code will expire in 5 minutes.\n\nIf you did not request this code, please ignore this email or contact support.\n\nWarm regards,\nRIGA Dance Academy Sri Lanka\nBattaramulla, Sri Lanka\nEmail: ${SENDER_EMAIL}`;
 
   const html = `
     <!DOCTYPE html>
@@ -75,7 +75,7 @@ export async function sendOtpEmail(toEmail: string, otpCode: string, recipientNa
                 <tr>
                   <td align="center" style="padding: 20px 25px; background-color: rgba(5, 1, 11, 0.85); border-top: 1px solid rgba(168, 85, 247, 0.15); font-size: 11px; color: #94a3b8; line-height: 1.6;">
                     © ${new Date().getFullYear()} RIGA Dance Academy Sri Lanka<br />
-                    Colombo, Sri Lanka • Official inquiries: <a href="mailto:${SENDER_EMAIL}" style="color: #c084fc; text-decoration: none;">${SENDER_EMAIL}</a>
+                    Battaramulla, Sri Lanka • Official inquiries: <a href="mailto:${SENDER_EMAIL}" style="color: #c084fc; text-decoration: none;">${SENDER_EMAIL}</a>
                   </td>
                 </tr>
               </table>
@@ -107,7 +107,7 @@ export async function sendVerificationLinkEmail(toEmail: string, verifyUrl: stri
   const nameDisplay = recipientName ? recipientName.trim() : "Student";
 
   // Clean plain text version: Critical for passing Gmail spam filters
-  const plainText = `Hello ${nameDisplay},\n\nThank you for registering with RIGA Dance Academy.\n\nPlease verify your email address by visiting the following link:\n${verifyUrl}\n\nThis verification link is valid for 24 hours.\n\nOnce verified, your enrollment and bank payment receipt will be reviewed by our Academy Administration for final activation.\n\nIf you did not create this account, please disregard this email.\n\nWarm regards,\nRIGA Dance Academy Sri Lanka\nColombo Main Studio\nEmail: ${SENDER_EMAIL}`;
+  const plainText = `Hello ${nameDisplay},\n\nThank you for registering with RIGA Dance Academy.\n\nPlease verify your email address by visiting the following link:\n${verifyUrl}\n\nThis verification link is valid for 24 hours.\n\nOnce verified, your enrollment and bank payment receipt will be reviewed by our Academy Administration for final activation.\n\nIf you did not create this account, please disregard this email.\n\nWarm regards,\nRIGA Dance Academy Sri Lanka\nBattaramulla Main Studio\nEmail: ${SENDER_EMAIL}`;
 
   const html = `
     <!DOCTYPE html>
@@ -187,7 +187,7 @@ export async function sendVerificationLinkEmail(toEmail: string, verifyUrl: stri
                 <!-- Footer -->
                 <tr>
                   <td align="center" style="padding: 22px 25px; background-color: rgba(5, 1, 11, 0.85); border-top: 1px solid rgba(168, 85, 247, 0.15); font-size: 11px; color: #94a3b8; line-height: 1.6;">
-                    © ${new Date().getFullYear()} RIGA Dance Academy Sri Lanka • Colombo, Sri Lanka<br />
+                    © ${new Date().getFullYear()} RIGA Dance Academy Sri Lanka • Battaramulla, Sri Lanka<br />
                     You received this email because you signed up for student admission at RIGA Dance Academy.<br />
                     Official contact: <a href="mailto:${SENDER_EMAIL}" style="color: #c084fc; text-decoration: none;">${SENDER_EMAIL}</a>
                   </td>
@@ -222,7 +222,7 @@ export async function sendAccountApprovedEmail(toEmail: string, recipientName?: 
   const nameDisplay = recipientName ? recipientName.trim() : "Student";
   const loginUrl = `${APP_URL}/login`;
 
-  const plainText = `Hello ${nameDisplay},\n\nGreat news! Your application and payment details have been officially reviewed and approved by the RIGA Dance Academy Administration.\n\nYou now have full access to your Student Portal, class schedules, and troupe rehearsals.\n\nYou can log in to your account here:\n${loginUrl}\n\nIf you have any questions, feel free to reply to this email or visit our academy studio.\n\nWarm regards,\nRIGA Dance Academy Sri Lanka\nColombo, Sri Lanka\nEmail: ${SENDER_EMAIL}`;
+  const plainText = `Hello ${nameDisplay},\n\nGreat news! Your application and payment details have been officially reviewed and approved by the RIGA Dance Academy Administration.\n\nYou now have full access to your Student Portal, class schedules, and troupe rehearsals.\n\nYou can log in to your account here:\n${loginUrl}\n\nIf you have any questions, feel free to reply to this email or visit our academy studio.\n\nWarm regards,\nRIGA Dance Academy Sri Lanka\nBattaramulla, Sri Lanka\nEmail: ${SENDER_EMAIL}`;
 
   const html = `
     <!DOCTYPE html>
@@ -287,7 +287,7 @@ export async function sendAccountApprovedEmail(toEmail: string, recipientName?: 
                 <!-- Footer -->
                 <tr>
                   <td align="center" style="padding: 22px 25px; background-color: rgba(5, 1, 11, 0.85); border-top: 1px solid rgba(34, 197, 94, 0.15); font-size: 11px; color: #94a3b8; line-height: 1.6;">
-                    © ${new Date().getFullYear()} RIGA Dance Academy Sri Lanka • Colombo, Sri Lanka<br />
+                    © ${new Date().getFullYear()} RIGA Dance Academy Sri Lanka • Battaramulla, Sri Lanka<br />
                     Official inquiries: <a href="mailto:${SENDER_EMAIL}" style="color: #4ade80; text-decoration: none;">${SENDER_EMAIL}</a>
                   </td>
                 </tr>

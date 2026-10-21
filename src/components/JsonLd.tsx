@@ -27,15 +27,15 @@ export default function JsonLd() {
         address: {
           "@type": "PostalAddress",
           streetAddress: "123 Dance Studio Road",
-          addressLocality: "Colombo 07",
+          addressLocality: "Battaramulla",
           addressRegion: "Western Province",
-          postalCode: "00700",
+          postalCode: "10120",
           addressCountry: "LK",
         },
         geo: {
           "@type": "GeoCoordinates",
-          latitude: 6.9034,
-          longitude: 79.8665,
+          latitude: 6.8972,
+          longitude: 79.9192,
         },
         priceRange: "$$",
         sameAs: [

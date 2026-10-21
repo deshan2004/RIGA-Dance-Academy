@@ -117,7 +117,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-white font-medium mb-1">Our Location</h3>
-                    <p className="text-gray-400">123 Rhythm Street, Dance District<br />Colombo 00700, Sri Lanka</p>
+                    <p className="text-gray-400">123 Rhythm Street, Dance District<br />Battaramulla 10120, Sri Lanka</p>
                   </div>
                 </div>
 
@@ -164,7 +164,7 @@ export default function ContactPage() {
             {/* Map Embed */}
             <div className="bg-academy-gray border border-gray-800 p-2 rounded-3xl shadow-xl h-[300px] overflow-hidden">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126743.58585978168!2d79.77380315482613!3d6.921922084792622!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae253d10f7a7003%3A0x320b2e4d32d3838d!2sColombo%2C%20Sri%20Lanka!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15843.868778841026!2d79.91024317180295!3d6.892186711681729!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae250aaa24e2c8d%3A0xc6cb6925e01c18e1!2sBattaramulla%2C%20Sri%20Lanka!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk"
                 width="100%"
                 height="100%"
                 style={{ border: 0, borderRadius: '1.25rem' }}

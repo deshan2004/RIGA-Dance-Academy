@@ -127,7 +127,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
     location: "",
     preferred_style: "Kandyan Traditional",
     skill_level: "Beginner",
-    preferred_branch: "Colombo Main Studio - Weekend Morning",
+    preferred_branch: "Battaramulla Main Studio - Weekend Morning",
     transaction_ref: "",
     notes: "",
   });
@@ -624,7 +624,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
           location: "",
           preferred_style: "Kandyan Traditional",
           skill_level: "Beginner",
-          preferred_branch: "Colombo Main Studio - Weekend Morning",
+          preferred_branch: "Battaramulla Main Studio - Weekend Morning",
           transaction_ref: "",
           notes: "",
         });
@@ -1125,7 +1125,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                           value={formData.location}
                           onChange={handleChange}
                           className="w-full bg-[#080312] border border-purple-900/60 rounded-xl pl-10 pr-4 py-3.5 text-white text-sm focus:outline-none focus:border-purple-500/90 focus:ring-2 focus:ring-purple-500/30 transition-all placeholder:text-purple-400/40"
-                          placeholder="e.g. Colombo 07"
+                          placeholder="e.g. Battaramulla"
                         />
                       </div>
                     </div>
@@ -1248,8 +1248,8 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                           onChange={handleChange}
                           className="w-full bg-[#080312] border border-purple-900/60 rounded-xl pl-10 pr-8 py-3.5 text-white text-sm focus:outline-none focus:border-purple-500/90 shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all"
                         >
-                          <option value="Colombo Main Studio - Weekend Morning">Colombo Main Studio - Weekend Morning</option>
-                          <option value="Colombo Main Studio - Weekday Evening">Colombo Main Studio - Weekday Evening</option>
+                          <option value="Battaramulla Main Studio - Weekend Morning">Battaramulla Main Studio - Weekend Morning</option>
+                          <option value="Battaramulla Main Studio - Weekday Evening">Battaramulla Main Studio - Weekday Evening</option>
                           <option value="Kandy Studio - Saturday Morning">Kandy Studio - Saturday Morning</option>
                           <option value="Galle Studio - Sunday Afternoon">Galle Studio - Sunday Afternoon</option>
                         </select>
