@@ -5,25 +5,49 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
+import JsonLd from "@/components/JsonLd";
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://rigadance.com"),
-  title: "RIGA - Sri Lanka's next generation of professional dancers starts at RIGA.",
-  description: "Sri Lanka's next generation of professional dancers starts at RIGA. Master Kandyan, Hip-Hop, Classical, and Contemporary dance styles with world-class instructors.",
-  keywords: ["RIGA", "RIGA Dance Academy", "Dance Academy Sri Lanka", "Kandyan Dance", "Hip Hop", "Contemporary Dance", "Dance Classes"],
-  authors: [{ name: "RIGA Dance Academy" }],
+  title: {
+    default: "RIGA Dance Academy | Premier Dance Education in Sri Lanka",
+    template: "%s | RIGA Dance Academy",
+  },
+  description:
+    "Sri Lanka's premier dance academy. Master Traditional Kandyan, Hip-Hop, Classical Ballet, Contemporary, and Commercial dance styles with world-class instructors in Colombo.",
+  keywords: [
+    "RIGA Dance Academy",
+    "Dance Academy Sri Lanka",
+    "Dance Classes Colombo",
+    "Kandyan Dance Lessons",
+    "Hip Hop Dance Classes Sri Lanka",
+    "Contemporary Dance Academy",
+    "Classical Dance Sri Lanka",
+    "Dance Studio Rental Colombo",
+    "Wedding Dance Choreography Sri Lanka",
+    "Kids Dance Academy Colombo",
+    "RIGA Crew",
+  ],
+  authors: [{ name: "RIGA Dance Academy", url: "https://rigadance.com" }],
+  creator: "RIGA Dance Academy",
+  publisher: "RIGA Dance Academy",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "RIGA - Sri Lanka's next generation of professional dancers starts at RIGA.",
-    description: "Sri Lanka's next generation of professional dancers starts at RIGA. Master Kandyan, Hip-Hop, Classical, and Contemporary dance styles with world-class instructors.",
+    title: "RIGA Dance Academy | Premier Dance Education in Sri Lanka",
+    description:
+      "Transform your passion into movement. Join Sri Lanka's leading dance academy for Kandyan, Hip-Hop, Contemporary, and Classical styles.",
     url: "https://rigadance.com",
     siteName: "RIGA Dance Academy",
     images: [
       {
         url: "/images/riga-transparent.png",
-        width: 800,
-        height: 600,
-        alt: "RIGA Dance Academy Logo",
+        width: 1200,
+        height: 630,
+        alt: "RIGA Dance Academy - Elevating Dance in Sri Lanka",
       },
     ],
     locale: "en_US",
@@ -31,9 +55,21 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "RIGA - Sri Lanka's next generation of professional dancers starts at RIGA.",
-    description: "Sri Lanka's next generation of professional dancers starts at RIGA.",
+    title: "RIGA Dance Academy | Premier Dance Education in Sri Lanka",
+    description:
+      "Transform your passion into movement. Join Sri Lanka's leading dance academy for Kandyan, Hip-Hop, Contemporary, and Classical styles.",
     images: ["/images/riga-transparent.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   icons: {
     icon: [
@@ -55,6 +91,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased bg-academy-black text-academy-white selection:bg-academy-gold selection:text-black min-h-screen flex flex-col`}>
+        <JsonLd />
         <Navbar />
         <main className="flex-grow">
           {children}
