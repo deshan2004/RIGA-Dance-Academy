@@ -80,8 +80,8 @@ export default function TroupeShowcase() {
   return (
     <section className="pt-8 pb-20 sm:py-24 bg-[#07020e] relative overflow-hidden border-t border-purple-900/30">
       {/* Background Lighting & Ambient Smoke */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-purple-900/20 rounded-full blur-[180px] pointer-events-none" />
-      <div className="absolute -top-32 -left-32 w-80 h-80 bg-fuchsia-900/15 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[340px] sm:w-[900px] h-[300px] sm:h-[500px] bg-purple-900/20 rounded-full blur-[70px] sm:blur-[180px] pointer-events-none" />
+      <div className="absolute -top-32 -left-32 w-60 sm:w-80 h-60 sm:h-80 bg-fuchsia-900/15 rounded-full blur-[60px] sm:blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         

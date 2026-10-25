@@ -18,12 +18,12 @@ interface ClassItem {
 }
 
 const defaultImages: Record<string, string> = {
-  kandyan: "https://images.unsplash.com/photo-1542838686-37ed7a956140?auto=format&fit=crop&q=80",
-  "hip-hop": "https://images.unsplash.com/photo-1535525153412-5a42439a6e0c?auto=format&fit=crop&q=80",
-  classical: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80",
-  contemporary: "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?auto=format&fit=crop&q=80",
-  sabaragamuwa: "https://images.unsplash.com/photo-1533147670608-2a2f9776d3ac?auto=format&fit=crop&q=80",
-  default: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&q=80",
+  kandyan: "https://images.unsplash.com/photo-1542838686-37ed7a956140?auto=format&fit=crop&w=800&q=75",
+  "hip-hop": "https://images.unsplash.com/photo-1535525153412-5a42439a6e0c?auto=format&fit=crop&w=800&q=75",
+  classical: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=75",
+  contemporary: "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?auto=format&fit=crop&w=800&q=75",
+  sabaragamuwa: "https://images.unsplash.com/photo-1533147670608-2a2f9776d3ac?auto=format&fit=crop&w=800&q=75",
+  default: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=800&q=75",
 };
 
 const filterCategories = [
@@ -200,8 +200,9 @@ export default function FeaturedClassesPreview() {
                         src={classPhoto} 
                         alt={cls.title} 
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        unoptimized
+                        loading="lazy"
                       />
                     </div>
                     

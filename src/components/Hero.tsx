@@ -25,9 +25,9 @@ const Hero = () => {
         <div className="absolute top-0 right-4 sm:right-12 w-1 h-full bg-gradient-to-b from-transparent via-purple-500/70 to-transparent opacity-70 blur-[2px] shadow-[0_0_20px_#a855f7]" />
 
         {/* Ambient Glows Positioned Seamlessly Behind Center Artwork */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-purple-900/25 rounded-full blur-[150px] mix-blend-screen pointer-events-none" />
-        <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-purple-950/40 rounded-full blur-[150px] pointer-events-none" />
-        <div className="absolute -bottom-36 right-0 w-[500px] h-[500px] bg-purple-950/40 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[800px] h-[260px] sm:h-[500px] bg-purple-900/25 rounded-full blur-[70px] sm:blur-[150px] mix-blend-screen pointer-events-none" />
+        <div className="absolute -top-24 -left-24 w-[280px] sm:w-[500px] h-[280px] sm:h-[500px] bg-purple-950/40 rounded-full blur-[60px] sm:blur-[150px] pointer-events-none" />
+        <div className="absolute -bottom-36 right-0 w-[280px] sm:w-[500px] h-[280px] sm:h-[500px] bg-purple-950/40 rounded-full blur-[60px] sm:blur-[150px] pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#04000b]/80 via-transparent to-[#04000b]" />
       </div>
 
@@ -42,7 +42,7 @@ const Hero = () => {
           className="w-full relative mb-7 sm:mb-16 flex justify-center items-center select-none"
         >
           {/* Soft ambient purple radial glow seamlessly behind logo */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] sm:w-[950px] h-[320px] sm:h-[420px] bg-gradient-to-r from-purple-600/25 via-fuchsia-500/20 to-purple-700/25 rounded-full blur-[150px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[950px] h-[180px] sm:h-[420px] bg-gradient-to-r from-purple-600/25 via-fuchsia-500/20 to-purple-700/25 rounded-full blur-[60px] sm:blur-[150px] pointer-events-none" />
 
           {/* Prominent, enlarged original logo artwork */}
           <div className="relative w-full max-w-5xl sm:max-w-5xl lg:max-w-6xl flex justify-center items-center px-2">
@@ -51,6 +51,7 @@ const Hero = () => {
               alt="RIGA Dance Academy" 
               width={1024}
               height={390}
+              sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 1024px"
               className="w-full h-auto object-contain block mx-auto opacity-100 pointer-events-none"
               priority
             />

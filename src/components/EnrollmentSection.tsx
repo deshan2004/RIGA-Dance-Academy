@@ -109,6 +109,33 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
   const [resendCountdown, setResendCountdown] = useState(0);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  const PENDING_2FA_STORAGE_KEY = "riga_pending_2fa_session";
+
+  // Restore active 2FA modal session if mobile browser refreshed while checking email
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const saved = sessionStorage.getItem(PENDING_2FA_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (
+          parsed.email &&
+          parsed.timestamp &&
+          Date.now() - parsed.timestamp < 10 * 60 * 1000
+        ) {
+          setTwoFactorEmail(parsed.email);
+          setTwoFactorName(parsed.name || "Member");
+          setTwoFactorTargetUrl(parsed.targetUrl || "/dashboard");
+          setShowTwoFactorModal(true);
+        } else {
+          sessionStorage.removeItem(PENDING_2FA_STORAGE_KEY);
+        }
+      }
+    } catch (e) {
+      console.warn("Could not read pending 2FA session:", e);
+    }
+  }, []);
+
   useEffect(() => {
     if (resendCountdown > 0) {
       const timer = setTimeout(() => setResendCountdown(resendCountdown - 1), 1000);
@@ -208,33 +235,34 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
   };
 
   const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) {
-      const digits = value.replace(/\D/g, "").slice(0, 6).split("");
-      if (digits.length > 0) {
-        const next = [...twoFactorOtp];
-        digits.forEach((d, i) => {
-          if (i < 6) next[i] = d;
-        });
-        setTwoFactorOtp(next);
-        const focusIdx = Math.min(digits.length, 5);
-        otpInputRefs.current[focusIdx]?.focus();
-      }
+    const cleaned = value.replace(/\D/g, "");
+    if (cleaned.length > 1) {
+      // Pasted or Mobile SMS/Email OTP autofill
+      const digits = cleaned.slice(0, 6).split("");
+      const next = ["", "", "", "", "", ""];
+      digits.forEach((d, i) => {
+        if (i < 6) next[i] = d;
+      });
+      setTwoFactorOtp(next);
+      const nextFocus = Math.min(digits.length - 1, 5);
+      otpInputRefs.current[nextFocus]?.focus();
       return;
     }
 
-    const digit = value.replace(/\D/g, "");
     const next = [...twoFactorOtp];
-    next[index] = digit;
+    next[index] = cleaned;
     setTwoFactorOtp(next);
 
-    if (digit && index < 5) {
+    if (cleaned && index < 5) {
       otpInputRefs.current[index + 1]?.focus();
     }
   };
 
   const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && !twoFactorOtp[index] && index > 0) {
-      otpInputRefs.current[index - 1]?.focus();
+    if (e.key === "Backspace") {
+      if (!twoFactorOtp[index] && index > 0) {
+        otpInputRefs.current[index - 1]?.focus();
+      }
     }
   };
 
@@ -261,6 +289,9 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
       const data = await res.json();
 
       if (data.success) {
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem(PENDING_2FA_STORAGE_KEY);
+        }
         setTwoFactorMessage({
           type: "success",
           message: "Email verified successfully! Redirecting...",
@@ -288,6 +319,9 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
   const handleCancelTwoFactor = async () => {
     setShowTwoFactorModal(false);
     setTwoFactorOtp(["", "", "", "", "", ""]);
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem(PENDING_2FA_STORAGE_KEY);
+    }
     await auth.signOut();
   };
 
@@ -399,6 +433,23 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
     setTwoFactorTargetUrl(targetUrl);
     setTwoFactorOtp(["", "", "", "", "", ""]);
     setShowTwoFactorModal(true);
+
+    if (typeof window !== "undefined") {
+      try {
+        sessionStorage.setItem(
+          PENDING_2FA_STORAGE_KEY,
+          JSON.stringify({
+            email: userEmail,
+            name: userName,
+            targetUrl,
+            timestamp: Date.now(),
+          })
+        );
+      } catch (err) {
+        console.warn("Failed to persist 2FA session:", err);
+      }
+    }
+
     await triggerSendOtp(userEmail, userName);
   };
 
@@ -656,8 +707,8 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
   return (
     <section id="enroll" className="py-20 bg-[#07030e] relative overflow-hidden text-white">
       {/* Dynamic Background Ambient Lights */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gradient-to-tr from-purple-900/20 via-fuchsia-900/15 to-transparent rounded-full blur-[170px] pointer-events-none" />
-      <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-purple-600/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[340px] sm:w-[700px] h-[340px] sm:h-[700px] bg-gradient-to-tr from-purple-900/20 via-fuchsia-900/15 to-transparent rounded-full blur-[70px] sm:blur-[170px] pointer-events-none" />
+      <div className="absolute -bottom-20 -right-20 w-60 sm:w-96 h-60 sm:h-96 bg-purple-600/10 rounded-full blur-[60px] sm:blur-[140px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -687,7 +738,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#120726]/85 backdrop-blur-2xl border border-purple-800/50 p-6 sm:p-10 rounded-3xl shadow-[0_0_60px_rgba(9,4,16,0.95)] relative overflow-hidden"
+          className="bg-[#120726]/90 backdrop-blur-lg sm:backdrop-blur-2xl border border-purple-800/50 p-6 sm:p-10 rounded-3xl shadow-[0_0_60px_rgba(9,4,16,0.95)] relative overflow-hidden"
         >
           {/* TAB SWITCHER (SIGN IN | SIGN UP) */}
           <div className="relative flex bg-[#080312] p-1.5 rounded-2xl border border-purple-900/60 mb-8 max-w-md mx-auto">
@@ -1437,13 +1488,13 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
       {/* FORGOT PASSWORD MODAL */}
       <AnimatePresence>
         {showForgotModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 sm:backdrop-blur-md p-3 sm:p-4 flex items-center justify-center min-h-[100dvh]">
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 10 }}
+              initial={{ opacity: 0, scale: 0.94, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 10 }}
+              exit={{ opacity: 0, scale: 0.94, y: 10 }}
               transition={{ type: "spring", duration: 0.3 }}
-              className="bg-[#120726] border border-purple-800/80 p-6 sm:p-8 rounded-3xl max-w-md w-full shadow-[0_0_60px_rgba(168,85,247,0.35)] relative overflow-hidden"
+              className="bg-[#120726] border border-purple-800/80 p-5 sm:p-8 rounded-3xl max-w-md w-full shadow-[0_0_60px_rgba(168,85,247,0.35)] relative overflow-hidden my-auto max-h-[94vh] overflow-y-auto"
             >
               {/* Close Button */}
               <button
@@ -1528,17 +1579,17 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
       {/* TWO-FACTOR AUTHENTICATION (2FA) OTP MODAL */}
       <AnimatePresence>
         {showTwoFactorModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 sm:backdrop-blur-md p-3 sm:p-4 flex items-center justify-center min-h-[100dvh]">
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 15 }}
+              initial={{ opacity: 0, scale: 0.94, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 15 }}
-              transition={{ type: "spring", duration: 0.35 }}
-              className="bg-[#0e041d] border border-purple-500/60 p-6 sm:p-8 rounded-3xl max-w-md w-full shadow-[0_0_80px_rgba(168,85,247,0.4)] relative overflow-hidden"
+              exit={{ opacity: 0, scale: 0.94, y: 15 }}
+              transition={{ type: "spring", duration: 0.3 }}
+              className="bg-[#0e041d] border border-purple-500/60 p-5 sm:p-8 rounded-3xl max-w-md w-full shadow-[0_0_80px_rgba(168,85,247,0.4)] relative overflow-hidden my-auto max-h-[94vh] overflow-y-auto"
             >
               {/* Subtle ambient lighting */}
-              <div className="absolute -top-20 -right-20 w-44 h-44 bg-purple-600/25 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-20 -left-20 w-44 h-44 bg-fuchsia-600/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -top-20 -right-20 w-44 h-44 bg-purple-600/25 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-20 -left-20 w-44 h-44 bg-fuchsia-600/20 rounded-full blur-2xl pointer-events-none" />
 
               {/* Close Button */}
               <button
@@ -1560,7 +1611,7 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                 <p className="text-xs text-purple-200/80 font-light leading-relaxed">
                   We sent a 6-digit verification code to
                 </p>
-                <div className="inline-block mt-1 px-3 py-1 rounded-full bg-purple-950/90 border border-purple-600/40 text-purple-200 font-bold text-xs tracking-wide">
+                <div className="inline-block mt-1 px-3 py-1 rounded-full bg-purple-950/90 border border-purple-600/40 text-purple-200 font-bold text-xs tracking-wide break-all max-w-full">
                   {twoFactorEmail}
                 </div>
               </div>
@@ -1594,13 +1645,13 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                       }}
                       type="text"
                       inputMode="numeric"
+                      autoComplete={idx === 0 ? "one-time-code" : "off"}
                       pattern="[0-9]*"
-                      maxLength={idx === 0 ? 6 : 1}
+                      maxLength={6}
                       value={digit}
                       onChange={(e) => handleOtpChange(idx, e.target.value)}
                       onKeyDown={(e) => handleOtpKeyDown(idx, e)}
                       className="w-full h-12 sm:h-14 text-center text-xl sm:text-2xl font-black text-white bg-[#06010e] border border-purple-700/60 rounded-xl focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-purple-500/40 shadow-[0_0_15px_rgba(168,85,247,0.2)] transition-all font-mono"
-                      autoFocus={idx === 0}
                     />
                   ))}
                 </div>

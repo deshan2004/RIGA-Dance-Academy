@@ -15,7 +15,7 @@ export default function CtaBanner() {
           className="bg-gradient-to-br from-purple-950 via-[#1e0938] to-purple-900 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-[0_0_50px_rgba(168,85,247,0.25)] border border-purple-500/40"
         >
           {/* Decorative Elements inside banner */}
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80')] bg-cover mix-blend-overlay opacity-15"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=70')] bg-cover mix-blend-overlay opacity-15"></div>
           <div className="absolute -top-24 -right-24 w-72 h-72 bg-fuchsia-600/30 rounded-full mix-blend-screen filter blur-[90px]"></div>
           <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-purple-600/30 rounded-full mix-blend-screen filter blur-[90px]"></div>
 

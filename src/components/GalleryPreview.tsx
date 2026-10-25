@@ -20,28 +20,28 @@ const defaultPhotos: GalleryPhoto[] = [
     id: "g1",
     title: "Kids Kandyan Dance Practice",
     category: "Kids Dancing",
-    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=800&q=75",
     description: "Our young students practicing traditional Kandyan dance rhythms."
   },
   {
     id: "g2",
     title: "Urban Hip-Hop Choreography",
     category: "Class Practice",
-    image: "https://images.unsplash.com/photo-1535525153412-5a42439a6e0c?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1535525153412-5a42439a6e0c?auto=format&fit=crop&w=800&q=75",
     description: "High energy street grooves & group routine training in studio."
   },
   {
     id: "g3",
     title: "Stage Performance Highlight",
     category: "Events & Highlights",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=75",
     description: "Live show at Nelum Pokuna Theater."
   },
   {
     id: "g4",
     title: "Contemporary Flow Masterclass",
     category: "Special Performances",
-    image: "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?auto=format&fit=crop&w=800&q=75",
     description: "Lyrical movement & stage expression workshop."
   },
 ];
@@ -146,8 +146,9 @@ export default function GalleryPreview() {
                   src={item.image}
                   alt={item.title}
                   fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                  unoptimized
+                  loading="lazy"
                 />
                 
                 {/* Gradient Overlays */}
