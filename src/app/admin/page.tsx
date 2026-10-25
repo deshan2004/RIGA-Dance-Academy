@@ -5,7 +5,7 @@ import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy } from "lucide-react";
+import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy, RefreshCw } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import EventsTab from "@/components/admin/EventsTab";
@@ -178,8 +178,34 @@ export default function AdminDashboard() {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setGalleryForm(prev => ({ ...prev, image: reader.result as string }));
+      reader.onload = (event) => {
+        const img = new window.Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const MAX_WIDTH = 1200;
+          const MAX_HEIGHT = 1200;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+          const compressed = canvas.toDataURL("image/jpeg", 0.78);
+          setGalleryForm(prev => ({ ...prev, image: compressed }));
+        };
+        img.src = event.target?.result as string;
       };
       reader.readAsDataURL(file);
     }
@@ -187,7 +213,7 @@ export default function AdminDashboard() {
 
   const fetchEnrollments = async () => {
     try {
-      const res = await fetch("/api/enroll");
+      const res = await fetch(`/api/enroll?t=${Date.now()}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success) {
         setEnrollments(data.data);
@@ -201,7 +227,7 @@ export default function AdminDashboard() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("/api/users");
+      const res = await fetch(`/api/users?t=${Date.now()}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success) {
         setRegisteredUsers(data.data);
@@ -213,7 +239,7 @@ export default function AdminDashboard() {
 
   const fetchClasses = async () => {
     try {
-      const res = await fetch("/api/classes");
+      const res = await fetch(`/api/classes?t=${Date.now()}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success) {
         setClasses(data.data);
@@ -225,7 +251,7 @@ export default function AdminDashboard() {
 
   const fetchInquiries = async () => {
     try {
-      const res = await fetch("/api/contact");
+      const res = await fetch(`/api/contact?t=${Date.now()}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success) {
         setInquiries(data.data);
@@ -237,7 +263,7 @@ export default function AdminDashboard() {
 
   const fetchGalleryItems = async () => {
     try {
-      const res = await fetch("/api/gallery");
+      const res = await fetch(`/api/gallery?t=${Date.now()}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success) {
         setGalleryItems(data.data);
@@ -249,7 +275,7 @@ export default function AdminDashboard() {
 
   const fetchAnnouncements = async () => {
     try {
-      const res = await fetch("/api/announcements");
+      const res = await fetch(`/api/announcements?t=${Date.now()}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success) {
         setAnnouncements(data.data);
@@ -261,7 +287,7 @@ export default function AdminDashboard() {
 
   const fetchVideos = async () => {
     try {
-      const res = await fetch("/api/videos");
+      const res = await fetch(`/api/videos?t=${Date.now()}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success) {
         setPracticeVideos(data.data);
@@ -324,13 +350,15 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     async function loadTabData() {
-      if (activeTab === "users" && registeredUsers.length === 0) {
+      if (activeTab === "enrollments") {
+        await fetchEnrollments();
+      } else if (activeTab === "users") {
         await fetchUsers();
-      } else if (activeTab === "classes" && classes.length === 0) {
+      } else if (activeTab === "classes") {
         await fetchClasses();
-      } else if (activeTab === "inquiries" && inquiries.length === 0) {
+      } else if (activeTab === "inquiries") {
         await fetchInquiries();
-      } else if (activeTab === "gallery" && galleryItems.length === 0) {
+      } else if (activeTab === "gallery") {
         await fetchGalleryItems();
       } else if (activeTab === "announcements") {
         await fetchAnnouncements();
@@ -339,7 +367,14 @@ export default function AdminDashboard() {
       }
     }
     loadTabData();
-  }, [activeTab, registeredUsers.length, classes.length, inquiries.length, galleryItems.length]);
+
+    // Live sync polling every 20 seconds so changes by any admin reflect across all accounts
+    const syncInterval = setInterval(() => {
+      loadTabData();
+    }, 20000);
+
+    return () => clearInterval(syncInterval);
+  }, [activeTab]);
 
   // Announcement Handlers
   const handleSaveAnnouncement = async (e: React.FormEvent) => {
@@ -477,13 +512,17 @@ export default function AdminDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(galleryForm),
       });
-      if (res.ok) {
+      const data = await res.json();
+      if (res.ok && data.success) {
         setShowGalleryModal(false);
         setGalleryForm({ title: "", category: "Class Practice", image: "", description: "" });
-        fetchGalleryItems();
+        await fetchGalleryItems();
+      } else {
+        alert(data.error || "Failed to save photo. Please try again.");
       }
     } catch (error) {
       console.error("Error saving gallery photo:", error);
+      alert("Network error while saving photo.");
     }
   };
 
@@ -621,6 +660,25 @@ export default function AdminDashboard() {
               </div>
             </div>
             
+            <button
+              onClick={async () => {
+                await Promise.all([
+                  fetchEnrollments(),
+                  fetchGalleryItems(),
+                  fetchUsers(),
+                  fetchClasses(),
+                  fetchInquiries(),
+                  fetchAnnouncements(),
+                  fetchVideos(),
+                ]);
+              }}
+              className="bg-purple-900/30 hover:bg-purple-800/60 text-purple-200 border border-purple-500/40 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+              title="Sync latest data across all admin accounts"
+            >
+              <RefreshCw className="w-4 h-4 text-fuchsia-400" />
+              <span>Live Sync</span>
+            </button>
+
             <button
               onClick={() => {
                 auth.signOut();

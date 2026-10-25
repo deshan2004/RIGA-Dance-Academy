@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Video, PartyPopper, Flame, Zap, Crown, Users, Radio } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Video, PartyPopper, Flame, Zap, Crown, Users, Radio, X, Check } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -337,16 +337,62 @@ export default function EventsPage() {
     ? categoryPackages
     : categoryPackages.filter(p => p.dancerCount === selectedDancerFilter);
 
-  const getWhatsAppLink = (pkg: ChoreographyPackage) => {
-    const categoryName =
-      pkg.category === "weddings"
-        ? "Weddings"
-        : pkg.category === "events"
-        ? "Corporate & Stage Events"
-        : "Music Video Production";
+  // Booking Popup Modal State
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingCategory, setBookingCategory] = useState<"weddings" | "events" | "music_video" | "custom">("weddings");
+  const [bookingDancers, setBookingDancers] = useState("4 Dancers");
+  const [bookingActs, setBookingActs] = useState("3 Dance Acts");
+  const [selectedStyles, setSelectedStyles] = useState<string[]>(["Traditional Kandyan", "Bollywood"]);
+  const [bookingDate, setBookingDate] = useState("");
+  const [bookingLocation, setBookingLocation] = useState("");
+  const [bookingNotes, setBookingNotes] = useState("");
 
-    const message = `Hello RIGA Dance Academy! 👋\n\nI would like to inquire about booking the *${categoryName}* Choreography Package:\n\n• Troupe Size: ${pkg.dancersLabel}\n• Program: ${pkg.actsLabel}\n\nPlease share the quote, date availability, and booking process. Thank you!`;
-    return `https://wa.me/94763401285?text=${encodeURIComponent(message)}`;
+  const openBookingModal = (pkg?: ChoreographyPackage) => {
+    if (pkg) {
+      setBookingCategory(pkg.category);
+      setBookingDancers(pkg.dancersLabel);
+      setBookingActs(pkg.actsLabel);
+    }
+    setIsBookingModalOpen(true);
+  };
+
+  const toggleStyle = (style: string) => {
+    if (selectedStyles.includes(style)) {
+      if (selectedStyles.length > 1) {
+        setSelectedStyles(selectedStyles.filter((s) => s !== style));
+      }
+    } else {
+      setSelectedStyles([...selectedStyles, style]);
+    }
+  };
+
+  const handleSendBookingToWhatsApp = () => {
+    const categoryTitle =
+      bookingCategory === "weddings"
+        ? "Wedding Choreography"
+        : bookingCategory === "events"
+        ? "Corporate & Stage Event"
+        : bookingCategory === "music_video"
+        ? "Music Video Production"
+        : "Custom Grand Performance";
+
+    const stylesText = selectedStyles.length > 0 ? selectedStyles.join(", ") : "All Genres";
+
+    const message = `Hello RIGA Dance Academy! 🌟
+
+I would like to book / inquire about a Choreography Troupe:
+
+📋 *Booking Details:*
+• *Event Category:* ${categoryTitle}
+• *Troupe Size:* ${bookingDancers}
+• *Routine / Program:* ${bookingActs}
+• *Selected Styles:* ${stylesText}${bookingDate ? `\n• *Event Date:* ${bookingDate}` : ""}${bookingLocation ? `\n• *Location / Venue:* ${bookingLocation}` : ""}${bookingNotes ? `\n• *Special Requests:* ${bookingNotes}` : ""}
+
+Please share a customized quotation, troupe availability, and booking procedure. Thank you!`;
+
+    const url = `https://wa.me/94763401285?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+    setIsBookingModalOpen(false);
   };
 
   return (
@@ -389,17 +435,35 @@ export default function EventsPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase"
           >
-            Troupe & Performance <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-purple-500 drop-shadow-[0_0_25px_rgba(192,132,252,0.4)]">Choreography Packages</span>
+            Troupe &amp; Performance <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-purple-500 drop-shadow-[0_0_25px_rgba(192,132,252,0.4)]">Choreography Packages</span>
           </motion.h1>
           
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-base sm:text-lg text-purple-200/80 max-w-3xl mx-auto mb-10 leading-relaxed"
+            className="text-base sm:text-lg text-purple-200/80 max-w-3xl mx-auto mb-8 leading-relaxed"
           >
-            Book Sri Lanka&apos;s premier dance ensemble for Weddings, Corporate Events, and Music Video Shoots. Explore our curated troupe packages with customized choreography, authentic stage regalia, and high-energy live performances. Book directly via WhatsApp for tailored quotations and date reservations.
+            Book Sri Lanka&apos;s premier dance ensemble for Weddings, Corporate Events, and Music Video Shoots. Explore our curated troupe packages with customized choreography, authentic stage regalia, and high-energy live performances.
           </motion.p>
+
+          {/* PRIMARY BOOKING CTA BUTTON (TRIGGER POPUP MODAL) */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="flex flex-wrap items-center justify-center gap-4 mb-10"
+          >
+            <button
+              type="button"
+              onClick={() => openBookingModal()}
+              className="inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-4 rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs sm:text-sm uppercase tracking-widest shadow-[0_0_35px_rgba(192,132,252,0.6)] hover:shadow-[0_0_50px_rgba(232,121,249,0.9)] border border-purple-300/40 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+            >
+              <Sparkles className="w-5 h-5 text-fuchsia-300 animate-pulse" />
+              <span>Inquire &amp; Book Choreography</span>
+              <MessageCircle className="w-5 h-5 text-emerald-400" />
+            </button>
+          </motion.div>
 
           {/* --- MAIN TROUPE VISUAL ARTWORK (ZERO BOX OUTLINE - SEAMLESS INTEGRATION) --- */}
           <motion.div
@@ -617,20 +681,19 @@ export default function EventsPage() {
                 </ul>
               </div>
 
-              {/* Action Button */}
-              <a
-                href={getWhatsAppLink(pkg)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-xs font-extrabold uppercase tracking-widest transition-all duration-300 ${
+              {/* Action Button: Opens Modal with pre-selected package */}
+              <button
+                type="button"
+                onClick={() => openBookingModal(pkg)}
+                className={`w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                   pkg.highlighted
-                    ? "bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white shadow-[0_0_25px_rgba(16,185,129,0.5)] hover:shadow-[0_0_40px_rgba(16,185,129,0.8)] border border-emerald-300/40 hover:scale-[1.02]"
-                    : "bg-[#25D366]/20 hover:bg-[#25D366] border border-[#25D366]/40 hover:border-[#25D366] text-emerald-300 hover:text-white shadow-[0_0_15px_rgba(37,211,102,0.2)] hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] hover:scale-[1.02]"
+                    ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white shadow-[0_0_20px_rgba(192,132,252,0.4)] hover:shadow-[0_0_30px_rgba(192,132,252,0.7)] border border-purple-300/40 hover:scale-[1.02]"
+                    : "bg-purple-950/70 hover:bg-purple-900 border border-purple-500/30 hover:border-purple-400 text-purple-200 hover:text-white shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:scale-[1.02]"
                 }`}
               >
-                <MessageCircle className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
-                <span>Book Package via WhatsApp</span>
-              </a>
+                <Sparkles className="w-4 h-4 text-fuchsia-300" />
+                <span>Select &amp; Inquire Booking</span>
+              </button>
             </motion.div>
           ))}
         </div>
@@ -649,15 +712,19 @@ export default function EventsPage() {
               Have a unique wedding entrance concept, corporate theme, or music video shoot? Contact our Troupe Director on WhatsApp for tailored choreography planning and a direct quotation.
             </p>
           </div>
-          <a
-            href="https://wa.me/94763401285?text=Hello%20RIGA%20Dance%20Academy!%20I%20would%20like%20to%20discuss%20a%20custom%20choreography%20booking%20for%20my%20event."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-gradient-to-r from-[#25D366] to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white text-xs font-black uppercase tracking-widest shadow-[0_0_25px_rgba(37,211,102,0.5)] hover:scale-105 transition-all shrink-0"
+          <button
+            type="button"
+            onClick={() => {
+              setBookingCategory("custom");
+              setBookingDancers("8+ Mega Troupe");
+              setBookingActs("Full Concert Lineup");
+              setIsBookingModalOpen(true);
+            }}
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-gradient-to-r from-[#25D366] to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white text-xs font-black uppercase tracking-widest shadow-[0_0_25px_rgba(37,211,102,0.5)] hover:scale-105 transition-all shrink-0 cursor-pointer"
           >
             <MessageCircle className="w-5 h-5" />
-            <span>Chat Troupe Director</span>
-          </a>
+            <span>Customize Troupe Booking</span>
+          </button>
         </div>
       </section>
 
@@ -741,6 +808,236 @@ export default function EventsPage() {
           </div>
         )}
       </section>
+
+      {/* ========================================================= */}
+      {/* CHOREOGRAPHY BOOKING POPUP MODAL (POPUP MESSAGE)          */}
+      {/* ========================================================= */}
+      <AnimatePresence>
+        {isBookingModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.25 }}
+              className="relative w-full max-w-2xl bg-gradient-to-b from-[#190a36] via-[#100424] to-[#0a0217] border border-purple-500/50 rounded-3xl p-6 sm:p-8 shadow-[0_0_60px_rgba(168,85,247,0.4)] my-8 text-white max-h-[90vh] overflow-y-auto"
+            >
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setIsBookingModalOpen(false)}
+                className="absolute top-5 right-5 p-2 rounded-full bg-purple-950/80 hover:bg-purple-900 border border-purple-700/60 text-purple-300 hover:text-white transition-all cursor-pointer"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Modal Header */}
+              <div className="mb-6 border-b border-purple-500/30 pb-5">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/15 border border-purple-400/30 text-fuchsia-300 text-xs font-bold uppercase tracking-wider mb-2">
+                  <Sparkles className="w-3.5 h-3.5 text-fuchsia-400" />
+                  Direct Troupe Booking
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+                  Customize Your Choreography
+                </h3>
+                <p className="text-xs sm:text-sm text-purple-200/70 mt-1">
+                  Choose your event type, troupe size, and dance preferences. We will connect you instantly with our Troupe Coordinator on WhatsApp with a personalized quote.
+                </p>
+              </div>
+
+              {/* Form Options */}
+              <div className="space-y-6">
+                
+                {/* 1. Event Category */}
+                <div>
+                  <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2.5">
+                    1. Select Event Type *
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    {[
+                      { id: "weddings", label: "Wedding", icon: Heart },
+                      { id: "events", label: "Corporate / Stage", icon: PartyPopper },
+                      { id: "music_video", label: "Music Video", icon: Video },
+                      { id: "custom", label: "Custom Show", icon: Crown },
+                    ].map((cat) => {
+                      const Icon = cat.icon;
+                      const isSelected = bookingCategory === cat.id;
+                      return (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => setBookingCategory(cat.id as "weddings" | "events" | "music_video" | "custom")}
+                          className={`p-3 rounded-2xl border text-xs font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 border-purple-300 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)]"
+                              : "bg-[#140728]/80 border-purple-900/60 text-purple-300 hover:border-purple-600 hover:text-white"
+                          }`}
+                        >
+                          <Icon className="w-5 h-5 shrink-0" />
+                          <span className="text-center">{cat.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 2. Troupe Size */}
+                <div>
+                  <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2.5">
+                    2. Troupe Size (Dancers) *
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    {["4 Dancers", "5 Dancers", "6 Dancers", "8+ Mega Troupe"].map((dancers) => {
+                      const isSelected = bookingDancers === dancers;
+                      return (
+                        <button
+                          key={dancers}
+                          type="button"
+                          onClick={() => setBookingDancers(dancers)}
+                          className={`py-3 px-4 rounded-xl border text-xs font-bold uppercase tracking-wider text-center transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-purple-600 border-fuchsia-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+                              : "bg-[#140728]/80 border-purple-900/60 text-purple-300 hover:border-purple-600 hover:text-white"
+                          }`}
+                        >
+                          {dancers}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 3. Program / Acts Count */}
+                <div>
+                  <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2.5">
+                    3. Dance Acts / Routines *
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    {[
+                      "Welcome Dance Entry",
+                      "3 Dance Acts",
+                      "4 Grand Stage Acts",
+                      "Full Concert Lineup",
+                    ].map((acts) => {
+                      const isSelected = bookingActs === acts;
+                      return (
+                        <button
+                          key={acts}
+                          type="button"
+                          onClick={() => setBookingActs(acts)}
+                          className={`py-2.5 px-3 rounded-xl border text-[11px] font-bold uppercase tracking-wider text-center transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-fuchsia-600 border-purple-300 text-white shadow-[0_0_15px_rgba(232,121,249,0.5)]"
+                              : "bg-[#140728]/80 border-purple-900/60 text-purple-300 hover:border-purple-600 hover:text-white"
+                          }`}
+                        >
+                          {acts}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 4. Preferred Dance Genres */}
+                <div>
+                  <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2.5">
+                    4. Preferred Dance Style(s) (Select multiple)
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      "Traditional Kandyan",
+                      "Bollywood",
+                      "Hip-Hop / Urban",
+                      "Latin / Ballroom",
+                      "Freestyle Fusion",
+                      "Contemporary",
+                    ].map((style) => {
+                      const isSelected = selectedStyles.includes(style);
+                      return (
+                        <button
+                          key={style}
+                          type="button"
+                          onClick={() => toggleStyle(style)}
+                          className={`px-3.5 py-2 rounded-full border text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-1.5 cursor-pointer ${
+                            isSelected
+                              ? "bg-purple-600/90 border-fuchsia-400 text-white shadow-[0_0_12px_rgba(192,132,252,0.4)]"
+                              : "bg-[#140728] border-purple-900 text-purple-300/80 hover:border-purple-600 hover:text-white"
+                          }`}
+                        >
+                          {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                          <span>{style}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 5. Date & Venue */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2">
+                      Event Date (Optional)
+                    </label>
+                    <input
+                      type="date"
+                      value={bookingDate}
+                      onChange={(e) => setBookingDate(e.target.value)}
+                      className="w-full bg-[#140728] border border-purple-900/80 focus:border-purple-500 rounded-xl px-4 py-3 text-white text-xs focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2">
+                      Location / Venue (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Colombo, Kandy, Galle, etc."
+                      value={bookingLocation}
+                      onChange={(e) => setBookingLocation(e.target.value)}
+                      className="w-full bg-[#140728] border border-purple-900/80 focus:border-purple-500 rounded-xl px-4 py-3 text-white text-xs placeholder:text-purple-400/40 focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                {/* 6. Special Requests */}
+                <div>
+                  <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2">
+                    Special Notes or Song Selection (Optional)
+                  </label>
+                  <textarea
+                    rows={2}
+                    placeholder="Tell us any specific requirements, costume themes, or music..."
+                    value={bookingNotes}
+                    onChange={(e) => setBookingNotes(e.target.value)}
+                    className="w-full bg-[#140728] border border-purple-900/80 focus:border-purple-500 rounded-xl px-4 py-2.5 text-white text-xs placeholder:text-purple-400/40 focus:outline-none resize-none"
+                  />
+                </div>
+              </div>
+
+              {/* Modal Footer / WhatsApp Send CTA */}
+              <div className="mt-8 pt-6 border-t border-purple-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <button
+                  type="button"
+                  onClick={() => setIsBookingModalOpen(false)}
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-purple-950/60 hover:bg-purple-900 border border-purple-800/60 text-purple-300 text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer text-center"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSendBookingToWhatsApp}
+                  className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-[#25D366] via-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-black text-xs sm:text-sm uppercase tracking-widest shadow-[0_0_30px_rgba(37,211,102,0.5)] hover:shadow-[0_0_40px_rgba(37,211,102,0.8)] hover:scale-102 active:scale-98 transition-all cursor-pointer"
+                >
+                  <MessageCircle className="w-5 h-5 text-white" />
+                  <span>Send Booking to WhatsApp</span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

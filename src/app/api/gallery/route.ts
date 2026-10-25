@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, addDoc, query, orderBy, serverTimestamp } from "firebase/firestore";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const galleryRef = collection(db, "gallery");

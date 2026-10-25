@@ -3,6 +3,9 @@ import { db } from "@/lib/firebase";
 import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, doc, getDoc, setDoc } from "firebase/firestore";
 import { Resend } from "resend";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const enrollRef = collection(db, "enrollments");

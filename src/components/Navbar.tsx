@@ -92,6 +92,11 @@ const Navbar = () => {
   const isHomePage = pathname === "/";
   const showDesktopHeader = !isHomePage || isScrolled;
 
+  // Do not render public Navbar in Admin pages
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <>
       {/* ========================================================= */}
