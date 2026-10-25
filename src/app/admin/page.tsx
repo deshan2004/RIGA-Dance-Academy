@@ -5,7 +5,7 @@ import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy, RefreshCw } from "lucide-react";
+import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy, RefreshCw, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import EventsTab from "@/components/admin/EventsTab";
@@ -163,51 +163,59 @@ export default function AdminDashboard() {
 
   const router = useRouter();
 
+  const compressImageFile = (
+    file: File,
+    maxWidth = 900,
+    maxHeight = 900,
+    quality = 0.72,
+    callback: (base64: string) => void
+  ) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+        }
+        canvas.width = Math.round(width);
+        canvas.height = Math.round(height);
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const compressed = canvas.toDataURL("image/jpeg", quality);
+        callback(compressed);
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleClassImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setClassForm(prev => ({ ...prev, image: reader.result as string }));
-      };
-      reader.readAsDataURL(file);
+      compressImageFile(file, 900, 900, 0.72, (compressed) => {
+        setClassForm(prev => ({ ...prev, image: compressed }));
+      });
     }
   };
 
   const handleGalleryImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = new window.Image();
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const MAX_WIDTH = 1200;
-          const MAX_HEIGHT = 1200;
-          let width = img.width;
-          let height = img.height;
-
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else {
-            if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
-              height = MAX_HEIGHT;
-            }
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-          ctx?.drawImage(img, 0, 0, width, height);
-          const compressed = canvas.toDataURL("image/jpeg", 0.78);
-          setGalleryForm(prev => ({ ...prev, image: compressed }));
-        };
-        img.src = event.target?.result as string;
-      };
-      reader.readAsDataURL(file);
+      compressImageFile(file, 900, 900, 0.72, (compressed) => {
+        setGalleryForm(prev => ({ ...prev, image: compressed }));
+      });
     }
   };
 
@@ -368,10 +376,10 @@ export default function AdminDashboard() {
     }
     loadTabData();
 
-    // Live sync polling every 20 seconds so changes by any admin reflect across all accounts
+    // Live sync polling every 8 seconds so changes by any admin reflect across all accounts
     const syncInterval = setInterval(() => {
       loadTabData();
-    }, 20000);
+    }, 8000);
 
     return () => clearInterval(syncInterval);
   }, [activeTab]);
@@ -516,6 +524,9 @@ export default function AdminDashboard() {
       if (res.ok && data.success) {
         setShowGalleryModal(false);
         setGalleryForm({ title: "", category: "Class Practice", image: "", description: "" });
+        if (data.data) {
+          setGalleryItems(prev => [data.data, ...prev.filter(item => item._id !== data.data._id)]);
+        }
         await fetchGalleryItems();
       } else {
         alert(data.error || "Failed to save photo. Please try again.");
@@ -642,24 +653,72 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-academy-black pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-white mb-2">Admin Dashboard</h1>
-            <p className="text-gray-400">Manage student enrollments and applications.</p>
+    <div className="min-h-screen bg-academy-black pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
+      {/* ========================================================= */}
+      {/* ADMIN CONTROL PANEL TOP NAVBAR                            */}
+      {/* ========================================================= */}
+      <header className="fixed top-0 left-0 right-0 z-40 bg-[#090314]/95 backdrop-blur-2xl border-b border-purple-500/30 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
+          
+          {/* BRAND / LOGO & TITLE */}
+          <div className="flex items-center gap-3 shrink-0">
+            <Link href="/" target="_blank" className="flex items-center gap-2.5 group" title="Open Public Website in New Tab">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-purple-700 via-fuchsia-600 to-purple-800 p-1 border border-purple-400/40 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.4)] group-hover:scale-105 transition-transform">
+                <Image
+                  src="/images/riga-original-transparent.png"
+                  alt="RIGA Admin"
+                  width={36}
+                  height={36}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+              <div className="hidden xs:flex flex-col">
+                <span className="text-base sm:text-lg font-black tracking-widest text-metallic-purple uppercase group-hover:text-white transition-colors leading-none">
+                  RIGA ADMIN
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-wider text-purple-300/80 uppercase">
+                  Control Center
+                </span>
+              </div>
+            </Link>
           </div>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full md:w-auto">
-            <div className="bg-academy-gray border border-gray-800 px-6 py-3 rounded-xl flex items-center gap-4 shadow-lg w-full sm:w-auto">
-              <div className="p-3 bg-academy-gold/10 rounded-lg">
-                <Users className="text-academy-gold w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-400">Total Enrollments</p>
-                <p className="text-2xl font-bold text-white">{enrollments.length}</p>
-              </div>
-            </div>
-            
+
+          {/* TOP ADMIN TABS (SCROLLABLE ON MOBILE) */}
+          <nav className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-1 px-1 scrollbar-none max-w-full">
+            {[
+              { id: "enrollments", label: "Enrollments", icon: Calendar },
+              { id: "users", label: "Students", icon: UserCog },
+              { id: "classes", label: "Classes", icon: BookOpen },
+              { id: "inquiries", label: "Inquiries", icon: Mail },
+              { id: "gallery", label: "Gallery", icon: Camera },
+              { id: "announcements", label: "Notices", icon: Bell },
+              { id: "videos", label: "Videos", icon: Video },
+              { id: "events", label: "Events", icon: Star },
+              { id: "rentals", label: "Rentals", icon: ShoppingBag },
+              { id: "stats", label: "Analytics", icon: Trophy },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer shrink-0 ${
+                    isActive
+                      ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)] border border-fuchsia-300 ring-1 ring-fuchsia-400/50"
+                      : "bg-[#14062a]/60 border border-purple-900/60 text-purple-300/70 hover:text-white hover:border-purple-600 hover:bg-purple-900/50"
+                  }`}
+                >
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white" : "text-fuchsia-400"}`} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* ACTIONS & SIGN OUT */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Live Sync */}
             <button
               onClick={async () => {
                 await Promise.all([
@@ -672,158 +731,73 @@ export default function AdminDashboard() {
                   fetchVideos(),
                 ]);
               }}
-              className="bg-purple-900/30 hover:bg-purple-800/60 text-purple-200 border border-purple-500/40 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
-              title="Sync latest data across all admin accounts"
+              className="p-2 sm:px-3 sm:py-2 bg-purple-900/40 hover:bg-purple-800/60 text-purple-200 border border-purple-500/40 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(168,85,247,0.2)] cursor-pointer"
+              title="Sync latest data"
             >
               <RefreshCw className="w-4 h-4 text-fuchsia-400" />
-              <span>Live Sync</span>
+              <span className="hidden sm:inline">Sync</span>
             </button>
 
+            {/* Total Enrollments Badge */}
+            <div className="hidden lg:flex items-center gap-2 bg-[#14062a] border border-purple-800/60 px-3 py-1.5 rounded-xl text-xs font-bold">
+              <Users className="w-3.5 h-3.5 text-fuchsia-400" />
+              <span className="text-purple-300">Total:</span>
+              <span className="text-white font-black">{enrollments.length}</span>
+            </div>
+
+            {/* Sign Out */}
             <button
               onClick={() => {
                 auth.signOut();
                 router.push("/login");
               }}
-              className="bg-red-900/30 hover:bg-red-900/50 text-red-400 border border-red-500/30 px-6 py-3 rounded-xl font-medium transition-all w-full sm:w-auto h-full"
+              className="p-2 sm:px-3 sm:py-2 bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/60 rounded-xl transition-all shadow-sm hover:scale-105 cursor-pointer flex items-center gap-1 text-xs font-bold"
+              title="Sign Out"
             >
-              Sign Out
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Sign Out</span>
             </button>
           </div>
+
         </div>
+      </header>
 
-        {/* Tab Navigation */}
-        <div className="flex space-x-2 mb-8 border-b border-gray-800 pb-px overflow-x-auto whitespace-nowrap no-scrollbar scroll-smooth">
-          <button
-            onClick={() => setActiveTab("enrollments")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "enrollments" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Enrollments
+      <div className="max-w-7xl mx-auto">
+        {/* COMPACT ADMIN SECTION HEADER */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 p-5 sm:p-6 rounded-2xl bg-[#120726]/60 border border-purple-900/40 backdrop-blur-xl">
+          <div>
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-fuchsia-300 text-[10px] font-bold uppercase tracking-widest mb-1.5">
+              <Shield className="w-3.5 h-3.5 text-fuchsia-400" />
+              Academy Administrator Console
             </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("users")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "users" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <UserCog className="w-4 h-4" />
-              Registered Students
-            </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("classes")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "classes" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              Manage Classes
-            </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("inquiries")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "inquiries" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Mail className="w-4 h-4" />
-              Inquiries
-            </div>
-          </button>
+            <h1 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-white">
+              {activeTab === "enrollments" && "Student Enrollments & Applications"}
+              {activeTab === "users" && "Registered Students & Accounts"}
+              {activeTab === "classes" && "Dance Classes & Studio Timetable"}
+              {activeTab === "inquiries" && "General Inquiries & Messages"}
+              {activeTab === "gallery" && "Public Gallery & Performance Photos"}
+              {activeTab === "announcements" && "Student Notices & Announcements"}
+              {activeTab === "videos" && "Practice Videos & Masterclasses"}
+              {activeTab === "events" && "Troupe Events & Showcases"}
+              {activeTab === "rentals" && "Costume Rentals & Inventory"}
+              {activeTab === "stats" && "Academy Performance Analytics"}
+            </h1>
+            <p className="text-purple-200/70 text-xs mt-0.5">
+              Manage your academy records using the top navigation bar with real-time multi-admin synchronization.
+            </p>
+          </div>
 
-          <button
-            onClick={() => setActiveTab("events")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "events" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Star className="w-4 h-4" />
-              Events
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="bg-[#0e041e] border border-purple-800/60 px-4 py-2 rounded-xl flex items-center gap-3">
+              <div className="p-1.5 bg-purple-500/10 rounded-lg">
+                <Users className="text-fuchsia-400 w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-[10px] text-purple-300/70 uppercase font-semibold">Total Students</p>
+                <p className="text-base font-black text-white">{enrollments.length}</p>
+              </div>
             </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("gallery")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "gallery" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Camera className="w-4 h-4" />
-              Gallery &amp; Photos
-            </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("rentals")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "rentals" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <ShoppingBag className="w-4 h-4" />
-              Rentals &amp; Wardrobe
-            </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("announcements")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "announcements" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Bell className="w-4 h-4" />
-              Announcements
-            </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("videos")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "videos" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Video className="w-4 h-4" />
-              Practice Videos
-            </div>
-          </button>
-          <button
-            onClick={() => setActiveTab("stats")}
-            className={`px-5 py-3 font-medium transition-colors border-b-2 shrink-0 ${
-              activeTab === "stats" 
-                ? "text-academy-gold border-academy-gold" 
-                : "text-gray-500 border-transparent hover:text-gray-300"
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Trophy className="w-4 h-4" />
-              Troupe Stats
-            </div>
-          </button>
+          </div>
         </div>
 
         {activeTab === "enrollments" ? (

@@ -54,7 +54,7 @@ export default function GalleryPreview() {
   useEffect(() => {
     async function loadGallery() {
       try {
-        const res = await fetch("/api/gallery");
+        const res = await fetch(`/api/gallery?t=${Date.now()}`, { cache: "no-store" });
         const json = await res.json();
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
           setPhotos(json.data);

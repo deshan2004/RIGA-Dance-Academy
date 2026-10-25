@@ -319,35 +319,78 @@ export default function StudentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#07030e] text-white pt-24 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-[#07030e] text-white pt-24 sm:pt-28 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Ambient Lights */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-purple-900/15 via-fuchsia-900/10 to-transparent rounded-full blur-[180px] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        
-        {/* TOP USER HEADER */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 p-6 rounded-3xl bg-[#120726]/80 border border-purple-900/50 backdrop-blur-xl shadow-[0_0_50px_rgba(9,4,16,0.8)]">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950 border border-purple-800 text-fuchsia-300 text-xs font-bold uppercase tracking-widest mb-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-green-400" />
-              Verified Student Portal
-            </div>
-            <h1 className="text-2xl sm:text-4xl font-black uppercase tracking-wide text-white">
-              My Student <span className="text-metallic-purple">Dashboard</span>
-            </h1>
-            <p className="text-purple-200/70 text-xs sm:text-sm font-light mt-1">
-              Welcome back, <span className="font-bold text-white">{userData?.firstName || "Student"}</span>! Access your schedule, payment receipts, and video lessons.
-            </p>
+      {/* ========================================================= */}
+      {/* STUDENT PORTAL TOP NAVBAR                                 */}
+      {/* ========================================================= */}
+      <header className="fixed top-0 left-0 right-0 z-40 bg-[#090214]/95 backdrop-blur-2xl border-b border-purple-500/30 shadow-[0_4px_30px_rgba(0,0,0,0.7)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
+          
+          {/* BRAND / LOGO & TITLE */}
+          <div className="flex items-center gap-3 shrink-0">
+            <Link href="/" className="flex items-center gap-2.5 group" title="Return to Academy Home">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-purple-700 via-fuchsia-600 to-purple-800 p-1 border border-purple-400/40 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.4)] group-hover:scale-105 transition-transform">
+                <Image
+                  src="/images/riga-original-transparent.png"
+                  alt="RIGA"
+                  width={36}
+                  height={36}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+              <div className="hidden xs:flex flex-col">
+                <span className="text-base sm:text-lg font-black tracking-widest text-metallic-purple uppercase group-hover:text-white transition-colors leading-none">
+                  RIGA
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-wider text-purple-300/80 uppercase">
+                  Student Portal
+                </span>
+              </div>
+            </Link>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="bg-[#080312] border border-purple-900/60 px-5 py-3 rounded-2xl flex items-center gap-3 shadow-inner">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-purple-600 to-fuchsia-600 flex items-center justify-center text-white font-black text-lg shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+          {/* TOP NAVBAR TABS (SCROLLABLE) */}
+          <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-1 px-1 scrollbar-none max-w-full">
+            {[
+              { id: "classes", label: "1. Classes & Schedule", icon: Calendar },
+              { id: "payments", label: "2. Bank Deposit & Slips", icon: CreditCard },
+              { id: "videos", label: "3. Practice Videos", icon: Video },
+              { id: "announcements", label: "4. Announcements", icon: Bell },
+              { id: "profile", label: "My Profile", icon: Settings },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                  className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
+                    isActive
+                      ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.6)] border border-fuchsia-300 ring-1 ring-fuchsia-400/50"
+                      : "bg-[#14062a]/70 border border-purple-900/60 text-purple-300/80 hover:text-white hover:border-purple-600 hover:bg-purple-900/50"
+                  }`}
+                >
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white" : "text-fuchsia-400"}`} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* USER CHIP & SIGN OUT */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            <div className="hidden lg:flex items-center gap-2.5 bg-[#120626]/80 border border-purple-800/50 px-3 py-1.5 rounded-xl">
+              <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-purple-600 to-fuchsia-600 flex items-center justify-center text-white font-black text-xs shadow-sm">
                 {(userData?.firstName?.charAt(0) || currentUser?.email?.charAt(0))?.toUpperCase()}
               </div>
-              <div className="truncate max-w-[180px]">
-                <p className="text-[10px] text-purple-400 uppercase font-bold tracking-wider">Logged in as</p>
-                <p className="font-semibold text-xs text-white truncate">{currentUser?.email}</p>
+              <div className="truncate max-w-[130px]">
+                <p className="font-bold text-[11px] text-white truncate leading-none">
+                  {userData?.firstName || "Student"}
+                </p>
+                <p className="text-[9px] text-purple-300/70 truncate">{currentUser?.email}</p>
               </div>
             </div>
 
@@ -356,81 +399,43 @@ export default function StudentDashboard() {
                 auth.signOut();
                 router.push("/login");
               }}
-              className="p-3.5 bg-red-950/60 hover:bg-red-900 text-red-400 border border-red-800/60 rounded-2xl transition-all shadow-md hover:shadow-red-900/40"
+              className="p-2 sm:px-3 sm:py-2 bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/60 rounded-xl transition-all shadow-sm hover:scale-105 cursor-pointer flex items-center gap-1.5 text-xs font-bold"
               title="Sign Out"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Sign Out</span>
             </button>
           </div>
+
         </div>
+      </header>
 
-        {/* TAB NAVIGATION BAR */}
-        <div className="flex overflow-x-auto gap-2 mb-8 p-1.5 bg-[#080312] border border-purple-900/60 rounded-2xl scrollbar-none">
-          
-          {/* Tab 1: Classes & Schedule */}
-          <button
-            onClick={() => setActiveTab("classes")}
-            className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap ${
-              activeTab === "classes"
-                ? "bg-gradient-to-r from-purple-700 to-fuchsia-700 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)] border border-fuchsia-400/40"
-                : "text-purple-300/70 hover:text-white hover:bg-purple-950/40"
-            }`}
-          >
-            <Calendar className="w-4 h-4 text-fuchsia-300" />
-            <span>1. My Classes & Schedule</span>
-          </button>
+      <div className="max-w-6xl mx-auto relative z-10">
+        
+        {/* COMPACT WELCOME BANNER */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 p-5 sm:p-6 rounded-2xl bg-[#120726]/60 border border-purple-900/40 backdrop-blur-xl">
+          <div>
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold uppercase tracking-widest mb-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              Verified Student Account
+            </div>
+            <h1 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-white">
+              Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-pink-400">{userData?.firstName || "Student"}</span>!
+            </h1>
+            <p className="text-purple-200/70 text-xs mt-0.5">
+              Access your schedule, payment receipts, and video lessons using the top navigation bar.
+            </p>
+          </div>
 
-          {/* Tab 2: Payments & Slip History */}
-          <button
-            onClick={() => setActiveTab("payments")}
-            className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap ${
-              activeTab === "payments"
-                ? "bg-gradient-to-r from-purple-700 to-fuchsia-700 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)] border border-fuchsia-400/40"
-                : "text-purple-300/70 hover:text-white hover:bg-purple-950/40"
-            }`}
-          >
-            <CreditCard className="w-4 h-4 text-fuchsia-300" />
-            <span>2. Bank Deposit & Slips</span>
-          </button>
-
-          {/* Tab 3: Practice Videos */}
-          <button
-            onClick={() => setActiveTab("videos")}
-            className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap ${
-              activeTab === "videos"
-                ? "bg-gradient-to-r from-purple-700 to-fuchsia-700 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)] border border-fuchsia-400/40"
-                : "text-purple-300/70 hover:text-white hover:bg-purple-950/40"
-            }`}
-          >
-            <Video className="w-4 h-4 text-fuchsia-300" />
-            <span>3. Practice Videos & Lessons</span>
-          </button>
-
-          {/* Tab 4: Announcements */}
-          <button
-            onClick={() => setActiveTab("announcements")}
-            className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap ${
-              activeTab === "announcements"
-                ? "bg-gradient-to-r from-purple-700 to-fuchsia-700 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)] border border-fuchsia-400/40"
-                : "text-purple-300/70 hover:text-white hover:bg-purple-950/40"
-            }`}
-          >
-            <Bell className="w-4 h-4 text-fuchsia-300" />
-            <span>4. Announcements</span>
-          </button>
-
-          {/* Tab 5: Profile */}
-          <button
-            onClick={() => setActiveTab("profile")}
-            className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap ${
-              activeTab === "profile"
-                ? "bg-gradient-to-r from-purple-700 to-fuchsia-700 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)] border border-fuchsia-400/40"
-                : "text-purple-300/70 hover:text-white hover:bg-purple-950/40"
-            }`}
-          >
-            <Settings className="w-4 h-4 text-fuchsia-300" />
-            <span>My Profile</span>
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/classes"
+              className="px-4 py-2 rounded-xl bg-purple-950/80 border border-purple-700/50 hover:border-purple-400 text-purple-200 hover:text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5"
+            >
+              <Calendar className="w-3.5 h-3.5 text-purple-400" />
+              <span>Full Schedule</span>
+            </Link>
+          </div>
         </div>
 
         {/* TAB CONTENTS */}
