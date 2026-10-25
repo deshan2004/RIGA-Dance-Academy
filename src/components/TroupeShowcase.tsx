@@ -217,7 +217,7 @@ export default function TroupeShowcase() {
 
             <div className="relative z-10 pt-6 border-t border-purple-900/60 flex flex-col sm:flex-row items-center sm:justify-between gap-4 w-full">
               <Link
-                href="/login"
+                href="/events"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 text-white font-extrabold text-xs uppercase tracking-widest hover:shadow-[0_0_35px_rgba(168,85,247,0.85)] hover:scale-[1.02] active:scale-[0.98] transition-all border border-purple-300/40 text-center"
               >
                 Inquire For Booking

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Bus, Video, PartyPopper, Flame, Zap, Crown, Users, Radio } from "lucide-react";
+import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Video, PartyPopper, Flame, Zap, Crown, Users, Radio } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -23,9 +23,6 @@ export interface ChoreographyPackage {
   dancerCount: number;
   dancersLabel: string;
   actsLabel: string;
-  priceLkr: number;
-  priceFormatted: string;
-  transport: string;
   badge?: string;
   highlighted?: boolean;
   features: string[];
@@ -39,16 +36,13 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "3 Dance Acts",
-    priceLkr: 70000,
-    priceFormatted: "70,000 LKR",
-    transport: "Without Transport",
     badge: "Popular Starter",
     features: [
       "4 Professional Troupe Dancers",
       "3 High-Energy Stage Dance Acts",
-      "Authentic / Modern Custom Costumes",
+      "Authentic & Modern Bespoke Costumes",
       "Customized Music & Song Selection",
-      "Without Transport (Transport charged separately for outstation)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
   {
@@ -57,9 +51,6 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "Welcome Dance + 3 Dance Acts",
-    priceLkr: 80000,
-    priceFormatted: "80,000 LKR",
-    transport: "Without Transport",
     badge: "Welcome Special",
     highlighted: true,
     features: [
@@ -68,7 +59,7 @@ const choreographyPackages: ChoreographyPackage[] = [
       "3 High-Energy Stage Dance Acts",
       "Bespoke Wedding Regalia & Accessories",
       "Customized Music & Entrance Choreography",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
   {
@@ -77,16 +68,13 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "4 Dance Acts",
-    priceLkr: 90000,
-    priceFormatted: "90,000 LKR",
-    transport: "Without Transport",
     badge: "Full 4-Act Set",
     features: [
       "4 Professional Troupe Dancers",
       "4 Complete Grand Stage Acts",
       "Multi-Style Costume Changes",
       "Customized Theme Choreography",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
   {
@@ -95,16 +83,13 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 5,
     dancersLabel: "5 Dancers",
     actsLabel: "3 Dance Acts",
-    priceLkr: 85000,
-    priceFormatted: "85,000 LKR",
-    transport: "Without Transport",
     badge: "Ensemble Choice",
     features: [
       "5 Professional Troupe Dancers",
       "3 High-Energy Stage Dance Acts",
       "Premium Stage Costumes & Props",
       "Center-Stage Solo & Formation Acts",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
   {
@@ -113,9 +98,6 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 5,
     dancersLabel: "5 Dancers",
     actsLabel: "4 Dance Acts",
-    priceLkr: 95000,
-    priceFormatted: "95,000 LKR",
-    transport: "Without Transport",
     badge: "Deluxe 5-Dancer Set",
     highlighted: true,
     features: [
@@ -123,7 +105,7 @@ const choreographyPackages: ChoreographyPackage[] = [
       "4 Complete Grand Stage Acts",
       "Multi-Genre Fusion Performance",
       "Full Accessory & Prop Package",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
   {
@@ -132,16 +114,13 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 6,
     dancersLabel: "6 Dancers",
     actsLabel: "3 Dance Acts",
-    priceLkr: 90000,
-    priceFormatted: "90,000 LKR",
-    transport: "Without Transport",
     badge: "Grand Ensemble",
     features: [
       "6 Professional Troupe Dancers",
       "3 High-Impact Stage Dance Acts",
       "Grand Formation & Visual Impact",
       "Matching Uniform Troupe Outfits",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
   {
@@ -150,9 +129,6 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 6,
     dancersLabel: "6 Dancers",
     actsLabel: "4 Dance Acts",
-    priceLkr: 100000,
-    priceFormatted: "100,000 LKR",
-    transport: "Without Transport",
     badge: "Ultimate Mega Set",
     highlighted: true,
     features: [
@@ -161,7 +137,7 @@ const choreographyPackages: ChoreographyPackage[] = [
       "Complete Multi-Style Wardrobe Changes",
       "Max Impact Stage Sync & Lighting Cue Sync",
       "Dedicated Stage Manager & Coordinator",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
 
@@ -172,16 +148,13 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "3 Dance Acts",
-    priceLkr: 75000,
-    priceFormatted: "75,000 LKR",
-    transport: "Without Transport",
     badge: "Corporate & Stage",
     features: [
       "4 Professional Troupe Dancers",
       "3 High-Impact Event Stage Acts",
       "Custom Corporate & Concert Outfits",
       "High-Energy Group Choreography",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
   {
@@ -190,17 +163,14 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "4 Dance Acts",
-    priceLkr: 85000,
-    priceFormatted: "85,000 LKR",
-    transport: "Without Transport",
     badge: "Full Stage Set",
     highlighted: true,
     features: [
       "4 Professional Troupe Dancers",
       "4 Complete Stage Performances",
       "Multi-Style Costume Wardrobe Changes",
-      "Pyrotechnic / Lighting Sync Option",
-      "Without Transport (Transport charged separately)"
+      "Pyrotechnic & Lighting Cue Coordination",
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
   {
@@ -209,16 +179,13 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 5,
     dancersLabel: "5 Dancers",
     actsLabel: "3 Dance Acts",
-    priceLkr: 95000,
-    priceFormatted: "95,000 LKR",
-    transport: "Without Transport",
     badge: "Grand Show",
     features: [
       "5 Professional Troupe Dancers",
       "3 High-Voltage Stage Dance Acts",
       "Custom Concert / Festival Theme Outfits",
       "Center-Stage Formations & Solo Sequences",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
   {
@@ -227,9 +194,6 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 5,
     dancersLabel: "5 Dancers",
     actsLabel: "4 Dance Acts",
-    priceLkr: 110000,
-    priceFormatted: "110,000 LKR",
-    transport: "Without Transport",
     badge: "Mega Event Set",
     highlighted: true,
     features: [
@@ -238,7 +202,7 @@ const choreographyPackages: ChoreographyPackage[] = [
       "Multi-Genre Fusion (Kandyan / Urban / Bollywood)",
       "Full Wardrobe & Prop Production",
       "Dedicated Troupe Director & Coordinator",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Performance Coverage (Travel quoted per venue)"
     ]
   },
 
@@ -249,9 +213,6 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "With Choreography",
-    priceLkr: 70000,
-    priceFormatted: "70,000 LKR",
-    transport: "Without Transport",
     badge: "Full Choreography",
     highlighted: true,
     features: [
@@ -259,7 +220,7 @@ const choreographyPackages: ChoreographyPackage[] = [
       "Full Original Video Choreography Creation",
       "Concept & Routine Rehearsal Sessions",
       "Styled Video Shoot Costumes",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Location & Studio Shoot Coverage"
     ]
   },
   {
@@ -268,16 +229,13 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 4,
     dancersLabel: "4 Dancers",
     actsLabel: "Without Choreography",
-    priceLkr: 60000,
-    priceFormatted: "60,000 LKR",
-    transport: "Without Transport",
     badge: "Dancers Only",
     features: [
       "4 Professional Backing Dancers",
       "Execution of Director's Routine / Placement",
-      "On-set Costume Wardrobe Coordination",
+      "On-Set Costume Wardrobe Coordination",
       "Full Shoot Day Availability",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Location & Studio Shoot Coverage"
     ]
   },
   {
@@ -286,9 +244,6 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 5,
     dancersLabel: "5 Dancers",
     actsLabel: "With Choreography",
-    priceLkr: 80000,
-    priceFormatted: "80,000 LKR",
-    transport: "Without Transport",
     badge: "Full Choreography",
     highlighted: true,
     features: [
@@ -296,7 +251,7 @@ const choreographyPackages: ChoreographyPackage[] = [
       "Bespoke Video Choreography & Hook Step Creation",
       "Group Formation & Solo Framing Sequences",
       "Themed Costume Wardrobe",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Location & Studio Shoot Coverage"
     ]
   },
   {
@@ -305,16 +260,13 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 5,
     dancersLabel: "5 Dancers",
     actsLabel: "Without Choreography",
-    priceLkr: 70000,
-    priceFormatted: "70,000 LKR",
-    transport: "Without Transport",
     badge: "Dancers Only",
     features: [
       "5 Professional Backing Dancers",
       "Execution of Pre-existing Choreography",
       "Camera Blocking & Placement Readiness",
       "Full Shoot Day Coverage",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Location & Studio Shoot Coverage"
     ]
   },
   {
@@ -323,9 +275,6 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 6,
     dancersLabel: "6 Dancers",
     actsLabel: "With Choreography",
-    priceLkr: 90000,
-    priceFormatted: "90,000 LKR",
-    transport: "Without Transport",
     badge: "Grand Video Set",
     highlighted: true,
     features: [
@@ -333,7 +282,7 @@ const choreographyPackages: ChoreographyPackage[] = [
       "Master Choreography & Hook Movement Design",
       "Pre-Production Rehearsals & Camera Blocking",
       "Premium Styling & Wardrobe Outfits",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Location & Studio Shoot Coverage"
     ]
   },
   {
@@ -342,16 +291,13 @@ const choreographyPackages: ChoreographyPackage[] = [
     dancerCount: 6,
     dancersLabel: "6 Dancers",
     actsLabel: "Without Choreography",
-    priceLkr: 80000,
-    priceFormatted: "80,000 LKR",
-    transport: "Without Transport",
     badge: "Dancers Only",
     features: [
       "6 Professional Backing Dancers",
       "High-Impact Group Formations for Camera",
       "Flexible Movement Adaptation to Director Cues",
       "Full Shoot Day Coverage",
-      "Without Transport (Transport charged separately)"
+      "Islandwide Location & Studio Shoot Coverage"
     ]
   }
 ];
@@ -392,8 +338,14 @@ export default function EventsPage() {
     : categoryPackages.filter(p => p.dancerCount === selectedDancerFilter);
 
   const getWhatsAppLink = (pkg: ChoreographyPackage) => {
-    const categoryName = pkg.category === "weddings" ? "Weddings" : pkg.category === "events" ? "Events" : "Music Video";
-    const message = `Hi RIGA Dance Academy! I would like to inquire about booking the ${categoryName} Package: ${pkg.dancersLabel} - ${pkg.actsLabel} (${pkg.priceFormatted}). Please share availability and details!`;
+    const categoryName =
+      pkg.category === "weddings"
+        ? "Weddings"
+        : pkg.category === "events"
+        ? "Corporate & Stage Events"
+        : "Music Video Production";
+
+    const message = `Hello RIGA Dance Academy! 👋\n\nI would like to inquire about booking the *${categoryName}* Choreography Package:\n\n• Troupe Size: ${pkg.dancersLabel}\n• Program: ${pkg.actsLabel}\n\nPlease share the quote, date availability, and booking process. Thank you!`;
     return `https://wa.me/94763401285?text=${encodeURIComponent(message)}`;
   };
 
@@ -437,7 +389,7 @@ export default function EventsPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-6xl font-black mb-6 tracking-tight uppercase"
           >
-            Troupe & Performance <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-purple-500 drop-shadow-[0_0_25px_rgba(192,132,252,0.4)]">Choreography Rates</span>
+            Troupe & Performance <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-purple-500 drop-shadow-[0_0_25px_rgba(192,132,252,0.4)]">Choreography Packages</span>
           </motion.h1>
           
           <motion.p 
@@ -446,7 +398,7 @@ export default function EventsPage() {
             transition={{ delay: 0.2 }}
             className="text-base sm:text-lg text-purple-200/80 max-w-3xl mx-auto mb-10 leading-relaxed"
           >
-            Book Sri Lanka&apos;s premier dance ensemble for Weddings, Corporate Events, and Music Video Shoots. Explore our official rates with customized choreography, authentic stage regalia, and high-energy troupe performances.
+            Book Sri Lanka&apos;s premier dance ensemble for Weddings, Corporate Events, and Music Video Shoots. Explore our curated troupe packages with customized choreography, authentic stage regalia, and high-energy live performances. Book directly via WhatsApp for tailored quotations and date reservations.
           </motion.p>
 
           {/* --- MAIN TROUPE VISUAL ARTWORK (ZERO BOX OUTLINE - SEAMLESS INTEGRATION) --- */}
@@ -510,7 +462,7 @@ export default function EventsPage() {
         <div className="flex flex-col items-center text-center mb-10">
           <div className="inline-flex items-center gap-2 text-fuchsia-300 mb-2 font-bold tracking-widest uppercase text-xs">
             <Heart className="w-4 h-4 text-pink-500 fill-pink-500/30" />
-            Official Package Pricing
+            Official Troupe Packages
           </div>
           
           {/* Main Category Tabs: WEDDINGS | EVENTS | MUSIC VIDEO */}
@@ -633,17 +585,24 @@ export default function EventsPage() {
                     <Users className="w-4 h-4 text-fuchsia-400 shrink-0" />
                     <span>{pkg.dancersLabel}</span>
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide mb-3">
+                  <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide mb-4">
                     {pkg.actsLabel}
                   </h3>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-fuchsia-300 drop-shadow-[0_0_15px_rgba(192,132,252,0.5)]">
-                      Rs. {pkg.priceLkr.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-amber-300/90 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-md">
-                    <Bus className="w-3.5 h-3.5" />
-                    <span>{pkg.transport}</span>
+                  
+                  {/* Quote on Request Badge */}
+                  <div className="py-2.5 px-3.5 rounded-xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300/70 block">
+                        Booking &amp; Pricing
+                      </span>
+                      <span className="text-sm sm:text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-300 via-purple-200 to-white">
+                        Quote on Request
+                      </span>
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-full">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Direct WhatsApp</span>
+                    </div>
                   </div>
                 </div>
 
@@ -665,8 +624,8 @@ export default function EventsPage() {
                 rel="noopener noreferrer"
                 className={`w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full text-xs font-extrabold uppercase tracking-widest transition-all duration-300 ${
                   pkg.highlighted
-                    ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white shadow-[0_0_25px_rgba(192,132,252,0.5)] hover:shadow-[0_0_40px_rgba(192,132,252,0.8)] border border-purple-300/40"
-                    : "bg-purple-950/80 hover:bg-purple-600 border border-purple-500/40 hover:border-purple-400 text-purple-100 hover:text-white shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_30px_rgba(168,85,247,0.5)]"
+                    ? "bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white shadow-[0_0_25px_rgba(16,185,129,0.5)] hover:shadow-[0_0_40px_rgba(16,185,129,0.8)] border border-emerald-300/40 hover:scale-[1.02]"
+                    : "bg-[#25D366]/20 hover:bg-[#25D366] border border-[#25D366]/40 hover:border-[#25D366] text-emerald-300 hover:text-white shadow-[0_0_15px_rgba(37,211,102,0.2)] hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] hover:scale-[1.02]"
                 }`}
               >
                 <MessageCircle className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
@@ -674,6 +633,31 @@ export default function EventsPage() {
               </a>
             </motion.div>
           ))}
+        </div>
+
+        {/* Custom Inquiry WhatsApp Banner */}
+        <div className="mt-12 rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-[#170833] via-[#210947] to-[#170833] border border-purple-500/40 shadow-[0_0_35px_rgba(168,85,247,0.25)] flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <div className="inline-flex items-center gap-2 text-fuchsia-300 text-xs font-bold uppercase tracking-wider mb-2">
+              <Sparkles className="w-4 h-4 text-fuchsia-400" />
+              Bespoke Routines &amp; Full Troupe Production
+            </div>
+            <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
+              Need a Custom Routine or Large Ensemble?
+            </h3>
+            <p className="text-sm text-purple-200/80 max-w-xl mt-1">
+              Have a unique wedding entrance concept, corporate theme, or music video shoot? Contact our Troupe Director on WhatsApp for tailored choreography planning and a direct quotation.
+            </p>
+          </div>
+          <a
+            href="https://wa.me/94763401285?text=Hello%20RIGA%20Dance%20Academy!%20I%20would%20like%20to%20discuss%20a%20custom%20choreography%20booking%20for%20my%20event."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-gradient-to-r from-[#25D366] to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white text-xs font-black uppercase tracking-widest shadow-[0_0_25px_rgba(37,211,102,0.5)] hover:scale-105 transition-all shrink-0"
+          >
+            <MessageCircle className="w-5 h-5" />
+            <span>Chat Troupe Director</span>
+          </a>
         </div>
       </section>
 
