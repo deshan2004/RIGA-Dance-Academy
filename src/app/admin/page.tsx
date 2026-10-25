@@ -5,7 +5,7 @@ import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy, RefreshCw, LogOut } from "lucide-react";
+import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy, RefreshCw, LogOut, Globe, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import EventsTab from "@/components/admin/EventsTab";
@@ -605,6 +605,23 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleClearAllClasses = async () => {
+    if (!confirm("Are you sure you want to remove ALL classes from the schedule?")) return;
+    try {
+      const res = await fetch("/api/classes", { method: "DELETE" });
+      if (res.ok) {
+        setClasses([]);
+      } else {
+        for (const cls of classes) {
+          if (cls._id) await fetch(`/api/classes/${cls._id}`, { method: "DELETE" });
+        }
+        setClasses([]);
+      }
+    } catch (error) {
+      console.error("Error clearing all classes:", error);
+    }
+  };
+
   const handleDeleteClass = async (id: string) => {
     if (!confirm("Are you sure you want to delete this class?")) return;
     try {
@@ -657,12 +674,15 @@ export default function AdminDashboard() {
       {/* ========================================================= */}
       {/* ADMIN CONTROL PANEL TOP NAVBAR                            */}
       {/* ========================================================= */}
+      {/* ========================================================= */}
+      {/* ADMIN CONTROL CENTER TOP NAVBAR                           */}
+      {/* ========================================================= */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-[#090314]/95 backdrop-blur-2xl border-b border-purple-500/30 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
           
           {/* BRAND / LOGO & TITLE */}
           <div className="flex items-center gap-3 shrink-0">
-            <Link href="/" target="_blank" className="flex items-center gap-2.5 group" title="Open Public Website in New Tab">
+            <Link href="/" className="flex items-center gap-2.5 group" title="Return to Academy Home">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-purple-700 via-fuchsia-600 to-purple-800 p-1 border border-purple-400/40 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.4)] group-hover:scale-105 transition-transform">
                 <Image
                   src="/images/riga-original-transparent.png"
@@ -683,38 +703,18 @@ export default function AdminDashboard() {
             </Link>
           </div>
 
-          {/* TOP ADMIN TABS (SCROLLABLE ON MOBILE) */}
-          <nav className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-1 px-1 scrollbar-none max-w-full">
-            {[
-              { id: "enrollments", label: "Enrollments", icon: Calendar },
-              { id: "users", label: "Students", icon: UserCog },
-              { id: "classes", label: "Classes", icon: BookOpen },
-              { id: "inquiries", label: "Inquiries", icon: Mail },
-              { id: "gallery", label: "Gallery", icon: Camera },
-              { id: "announcements", label: "Notices", icon: Bell },
-              { id: "videos", label: "Videos", icon: Video },
-              { id: "events", label: "Events", icon: Star },
-              { id: "rentals", label: "Rentals", icon: ShoppingBag },
-              { id: "stats", label: "Analytics", icon: Trophy },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                  className={`px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer shrink-0 ${
-                    isActive
-                      ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)] border border-fuchsia-300 ring-1 ring-fuchsia-400/50"
-                      : "bg-[#14062a]/60 border border-purple-900/60 text-purple-300/70 hover:text-white hover:border-purple-600 hover:bg-purple-900/50"
-                  }`}
-                >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white" : "text-fuchsia-400"}`} />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </nav>
+          {/* TWO-WAY SEAMLESS WEBSITE NAVIGATION (WITHOUT SIGNING OUT) */}
+          <div className="flex items-center">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-purple-950/80 to-[#190636]/90 hover:from-purple-900 hover:to-fuchsia-950 border border-purple-500/40 hover:border-purple-300 text-purple-200 hover:text-white text-xs font-black uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-105 active:scale-95 group"
+              title="Visit Live Academy Website without signing out"
+            >
+              <Globe className="w-4 h-4 text-fuchsia-400 group-hover:rotate-12 transition-transform" />
+              <span>Live Website</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-purple-400 group-hover:text-white transition-colors" />
+            </Link>
+          </div>
 
           {/* ACTIONS & SIGN OUT */}
           <div className="flex items-center gap-2 shrink-0">
@@ -751,10 +751,10 @@ export default function AdminDashboard() {
                 auth.signOut();
                 router.push("/login");
               }}
-              className="p-2 sm:px-3 sm:py-2 bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/60 rounded-xl transition-all shadow-sm hover:scale-105 cursor-pointer flex items-center gap-1 text-xs font-bold"
+              className="px-3 py-2 bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/60 rounded-xl transition-all shadow-sm hover:scale-105 cursor-pointer flex items-center gap-1.5 text-xs font-bold"
               title="Sign Out"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Sign Out</span>
             </button>
           </div>
@@ -798,6 +798,50 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* ========================================================= */}
+        {/* MODERN INTERACTIVE ADMIN TABS DOCK                        */}
+        {/* ========================================================= */}
+        <div className="mb-8 p-1.5 sm:p-2 rounded-2xl bg-[#0e041e]/90 border border-purple-500/30 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.6)]">
+          <nav className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto p-1 scrollbar-none" aria-label="Admin Navigation Tabs">
+            {[
+              { id: "enrollments", label: "Enrollments", count: enrollments.length, icon: Calendar },
+              { id: "users", label: "Students", count: registeredUsers.length, icon: UserCog },
+              { id: "classes", label: "Classes", count: classes.length, icon: BookOpen },
+              { id: "inquiries", label: "Inquiries", count: inquiries.length, icon: Mail },
+              { id: "gallery", label: "Gallery", count: galleryItems.length, icon: Camera },
+              { id: "announcements", label: "Notices", count: announcements.length, icon: Bell },
+              { id: "videos", label: "Videos", count: practiceVideos.length, icon: Video },
+              { id: "events", label: "Events", icon: Star },
+              { id: "rentals", label: "Rentals", icon: ShoppingBag },
+              { id: "stats", label: "Analytics", icon: Trophy },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                  className={`relative px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 whitespace-nowrap cursor-pointer select-none group shrink-0 ${
+                    isActive
+                      ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)] border border-fuchsia-300 ring-1 ring-fuchsia-400/50"
+                      : "bg-[#14062a]/60 border border-purple-900/60 text-purple-300/70 hover:text-white hover:border-purple-600 hover:bg-purple-900/50"
+                  }`}
+                >
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white" : "text-fuchsia-400 group-hover:text-white"}`} />
+                  <span>{tab.label}</span>
+                  {typeof tab.count === "number" && (
+                    <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
+                      isActive ? "bg-white/25 text-white" : "bg-purple-950 text-purple-300 border border-purple-800"
+                    }`}>
+                      {tab.count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {activeTab === "enrollments" ? (
@@ -1044,14 +1088,28 @@ export default function AdminDashboard() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-academy-gray border border-gray-800 rounded-3xl shadow-2xl overflow-hidden p-6"
         >
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-white">Class Schedule</h2>
-            <button
-              onClick={() => openClassModal()}
-              className="bg-academy-gold hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors"
-            >
-              <Plus className="w-4 h-4" /> Add Class
-            </button>
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-white">Class Schedule</h2>
+              <p className="text-xs text-purple-300/70">Manage all academy dance programs & studio timetable</p>
+            </div>
+            <div className="flex items-center gap-2">
+              {classes.length > 0 && (
+                <button
+                  onClick={handleClearAllClasses}
+                  className="bg-red-950/70 hover:bg-red-900 text-red-300 border border-red-700/60 font-bold py-2 px-3.5 rounded-xl flex items-center gap-2 transition-all text-xs shadow-sm hover:scale-105 active:scale-95 cursor-pointer"
+                  title="Remove all classes from schedule"
+                >
+                  <Trash2 className="w-4 h-4" /> Remove All Classes
+                </button>
+              )}
+              <button
+                onClick={() => openClassModal()}
+                className="bg-academy-gold hover:bg-yellow-500 text-black font-extrabold py-2 px-4 rounded-xl flex items-center gap-2 transition-all text-xs shadow-[0_0_15px_rgba(234,179,8,0.4)] hover:scale-105 active:scale-95 cursor-pointer"
+              >
+                <Plus className="w-4 h-4" /> Add Class
+              </button>
+            </div>
           </div>
           
           <div className="overflow-x-auto">

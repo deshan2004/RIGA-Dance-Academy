@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Calendar, User as UserIcon, Mail, Settings, Phone, LogOut,
   CreditCard, Video, Bell, Clock, MapPin, Sparkles, FileText, Check, Copy,
-  Play, Building, Eye, ShieldCheck, X, ChevronRight
+  Play, Building, Eye, ShieldCheck, X, ChevronRight, Globe, ArrowUpRight
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -352,37 +352,22 @@ export default function StudentDashboard() {
             </Link>
           </div>
 
-          {/* TOP NAVBAR TABS (SCROLLABLE) */}
-          <nav className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-1 px-1 scrollbar-none max-w-full">
-            {[
-              { id: "classes", label: "1. Classes & Schedule", icon: Calendar },
-              { id: "payments", label: "2. Bank Deposit & Slips", icon: CreditCard },
-              { id: "videos", label: "3. Practice Videos", icon: Video },
-              { id: "announcements", label: "4. Announcements", icon: Bell },
-              { id: "profile", label: "My Profile", icon: Settings },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                  className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0 ${
-                    isActive
-                      ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.6)] border border-fuchsia-300 ring-1 ring-fuchsia-400/50"
-                      : "bg-[#14062a]/70 border border-purple-900/60 text-purple-300/80 hover:text-white hover:border-purple-600 hover:bg-purple-900/50"
-                  }`}
-                >
-                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white" : "text-fuchsia-400"}`} />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </nav>
+          {/* TWO-WAY SEAMLESS WEBSITE NAVIGATION (WITHOUT SIGNING OUT) */}
+          <div className="flex items-center">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-purple-950/80 to-[#190636]/90 hover:from-purple-900 hover:to-fuchsia-950 border border-purple-500/40 hover:border-purple-300 text-purple-200 hover:text-white text-xs font-black uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-105 active:scale-95 group"
+              title="Visit Academy Website without signing out"
+            >
+              <Globe className="w-4 h-4 text-fuchsia-400 group-hover:rotate-12 transition-transform" />
+              <span>Academy Website</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-purple-400 group-hover:text-white transition-colors" />
+            </Link>
+          </div>
 
           {/* USER CHIP & SIGN OUT */}
           <div className="flex items-center gap-2.5 shrink-0">
-            <div className="hidden lg:flex items-center gap-2.5 bg-[#120626]/80 border border-purple-800/50 px-3 py-1.5 rounded-xl">
+            <div className="hidden md:flex items-center gap-2.5 bg-[#120626]/80 border border-purple-800/50 px-3 py-1.5 rounded-xl">
               <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-purple-600 to-fuchsia-600 flex items-center justify-center text-white font-black text-xs shadow-sm">
                 {(userData?.firstName?.charAt(0) || currentUser?.email?.charAt(0))?.toUpperCase()}
               </div>
@@ -399,10 +384,10 @@ export default function StudentDashboard() {
                 auth.signOut();
                 router.push("/login");
               }}
-              className="p-2 sm:px-3 sm:py-2 bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/60 rounded-xl transition-all shadow-sm hover:scale-105 cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              className="px-3 py-2 bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/60 rounded-xl transition-all shadow-sm hover:scale-105 cursor-pointer flex items-center gap-1.5 text-xs font-bold"
               title="Sign Out"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Sign Out</span>
             </button>
           </div>
@@ -413,7 +398,7 @@ export default function StudentDashboard() {
       <div className="max-w-6xl mx-auto relative z-10">
         
         {/* COMPACT WELCOME BANNER */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 p-5 sm:p-6 rounded-2xl bg-[#120726]/60 border border-purple-900/40 backdrop-blur-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 p-5 sm:p-6 rounded-2xl bg-[#120726]/60 border border-purple-900/40 backdrop-blur-xl">
           <div>
             <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold uppercase tracking-widest mb-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
@@ -423,7 +408,7 @@ export default function StudentDashboard() {
               Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-fuchsia-400 to-pink-400">{userData?.firstName || "Student"}</span>!
             </h1>
             <p className="text-purple-200/70 text-xs mt-0.5">
-              Access your schedule, payment receipts, and video lessons using the top navigation bar.
+              Access your schedule, payment receipts, and video lessons using the interactive dashboard controller below.
             </p>
           </div>
 
@@ -436,6 +421,45 @@ export default function StudentDashboard() {
               <span>Full Schedule</span>
             </Link>
           </div>
+        </div>
+
+        {/* ========================================================= */}
+        {/* LUXURY INTERACTIVE FLOATING TAB DOCK                      */}
+        {/* ========================================================= */}
+        <div className="mb-8 p-1.5 sm:p-2 rounded-2xl sm:rounded-3xl bg-[#0e041e]/90 border border-purple-500/30 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.6)]">
+          <nav className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 sm:gap-2 p-1" aria-label="Student Portal Sections">
+            {[
+              { id: "classes", label: "Classes & Schedule", step: "01", icon: Calendar },
+              { id: "payments", label: "Bank Slip & Fees", step: "02", icon: CreditCard },
+              { id: "videos", label: "Practice Videos", step: "03", icon: Video },
+              { id: "announcements", label: "Announcements", step: "04", icon: Bell },
+              { id: "profile", label: "My Profile", step: "05", icon: Settings },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                  className={`relative py-3 sm:py-3.5 px-3 sm:px-4 rounded-xl sm:rounded-2xl text-xs font-black uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2.5 whitespace-nowrap cursor-pointer select-none group ${
+                    isActive
+                      ? "text-white shadow-[0_0_25px_rgba(168,85,247,0.55)] border border-fuchsia-300/80 bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-700"
+                      : "text-purple-300/70 hover:text-white bg-purple-950/20 hover:bg-purple-900/40 border border-transparent hover:border-purple-600/40"
+                  }`}
+                >
+                  <div className={`p-1.5 rounded-lg transition-colors ${
+                    isActive ? "bg-white/20 text-white" : "bg-purple-900/40 text-fuchsia-400 group-hover:text-white group-hover:bg-purple-800/60"
+                  }`}>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="text-[9px] text-fuchsia-300/70 font-semibold leading-tight">Step {tab.step}</span>
+                    <span className="leading-tight font-extrabold">{tab.label}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </nav>
         </div>
 
         {/* TAB CONTENTS */}
@@ -492,13 +516,13 @@ export default function StudentDashboard() {
 
                   const scheduleText = matchedClass
                     ? `${matchedClass.day} ${matchedClass.time ? `(${matchedClass.time})` : ""}`
-                    : "Saturdays & Sundays (10:00 AM – 12:00 PM)";
+                    : "Schedule details to be announced";
 
                   const hallText = matchedClass?.hall_no
                     ? `Hall ${matchedClass.hall_no}`
-                    : "Studio Hall A (Main Stage Floor)";
+                    : "Hall Assignment Pending";
 
-                  const instructorText = matchedClass?.instructor_name || "Guru K. Jayawardena";
+                  const instructorText = matchedClass?.instructor_name || "Academy Instructor";
 
                   return (
                     <motion.div
