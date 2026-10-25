@@ -6,7 +6,7 @@ import {
   CheckCircle, AlertCircle, UserPlus, LogIn, Send, Upload, 
   CreditCard, Building, Eye, EyeOff, Lock, Mail, Copy, Check, 
   ChevronRight, ChevronLeft, Sparkles, User, MapPin, X, FileText,
-  ShieldCheck, RotateCw
+  ShieldCheck, RotateCw, MessageCircle
 } from "lucide-react";
 import { 
   signInWithEmailAndPassword, 
@@ -1291,58 +1291,45 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                       <p className="text-xs text-purple-300/70 font-light">Deposit registration fees & upload bank slip for approval</p>
                     </div>
 
-                    {/* INTERACTIVE COPYABLE BANK DETAILS CARD */}
-                    <div className="p-6 rounded-2xl bg-gradient-to-r from-[#190933] via-[#240b49] to-[#190933] border border-purple-700/60 shadow-[0_0_25px_rgba(168,85,247,0.2)]">
-                      <div className="flex items-center justify-between mb-4 pb-3 border-b border-purple-800/50">
-                        <div className="flex items-center gap-2 text-fuchsia-300 font-extrabold text-xs uppercase tracking-wider">
-                          <Building className="w-4 h-4 text-fuchsia-400" />
-                          Official RIGA Bank Deposit Info
+                    {/* WHATSAPP CONTACT CARD FOR OFFICIAL BANK DETAILS */}
+                    <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-[#072418] via-[#0d3423] to-[#072418] border border-emerald-500/60 shadow-[0_0_30px_rgba(16,185,129,0.22)]">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-emerald-800/50">
+                        <div className="flex items-start sm:items-center gap-3">
+                          <div className="w-11 h-11 rounded-2xl bg-emerald-950 border border-emerald-500/50 flex items-center justify-center text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.35)] shrink-0">
+                            <MessageCircle className="w-5 h-5 text-emerald-300" />
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h4 className="text-white font-extrabold text-sm uppercase tracking-wide">
+                                Official Bank Deposit Info
+                              </h4>
+                              <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                                WhatsApp Direct
+                              </span>
+                            </div>
+                            <p className="text-emerald-200/80 text-xs font-light mt-0.5">
+                              Request our official academy bank account & batch registration fee via WhatsApp
+                            </p>
+                          </div>
                         </div>
-                        <span className="text-[10px] text-purple-300/70 bg-purple-950 px-2.5 py-1 rounded-full border border-purple-800/60 font-semibold">
-                          1-Click Copy Supported
-                        </span>
+
+                        <a
+                          href="https://wa.me/94763401285?text=Hello%20RIGA%20Dance%20Academy%2C%20I%20am%20registering%20as%20a%20new%20student%20and%20would%20like%20to%20get%20the%20official%20bank%20account%20details%20for%20my%20registration%20deposit."
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 via-green-500 to-emerald-600 hover:from-emerald-500 hover:to-green-400 text-white font-black text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(16,185,129,0.45)] hover:scale-105 active:scale-95 transition-all shrink-0 cursor-pointer"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                          <span>Get Bank Details on WhatsApp</span>
+                        </a>
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                        <div className="bg-[#080312]/80 p-3 rounded-xl border border-purple-900/50">
-                          <span className="text-purple-400/60 block text-[9px] uppercase font-bold mb-0.5">Bank</span>
-                          <span className="text-white font-bold text-xs">Commercial Bank</span>
-                        </div>
-
-                        <div className="bg-[#080312]/80 p-3 rounded-xl border border-purple-900/50 flex items-center justify-between">
-                          <div>
-                            <span className="text-purple-400/60 block text-[9px] uppercase font-bold mb-0.5">Account Name</span>
-                            <span className="text-white font-bold text-xs truncate max-w-[110px] block">RIGA Dance Academy</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => handleCopy("RIGA Dance Academy", "name")}
-                            className="p-1.5 rounded-lg bg-purple-950 hover:bg-purple-900 text-purple-300 hover:text-white border border-purple-800/60 transition-colors"
-                            title="Copy Account Name"
-                          >
-                            {copiedField === "name" ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
-                          </button>
-                        </div>
-
-                        <div className="bg-[#080312]/80 p-3 rounded-xl border border-purple-900/50 flex items-center justify-between">
-                          <div>
-                            <span className="text-purple-400/60 block text-[9px] uppercase font-bold mb-0.5">Account No.</span>
-                            <span className="text-fuchsia-300 font-black tracking-wider text-xs">8002 9384 1029</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => handleCopy("800293841029", "no")}
-                            className="p-1.5 rounded-lg bg-purple-950 hover:bg-purple-900 text-purple-300 hover:text-white border border-purple-800/60 transition-colors"
-                            title="Copy Account Number"
-                          >
-                            {copiedField === "no" ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
-                          </button>
-                        </div>
-
-                        <div className="bg-[#080312]/80 p-3 rounded-xl border border-purple-900/50">
-                          <span className="text-purple-400/60 block text-[9px] uppercase font-bold mb-0.5">Branch</span>
-                          <span className="text-white font-bold text-xs">Colombo Main</span>
-                        </div>
+                      <div className="bg-[#04160f]/80 p-3.5 rounded-xl border border-emerald-800/40 flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-emerald-400 mt-1.5 shrink-0 animate-pulse" />
+                        <p className="text-xs text-emerald-200/90 leading-relaxed font-light">
+                          <strong className="text-emerald-300 font-bold">Important Notice: </strong> 
+                          To verify batch slots and fee schedules for your selected dance style, please message our official administration WhatsApp hotline (<span className="text-white font-semibold font-mono">+94 76 340 1285</span>). Once your deposit or bank transfer is complete, please upload your deposit receipt or enter the reference number below to finalize your registration.
+                        </p>
                       </div>
                     </div>
 
