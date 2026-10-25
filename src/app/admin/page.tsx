@@ -657,6 +657,18 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleDeleteInquiry = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this inquiry message?")) return;
+    try {
+      const res = await fetch(`/api/contact/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setInquiries(inquiries.filter(inq => inq._id !== id));
+      }
+    } catch (error) {
+      console.error("Error deleting inquiry:", error);
+    }
+  };
+
   const openClassModal = (cls: ClassItem | null = null) => {
     if (cls) {
       setEditingClass(cls);
@@ -1206,12 +1218,13 @@ export default function AdminDashboard() {
                   <th className="px-6 py-4 font-medium border-b border-gray-800">Subject</th>
                   <th className="px-6 py-4 font-medium border-b border-gray-800">Message</th>
                   <th className="px-6 py-4 font-medium border-b border-gray-800">Date</th>
+                  <th className="px-6 py-4 font-medium border-b border-gray-800 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
                 {inquiries.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                    <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
                       No inquiries found.
                     </td>
                   </tr>
@@ -1221,19 +1234,33 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4">
                         <div className="text-sm font-medium text-white">{inq.name}</div>
                         <div className="text-sm text-gray-400 flex items-center gap-1 mt-1">
-                          <Mail className="w-3 h-3" /> {inq.email}
+                          <Mail className="w-3 h-3 text-purple-400" /> {inq.email}
                         </div>
+                        {inq.phone && (
+                          <div className="text-xs text-purple-300/80 flex items-center gap-1 mt-0.5 font-mono">
+                            <Phone className="w-3 h-3 text-fuchsia-400" /> {inq.phone}
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-white text-sm font-medium">
                         {inq.subject}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-300 max-w-xs truncate">
+                      <td className="px-6 py-4 text-sm text-gray-300 max-w-sm whitespace-pre-wrap">
                         {inq.message}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-400">
+                      <td className="px-6 py-4 text-sm text-gray-400 whitespace-nowrap">
                         {typeof inq.createdAt === "object" && inq.createdAt && "seconds" in inq.createdAt
                           ? new Date(inq.createdAt.seconds * 1000).toLocaleDateString()
                           : "Unknown"}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <button
+                          onClick={() => handleDeleteInquiry(inq._id)}
+                          className="p-2 bg-red-900/30 text-red-400 hover:bg-red-900/60 rounded-md transition-colors"
+                          title="Delete inquiry"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </td>
                     </tr>
                   ))
