@@ -112,7 +112,30 @@ export default function AdminDashboard() {
   const [announcements, setAnnouncements] = useState<AnnouncementItem[]>([]);
   const [practiceVideos, setPracticeVideos] = useState<VideoItem[]>([]);
 
-  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery" | "rentals" | "announcements" | "videos" | "stats">("enrollments");
+  const [activeTab, setActiveTab] = useState<"enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery" | "rentals" | "announcements" | "videos" | "stats">(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = sessionStorage.getItem("riga_admin_tab");
+        const validTabs = ["enrollments", "users", "classes", "inquiries", "events", "gallery", "rentals", "announcements", "videos", "stats"];
+        if (saved && validTabs.includes(saved)) {
+          return saved as "enrollments" | "users" | "classes" | "inquiries" | "events" | "gallery" | "rentals" | "announcements" | "videos" | "stats";
+        }
+      } catch {
+        // ignore
+      }
+    }
+    return "enrollments";
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        sessionStorage.setItem("riga_admin_tab", activeTab);
+      } catch {
+        // ignore
+      }
+    }
+  }, [activeTab]);
   const [loading, setLoading] = useState(true);
   const [selectedSlip, setSelectedSlip] = useState<EnrollmentItem | null>(null);
 

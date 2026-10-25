@@ -115,7 +115,30 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [activeTab, setActiveTab] = useState<"classes" | "payments" | "videos" | "announcements" | "profile">("classes");
+  const [activeTab, setActiveTab] = useState<"classes" | "payments" | "videos" | "announcements" | "profile">(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = sessionStorage.getItem("riga_student_tab");
+        const validTabs = ["classes", "payments", "videos", "announcements", "profile"];
+        if (saved && validTabs.includes(saved)) {
+          return saved as "classes" | "payments" | "videos" | "announcements" | "profile";
+        }
+      } catch {
+        // ignore
+      }
+    }
+    return "classes";
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        sessionStorage.setItem("riga_student_tab", activeTab);
+      } catch {
+        // ignore
+      }
+    }
+  }, [activeTab]);
   
   // Dynamic Videos, Announcements & Admin Classes state
   const [adminClasses, setAdminClasses] = useState<Array<{ title: string; style: string; day: string; time: string; instructor_name: string; hall_no: string; }>>([]);
