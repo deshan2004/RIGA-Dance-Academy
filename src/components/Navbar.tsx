@@ -14,12 +14,8 @@ import {
   Clapperboard, 
   Music, 
   ArrowRight,
-  ChevronRight,
-  Shield,
-  LayoutDashboard
+  ChevronRight
 } from "lucide-react";
-import { auth, db } from "@/lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
 
 const navItems = [
   { 
@@ -57,52 +53,7 @@ const navItems = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [authState, setAuthState] = useState<{
-    isLoggedIn: boolean;
-    isAdmin: boolean;
-    name?: string;
-  }>({
-    isLoggedIn: false,
-    isAdmin: false,
-  });
   const pathname = usePathname();
-
-  // Listen to Firebase auth state to allow seamless return to portal
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        setAuthState({ isLoggedIn: false, isAdmin: false });
-        return;
-      }
-      try {
-        let isAdmin = user.email === "deshandhakshitha16@gmail.com";
-        let name = user.displayName || "";
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          const d = userDoc.data();
-          if (typeof d.role === "string" && d.role.toLowerCase() === "admin") {
-            isAdmin = true;
-          }
-          if (d.firstName) {
-            name = `${d.firstName}`;
-          }
-        }
-        setAuthState({
-          isLoggedIn: true,
-          isAdmin,
-          name: name || user.email?.split("@")[0] || "User",
-        });
-      } catch {
-        setAuthState({
-          isLoggedIn: true,
-          isAdmin: user.email === "deshandhakshitha16@gmail.com",
-          name: user.displayName || user.email?.split("@")[0] || "User",
-        });
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   // Close mobile drawer on route change & restore body scroll
   useEffect(() => {
@@ -113,7 +64,7 @@ const Navbar = () => {
   // Handle scroll detection
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
+      if (window.scrollY > 120) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -137,6 +88,11 @@ const Navbar = () => {
     };
   }, [isOpen]);
 
+  // On the home page, desktop header smoothly reveals when scrolling down past the hero
+  // On other pages, desktop header is always visible
+  const isHomePage = pathname === "/";
+  const showDesktopHeader = !isHomePage || isScrolled;
+
   // Do not render public Navbar in Admin or student account / portal pages
   if (
     pathname?.startsWith("/admin") ||
@@ -150,10 +106,14 @@ const Navbar = () => {
   return (
     <>
       {/* ========================================================= */}
-      {/* MAIN TOP BAR (Always Visible with Glassmorphic Backdrop) */}
+      {/* MAIN TOP BAR (Mobile Always Visible, Desktop Conditional) */}
       {/* ========================================================= */}
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 md:translate-y-0 md:opacity-100 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+          showDesktopHeader
+            ? "md:translate-y-0 md:opacity-100"
+            : "md:-translate-y-full md:opacity-0 pointer-events-none md:pointer-events-none"
+        } ${
           isScrolled
             ? "shadow-[0_10px_35px_-5px_rgba(147,51,234,0.35)]"
             : "shadow-[0_4px_20px_-5px_rgba(0,0,0,0.5)]"
@@ -389,27 +349,6 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      {/* Floating Discrete Return Pill for Logged-In Admin / Student */}
-      {authState.isLoggedIn && (
-        <aside aria-label="Return to Portal" className="fixed bottom-6 right-6 z-50 pointer-events-auto">
-          <Link
-            href={authState.isAdmin ? "/admin" : "/dashboard"}
-            className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#0d031c]/95 border border-purple-500/50 hover:border-purple-300 text-white shadow-[0_10px_35px_rgba(0,0,0,0.8),0_0_20px_rgba(168,85,247,0.35)] hover:scale-105 active:scale-95 transition-all group backdrop-blur-xl"
-            title={authState.isAdmin ? "Return to Admin Console" : "Return to Student Dashboard"}
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            {authState.isAdmin ? (
-              <Shield className="w-4 h-4 text-fuchsia-300" />
-            ) : (
-              <LayoutDashboard className="w-4 h-4 text-fuchsia-300" />
-            )}
-            <span className="text-xs font-bold tracking-wide">
-              {authState.isAdmin ? "Back to Admin Console" : "My Dashboard"}
-            </span>
-            <ArrowRight className="w-3.5 h-3.5 text-purple-300 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </aside>
-      )}
     </>
   );
 };
