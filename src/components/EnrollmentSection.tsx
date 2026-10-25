@@ -1576,9 +1576,6 @@ export default function EnrollmentSection({ initialMode = "signup" }: { initialM
                 <div className="inline-block mt-1 px-3 py-1 rounded-full bg-purple-950/90 border border-purple-600/40 text-purple-200 font-bold text-xs tracking-wide">
                   {twoFactorEmail}
                 </div>
-                <p className="text-[11px] text-purple-400/70 mt-1.5">
-                  Sent from <span className="text-purple-300 font-semibold">inforigadance@gmail.com</span>
-                </p>
               </div>
 
               {/* 2FA Alert Status */}
