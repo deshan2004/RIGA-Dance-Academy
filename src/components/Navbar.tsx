@@ -172,13 +172,13 @@ const Navbar = () => {
               className="group flex items-center gap-3 relative z-10 pointer-events-auto"
               aria-label="RIGA Dance Academy Home"
             >
-              <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-2xl overflow-hidden bg-purple-950/80 p-0.5 border border-purple-500/40 group-hover:border-purple-300 transition-all shadow-[0_0_15px_rgba(168,85,247,0.35)] flex items-center justify-center">
+              <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-purple-900/80 to-purple-700/40 p-1 border border-purple-500/40 group-hover:border-purple-300 transition-all shadow-[0_0_15px_rgba(168,85,247,0.35)] flex items-center justify-center">
                 <Image
-                  src="/apple-icon.png"
+                  src="/images/riga-original-transparent.png"
                   alt="RIGA"
                   width={44}
                   height={44}
-                  className="w-full h-full object-cover rounded-xl"
+                  className="w-full h-auto object-contain"
                 />
               </div>
               <div className="flex flex-col">
@@ -298,13 +298,13 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-3"
                 >
-                  <div className="w-10 h-10 rounded-2xl overflow-hidden bg-purple-950/80 p-0.5 border border-purple-500/50 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+                  <div className="w-10 h-10 rounded-xl bg-purple-950/80 p-1 border border-purple-500/50 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.4)]">
                     <Image
-                      src="/apple-icon.png"
+                      src="/images/riga-original-transparent.png"
                       alt="RIGA"
                       width={40}
                       height={40}
-                      className="w-full h-full object-cover rounded-xl"
+                      className="w-full h-auto object-contain"
                     />
                   </div>
                   <div>

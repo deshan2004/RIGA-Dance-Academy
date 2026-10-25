@@ -166,6 +166,21 @@ export default function FeaturedClassesPreview() {
           <div className="flex justify-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-400"></div>
           </div>
+        ) : dbClasses.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 px-6 text-center rounded-3xl bg-purple-950/20 border border-purple-900/40 backdrop-blur-sm">
+            <div className="w-16 h-16 rounded-2xl bg-purple-900/40 border border-purple-500/30 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+              <Sparkles className="w-8 h-8 text-fuchsia-400" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-wide">Upcoming Schedule Being Finalized</h3>
+            <p className="text-purple-200/60 max-w-md text-sm mb-6">Our new season studio timetables and guest choreographers will be published shortly.</p>
+            <Link
+              href="/enroll"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider text-white bg-gradient-to-r from-purple-700 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-500 border border-purple-400/40 shadow-lg hover:scale-105 transition-all"
+            >
+              <span>Join Waitlist / Enroll Early</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {(filteredClasses.length > 0 ? filteredClasses : dbClasses).map((cls, index) => {

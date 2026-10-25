@@ -332,13 +332,13 @@ export default function StudentDashboard() {
           {/* BRAND / LOGO & TITLE */}
           <div className="flex items-center gap-3 shrink-0">
             <Link href="/" className="flex items-center gap-3 group" title="Return to Academy Public Site">
-              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl overflow-hidden bg-purple-950/80 p-0.5 border border-purple-500/40 group-hover:border-purple-300 transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)] flex items-center justify-center">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-purple-900/80 to-purple-700/40 p-1 border border-purple-500/40 group-hover:border-purple-300 transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)] flex items-center justify-center">
                 <Image
-                  src="/apple-icon.png"
+                  src="/images/riga-original-transparent.png"
                   alt="RIGA Student Portal"
                   width={44}
                   height={44}
-                  className="w-full h-full object-cover rounded-xl"
+                  className="w-full h-auto object-contain"
                 />
               </div>
               <div className="flex flex-col">

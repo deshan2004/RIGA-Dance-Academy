@@ -22,12 +22,41 @@ export async function GET() {
       snapshot = await getDocs(classesRef);
     }
     
-    const classes = snapshot.docs.map(d => ({
-      _id: d.id,
-      ...d.data()
-    }));
+    // Permanently purge any remaining demo classes from Firestore
+    const realClasses: Record<string, unknown>[] = [];
+    for (const d of snapshot.docs) {
+      const data = d.data() as { title?: string; instructor_name?: string; style?: string };
+      const title = (data.title || "").toLowerCase();
+      const instructor = (data.instructor_name || "").toLowerCase();
+      const isDemo = 
+        title.includes("ves netuma") ||
+        title.includes("commercial choreography") ||
+        title.includes("contemporary flow") ||
+        title.includes("stage expression") ||
+        title.includes("ballroom dynamics") ||
+        title.includes("latin fusion") ||
+        title.includes("urban hip-hop") ||
+        instructor.includes("jayawardena") ||
+        instructor.includes("carlos") ||
+        instructor.includes("maria") ||
+        instructor.includes("alex") ||
+        instructor.includes("niluka");
 
-    return NextResponse.json({ success: true, data: classes }, { status: 200, headers });
+      if (isDemo) {
+        try {
+          await deleteDoc(doc(db, "classes", d.id));
+        } catch {
+          // ignore error
+        }
+      } else {
+        realClasses.push({
+          _id: d.id,
+          ...data
+        });
+      }
+    }
+
+    return NextResponse.json({ success: true, data: realClasses }, { status: 200, headers });
   } catch (error) {
     console.error("Error fetching classes:", error);
     return NextResponse.json({ success: true, data: [] }, { status: 200, headers });
