@@ -17,296 +17,114 @@ interface EventItem {
   [key: string]: unknown;
 }
 
-export interface ChoreographyPackage {
-  id: string;
-  category: "weddings" | "events" | "music_video";
-  dancerCount: number;
-  dancersLabel: string;
-  actsLabel: string;
-  badge?: string;
-  highlighted?: boolean;
-  features: string[];
+type EventCategoryKey = "weddings" | "events" | "music_video" | "custom";
+
+interface CategoryOptionConfig {
+  title: string;
+  defaultDancers: string;
+  dancerOptions: string[];
+  defaultActs: string;
+  actOptions: string[];
+  recommendedStyles: string[];
 }
 
-const choreographyPackages: ChoreographyPackage[] = [
-  // --- WEDDINGS ---
-  {
-    id: "pkg-w-4d-3a",
-    category: "weddings",
-    dancerCount: 4,
-    dancersLabel: "4 Dancers",
-    actsLabel: "3 Dance Acts",
-    badge: "Popular Starter",
-    features: [
-      "4 Professional Troupe Dancers",
-      "3 High-Energy Stage Dance Acts",
-      "Authentic & Modern Bespoke Costumes",
-      "Customized Music & Song Selection",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
+const CATEGORY_CONFIGS: Record<EventCategoryKey, CategoryOptionConfig> = {
+  weddings: {
+    title: "Wedding Choreography",
+    defaultDancers: "4 Dancers",
+    dancerOptions: ["4 Dancers", "5 Dancers", "6 Dancers", "8+ Mega Troupe"],
+    defaultActs: "Welcome Dance + 3 Acts",
+    actOptions: [
+      "Welcome Dance Entry",
+      "Welcome Dance + 3 Acts",
+      "3 High-Energy Stage Acts",
+      "4 Grand Stage Acts",
+      "Couple First Dance + Troupe",
+    ],
+    recommendedStyles: [
+      "Traditional Kandyan Fusion",
+      "Bollywood Extravaganza",
+      "Freestyle Fusion",
+      "Latin / Ballroom",
+      "Classical Contemporary",
+    ],
   },
-  {
-    id: "pkg-w-4d-w3a",
-    category: "weddings",
-    dancerCount: 4,
-    dancersLabel: "4 Dancers",
-    actsLabel: "Welcome Dance + 3 Dance Acts",
-    badge: "Welcome Special",
-    highlighted: true,
-    features: [
-      "4 Professional Troupe Dancers",
-      "Traditional / Modern Welcome Entry Dance",
-      "3 High-Energy Stage Dance Acts",
-      "Bespoke Wedding Regalia & Accessories",
-      "Customized Music & Entrance Choreography",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
-  },
-  {
-    id: "pkg-w-4d-4a",
-    category: "weddings",
-    dancerCount: 4,
-    dancersLabel: "4 Dancers",
-    actsLabel: "4 Dance Acts",
-    badge: "Full 4-Act Set",
-    features: [
-      "4 Professional Troupe Dancers",
-      "4 Complete Grand Stage Acts",
-      "Multi-Style Costume Changes",
-      "Customized Theme Choreography",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
-  },
-  {
-    id: "pkg-w-5d-3a",
-    category: "weddings",
-    dancerCount: 5,
-    dancersLabel: "5 Dancers",
-    actsLabel: "3 Dance Acts",
-    badge: "Ensemble Choice",
-    features: [
-      "5 Professional Troupe Dancers",
-      "3 High-Energy Stage Dance Acts",
-      "Premium Stage Costumes & Props",
-      "Center-Stage Solo & Formation Acts",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
-  },
-  {
-    id: "pkg-w-5d-4a",
-    category: "weddings",
-    dancerCount: 5,
-    dancersLabel: "5 Dancers",
-    actsLabel: "4 Dance Acts",
-    badge: "Deluxe 5-Dancer Set",
-    highlighted: true,
-    features: [
-      "5 Professional Troupe Dancers",
-      "4 Complete Grand Stage Acts",
-      "Multi-Genre Fusion Performance",
-      "Full Accessory & Prop Package",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
-  },
-  {
-    id: "pkg-w-6d-3a",
-    category: "weddings",
-    dancerCount: 6,
-    dancersLabel: "6 Dancers",
-    actsLabel: "3 Dance Acts",
-    badge: "Grand Ensemble",
-    features: [
-      "6 Professional Troupe Dancers",
-      "3 High-Impact Stage Dance Acts",
-      "Grand Formation & Visual Impact",
-      "Matching Uniform Troupe Outfits",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
-  },
-  {
-    id: "pkg-w-6d-4a",
-    category: "weddings",
-    dancerCount: 6,
-    dancersLabel: "6 Dancers",
-    actsLabel: "4 Dance Acts",
-    badge: "Ultimate Mega Set",
-    highlighted: true,
-    features: [
-      "6 Professional Troupe Dancers",
-      "4 Grand Full Stage Performances",
-      "Complete Multi-Style Wardrobe Changes",
-      "Max Impact Stage Sync & Lighting Cue Sync",
-      "Dedicated Stage Manager & Coordinator",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
-  },
-
-  // --- EVENTS ---
-  {
-    id: "pkg-e-4d-3a",
-    category: "events",
-    dancerCount: 4,
-    dancersLabel: "4 Dancers",
-    actsLabel: "3 Dance Acts",
-    badge: "Corporate & Stage",
-    features: [
-      "4 Professional Troupe Dancers",
-      "3 High-Impact Event Stage Acts",
-      "Custom Corporate & Concert Outfits",
-      "High-Energy Group Choreography",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
-  },
-  {
-    id: "pkg-e-4d-4a",
-    category: "events",
-    dancerCount: 4,
-    dancersLabel: "4 Dancers",
-    actsLabel: "4 Dance Acts",
-    badge: "Full Stage Set",
-    highlighted: true,
-    features: [
-      "4 Professional Troupe Dancers",
-      "4 Complete Stage Performances",
-      "Multi-Style Costume Wardrobe Changes",
-      "Pyrotechnic & Lighting Cue Coordination",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
-  },
-  {
-    id: "pkg-e-5d-3a",
-    category: "events",
-    dancerCount: 5,
-    dancersLabel: "5 Dancers",
-    actsLabel: "3 Dance Acts",
-    badge: "Grand Show",
-    features: [
-      "5 Professional Troupe Dancers",
-      "3 High-Voltage Stage Dance Acts",
-      "Custom Concert / Festival Theme Outfits",
-      "Center-Stage Formations & Solo Sequences",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
-  },
-  {
-    id: "pkg-e-5d-4a",
-    category: "events",
-    dancerCount: 5,
-    dancersLabel: "5 Dancers",
-    actsLabel: "4 Dance Acts",
-    badge: "Mega Event Set",
-    highlighted: true,
-    features: [
-      "5 Professional Troupe Dancers",
+  events: {
+    title: "Corporate & Stage Events",
+    defaultDancers: "5 Dancers",
+    dancerOptions: ["4 Dancers", "5 Dancers", "6 Dancers", "8+ Mega Troupe"],
+    defaultActs: "3 High-Energy Stage Acts",
+    actOptions: [
+      "Grand Opening Act (3-5 mins)",
+      "3 High-Energy Stage Acts",
       "4 Complete Mega Stage Acts",
-      "Multi-Genre Fusion (Kandyan / Urban / Bollywood)",
-      "Full Wardrobe & Prop Production",
-      "Dedicated Troupe Director & Coordinator",
-      "Islandwide Performance Coverage (Travel quoted per venue)"
-    ]
+      "Product / Brand Reveal Routine",
+      "Pyrotechnic & Lighting Sync Act",
+    ],
+    recommendedStyles: [
+      "Urban Hip-Hop / Street",
+      "High-Voltage Freestyle",
+      "Traditional Fusion",
+      "Latin & Commercial",
+      "Contemporary Show",
+    ],
   },
-
-  // --- MUSIC VIDEO ---
-  {
-    id: "pkg-mv-4d-wc",
-    category: "music_video",
-    dancerCount: 4,
-    dancersLabel: "4 Dancers",
-    actsLabel: "With Choreography",
-    badge: "Full Choreography",
-    highlighted: true,
-    features: [
-      "4 Professional Music Video Dancers",
-      "Full Original Video Choreography Creation",
-      "Concept & Routine Rehearsal Sessions",
-      "Styled Video Shoot Costumes",
-      "Islandwide Location & Studio Shoot Coverage"
-    ]
+  music_video: {
+    title: "Music Video Production",
+    defaultDancers: "4 Dancers",
+    dancerOptions: ["4 Dancers", "5 Dancers", "6 Dancers", "Custom Cast Size"],
+    defaultActs: "Full Original Video Choreography",
+    actOptions: [
+      "Full Original Video Choreography",
+      "Hook Step Choreography & Rehearsals",
+      "Backing Dancers (Director's Routine)",
+      "Full Shoot Day Troupe",
+    ],
+    recommendedStyles: [
+      "Urban Hip-Hop / Street Swag",
+      "Commercial Pop & Commercial",
+      "Afrobeats & Dancehall",
+      "Contemporary Fusion",
+    ],
   },
-  {
-    id: "pkg-mv-4d-woc",
-    category: "music_video",
-    dancerCount: 4,
-    dancersLabel: "4 Dancers",
-    actsLabel: "Without Choreography",
-    badge: "Dancers Only",
-    features: [
-      "4 Professional Backing Dancers",
-      "Execution of Director's Routine / Placement",
-      "On-Set Costume Wardrobe Coordination",
-      "Full Shoot Day Availability",
-      "Islandwide Location & Studio Shoot Coverage"
-    ]
+  custom: {
+    title: "Custom Grand Performance",
+    defaultDancers: "8+ Mega Troupe",
+    dancerOptions: ["6 Dancers", "8+ Troupe", "10-15 Mega Ensemble", "Bespoke Troupe"],
+    defaultActs: "Full Concert Stage Production",
+    actOptions: [
+      "Full Concert Stage Production",
+      "Festival Headline Performance",
+      "Multi-Genre Mega Medley",
+      "Themed Grand Production",
+    ],
+    recommendedStyles: [
+      "Multi-Genre Fusion",
+      "Traditional & Fire Lighting",
+      "Freestyle Stage Battles",
+      "Cinematic Stage Dance",
+    ],
   },
-  {
-    id: "pkg-mv-5d-wc",
-    category: "music_video",
-    dancerCount: 5,
-    dancersLabel: "5 Dancers",
-    actsLabel: "With Choreography",
-    badge: "Full Choreography",
-    highlighted: true,
-    features: [
-      "5 Professional Music Video Dancers",
-      "Bespoke Video Choreography & Hook Step Creation",
-      "Group Formation & Solo Framing Sequences",
-      "Themed Costume Wardrobe",
-      "Islandwide Location & Studio Shoot Coverage"
-    ]
-  },
-  {
-    id: "pkg-mv-5d-woc",
-    category: "music_video",
-    dancerCount: 5,
-    dancersLabel: "5 Dancers",
-    actsLabel: "Without Choreography",
-    badge: "Dancers Only",
-    features: [
-      "5 Professional Backing Dancers",
-      "Execution of Pre-existing Choreography",
-      "Camera Blocking & Placement Readiness",
-      "Full Shoot Day Coverage",
-      "Islandwide Location & Studio Shoot Coverage"
-    ]
-  },
-  {
-    id: "pkg-mv-6d-wc",
-    category: "music_video",
-    dancerCount: 6,
-    dancersLabel: "6 Dancers",
-    actsLabel: "With Choreography",
-    badge: "Grand Video Set",
-    highlighted: true,
-    features: [
-      "6 Professional Music Video Dancers",
-      "Master Choreography & Hook Movement Design",
-      "Pre-Production Rehearsals & Camera Blocking",
-      "Premium Styling & Wardrobe Outfits",
-      "Islandwide Location & Studio Shoot Coverage"
-    ]
-  },
-  {
-    id: "pkg-mv-6d-woc",
-    category: "music_video",
-    dancerCount: 6,
-    dancersLabel: "6 Dancers",
-    actsLabel: "Without Choreography",
-    badge: "Dancers Only",
-    features: [
-      "6 Professional Backing Dancers",
-      "High-Impact Group Formations for Camera",
-      "Flexible Movement Adaptation to Director Cues",
-      "Full Shoot Day Coverage",
-      "Islandwide Location & Studio Shoot Coverage"
-    ]
-  }
-];
+};
 
 export default function EventsPage() {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<"weddings" | "events" | "music_video">("weddings");
-  const [selectedDancerFilter, setSelectedDancerFilter] = useState<number | "all">("all");
+
+  // Booking Popup Modal State
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [bookingCategory, setBookingCategory] = useState<EventCategoryKey>("weddings");
+  const [bookingDancers, setBookingDancers] = useState(CATEGORY_CONFIGS.weddings.defaultDancers);
+  const [bookingActs, setBookingActs] = useState(CATEGORY_CONFIGS.weddings.defaultActs);
+  const [selectedStyles, setSelectedStyles] = useState<string[]>([
+    CATEGORY_CONFIGS.weddings.recommendedStyles[0],
+    CATEGORY_CONFIGS.weddings.recommendedStyles[1],
+  ]);
+  const [bookingDate, setBookingDate] = useState("");
+  const [bookingLocation, setBookingLocation] = useState("");
+  const [bookingNotes, setBookingNotes] = useState("");
+
+  const activeConfig = CATEGORY_CONFIGS[bookingCategory];
 
   useEffect(() => {
     let ignore = false;
@@ -331,29 +149,17 @@ export default function EventsPage() {
     };
   }, []);
 
-  const categoryPackages = choreographyPackages.filter(p => p.category === selectedCategory);
-
-  const filteredPackages = selectedDancerFilter === "all"
-    ? categoryPackages
-    : categoryPackages.filter(p => p.dancerCount === selectedDancerFilter);
-
-  // Booking Popup Modal State
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  const [bookingCategory, setBookingCategory] = useState<"weddings" | "events" | "music_video" | "custom">("weddings");
-  const [bookingDancers, setBookingDancers] = useState("4 Dancers");
-  const [bookingActs, setBookingActs] = useState("3 Dance Acts");
-  const [selectedStyles, setSelectedStyles] = useState<string[]>(["Traditional Kandyan", "Bollywood"]);
-  const [bookingDate, setBookingDate] = useState("");
-  const [bookingLocation, setBookingLocation] = useState("");
-  const [bookingNotes, setBookingNotes] = useState("");
-
-  const openBookingModal = (pkg?: ChoreographyPackage) => {
-    if (pkg) {
-      setBookingCategory(pkg.category);
-      setBookingDancers(pkg.dancersLabel);
-      setBookingActs(pkg.actsLabel);
-    }
+  const openBookingModal = (category: EventCategoryKey = "weddings") => {
+    handleCategoryChange(category);
     setIsBookingModalOpen(true);
+  };
+
+  const handleCategoryChange = (cat: EventCategoryKey) => {
+    setBookingCategory(cat);
+    const config = CATEGORY_CONFIGS[cat];
+    setBookingDancers(config.defaultDancers);
+    setBookingActs(config.defaultActs);
+    setSelectedStyles([config.recommendedStyles[0], config.recommendedStyles[1]]);
   };
 
   const toggleStyle = (style: string) => {
@@ -367,15 +173,7 @@ export default function EventsPage() {
   };
 
   const handleSendBookingToWhatsApp = () => {
-    const categoryTitle =
-      bookingCategory === "weddings"
-        ? "Wedding Choreography"
-        : bookingCategory === "events"
-        ? "Corporate & Stage Event"
-        : bookingCategory === "music_video"
-        ? "Music Video Production"
-        : "Custom Grand Performance";
-
+    const categoryTitle = activeConfig.title;
     const stylesText = selectedStyles.length > 0 ? selectedStyles.join(", ") : "All Genres";
 
     const message = `Hello RIGA Dance Academy! 🌟
@@ -446,25 +244,6 @@ Please share a customized quotation, troupe availability, and booking procedure.
           >
             Book Sri Lanka&apos;s premier dance ensemble for Weddings, Corporate Events, and Music Video Shoots. Explore our curated troupe packages with customized choreography, authentic stage regalia, and high-energy live performances.
           </motion.p>
-
-          {/* PRIMARY BOOKING CTA BUTTON (TRIGGER POPUP MODAL) */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="flex flex-wrap items-center justify-center gap-4 mb-10"
-          >
-            <button
-              type="button"
-              onClick={() => openBookingModal()}
-              className="inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-4 rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs sm:text-sm uppercase tracking-widest shadow-[0_0_35px_rgba(192,132,252,0.6)] hover:shadow-[0_0_50px_rgba(232,121,249,0.9)] border border-purple-300/40 hover:scale-105 active:scale-95 transition-all cursor-pointer"
-            >
-              <Sparkles className="w-5 h-5 text-fuchsia-300 animate-pulse" />
-              <span>Inquire &amp; Book Choreography</span>
-              <MessageCircle className="w-5 h-5 text-emerald-400" />
-            </button>
-          </motion.div>
-
           {/* --- MAIN TROUPE VISUAL ARTWORK (ZERO BOX OUTLINE - SEAMLESS INTEGRATION) --- */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
@@ -519,212 +298,55 @@ Please share a customized quotation, troupe availability, and booking procedure.
         </div>
       </section>
 
-      {/* --- CHOREOGRAPHY PACKAGES SECTION --- */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
-        
-        {/* Section Header & Main Category Selector */}
-        <div className="flex flex-col items-center text-center mb-10">
-          <div className="inline-flex items-center gap-2 text-fuchsia-300 mb-2 font-bold tracking-widest uppercase text-xs">
-            <Heart className="w-4 h-4 text-pink-500 fill-pink-500/30" />
-            Official Troupe Packages
-          </div>
-          
-          {/* Main Category Tabs: WEDDINGS | EVENTS | MUSIC VIDEO */}
-          <div className="flex flex-wrap items-center justify-center gap-3 p-2 rounded-2xl bg-[#130728] border border-purple-500/40 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.6)] mb-8">
-            <button
-              onClick={() => { setSelectedCategory("weddings"); setSelectedDancerFilter("all"); }}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                selectedCategory === "weddings"
-                  ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 text-white shadow-[0_0_25px_rgba(192,132,252,0.6)] border border-purple-300/40"
-                  : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
-              }`}
-            >
-              <Heart className="w-4 h-4 text-pink-400" />
-              <span>Weddings</span>
-            </button>
+      {/* --- SINGLE DEDICATED BOOKING ACTION SECTION --- */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto relative z-10 text-center">
+        <div className="relative rounded-3xl p-8 sm:p-12 bg-gradient-to-b from-[#180838]/95 via-[#120529]/95 to-[#0b031b] border border-purple-500/40 shadow-[0_0_50px_rgba(168,85,247,0.3)] backdrop-blur-xl overflow-hidden">
+          {/* Subtle glow orb */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-40 bg-fuchsia-600/20 rounded-full blur-[90px] pointer-events-none" />
 
-            <button
-              onClick={() => { setSelectedCategory("events"); setSelectedDancerFilter("all"); }}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                selectedCategory === "events"
-                  ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 text-white shadow-[0_0_25px_rgba(192,132,252,0.6)] border border-purple-300/40"
-                  : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
-              }`}
-            >
-              <PartyPopper className="w-4 h-4 text-amber-400" />
-              <span>Events</span>
-            </button>
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/20 border border-purple-400/40 text-fuchsia-300 text-xs font-black uppercase tracking-widest mb-4 shadow-[0_0_20px_rgba(192,132,252,0.3)]">
+              <Sparkles className="w-4 h-4 text-fuchsia-400 animate-pulse" />
+              <span>Official Troupe Bookings</span>
+            </div>
 
-            <button
-              onClick={() => { setSelectedCategory("music_video"); setSelectedDancerFilter("all"); }}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                selectedCategory === "music_video"
-                  ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 text-white shadow-[0_0_25px_rgba(192,132,252,0.6)] border border-purple-300/40"
-                  : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
-              }`}
-            >
-              <Video className="w-4 h-4 text-cyan-400" />
-              <span>Music Video</span>
-            </button>
-          </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tight mb-3">
+              Book RIGA Performance Troupe
+            </h2>
 
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-wide uppercase mb-6 flex items-center justify-center gap-3">
-            {selectedCategory === "weddings" && (
-              <>
-                <Heart className="w-8 h-8 text-pink-500 fill-pink-500/20 drop-shadow-[0_0_15px_rgba(236,72,153,0.6)] shrink-0" />
-                <span>Wedding Troupe Packages</span>
-              </>
-            )}
-            {selectedCategory === "events" && (
-              <>
-                <PartyPopper className="w-8 h-8 text-amber-400 drop-shadow-[0_0_15px_rgba(251,191,36,0.6)] shrink-0" />
-                <span>Event & Stage Acts Packages</span>
-              </>
-            )}
-            {selectedCategory === "music_video" && (
-              <>
-                <Video className="w-8 h-8 text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.6)] shrink-0" />
-                <span>Music Video Choreography Packages</span>
-              </>
-            )}
-          </h2>
+            <p className="text-sm sm:text-base text-purple-200/80 max-w-2xl mx-auto mb-8 leading-relaxed">
+              Tailored choreography, authentic stage costumes, and electric live acts for Weddings, Corporate Galas, and Music Videos. Customize your requirements and get an instant quote on WhatsApp.
+            </p>
 
-          {/* Secondary Dancer Filter Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-full bg-[#130728]/80 border border-purple-500/30 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
-            <button
-              onClick={() => setSelectedDancerFilter("all")}
-              className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 ${
-                selectedDancerFilter === "all"
-                  ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)]"
-                  : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
-              }`}
-            >
-              All ({categoryPackages.length})
-            </button>
-            {[4, 5, 6].map((dancers) => {
-              const count = categoryPackages.filter(p => p.dancerCount === dancers).length;
-              if (count === 0) return null;
-              return (
-                <button
-                  key={dancers}
-                  onClick={() => setSelectedDancerFilter(dancers)}
-                  className={`px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 ${
-                    selectedDancerFilter === dancers
-                      ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)]"
-                      : "text-purple-300/80 hover:text-white hover:bg-purple-500/20"
-                  }`}
-                >
-                  {dancers} Dancers ({count})
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Packages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredPackages.map((pkg, idx) => (
-            <motion.div
-              key={pkg.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.08 }}
-              className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
-                pkg.highlighted
-                  ? "bg-gradient-to-b from-[#1c0a3a] to-[#100424] border-2 border-fuchsia-500/60 shadow-[0_0_35px_rgba(192,132,252,0.3)] hover:shadow-[0_0_50px_rgba(192,132,252,0.5)]"
-                  : "bg-[#120626]/80 border border-purple-500/30 hover:border-purple-400/60 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(168,85,247,0.25)]"
-              } backdrop-blur-xl group`}
-            >
-              {/* Badge Tag */}
-              {pkg.badge && (
-                <div className="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 border border-purple-300/40 text-[10px] font-black uppercase tracking-widest text-white shadow-[0_0_15px_rgba(192,132,252,0.6)]">
-                  {pkg.badge}
-                </div>
-              )}
-
-              <div>
-                {/* Header Info */}
-                <div className="mb-6 border-b border-purple-500/20 pb-6">
-                  <div className="flex items-center gap-2 text-fuchsia-400 text-xs font-bold uppercase tracking-wider mb-2">
-                    <Users className="w-4 h-4 text-fuchsia-400 shrink-0" />
-                    <span>{pkg.dancersLabel}</span>
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide mb-4">
-                    {pkg.actsLabel}
-                  </h3>
-                  
-                  {/* Quote on Request Badge */}
-                  <div className="py-2.5 px-3.5 rounded-xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300/70 block">
-                        Booking &amp; Pricing
-                      </span>
-                      <span className="text-sm sm:text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-300 via-purple-200 to-white">
-                        Quote on Request
-                      </span>
-                    </div>
-                    <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-full">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>Direct WhatsApp</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Features Checklist */}
-                <ul className="space-y-3 mb-8 text-xs sm:text-sm text-purple-200/90">
-                  {pkg.features.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-fuchsia-400 shrink-0 mt-0.5" />
-                      <span className="leading-snug">{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Action Button: Opens Modal with pre-selected package */}
+            {/* THE ONE BOOKING BUTTON ON THE ENTIRE PAGE */}
+            <div className="flex justify-center mb-8">
               <button
                 type="button"
-                onClick={() => openBookingModal(pkg)}
-                className={`w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                  pkg.highlighted
-                    ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white shadow-[0_0_20px_rgba(192,132,252,0.4)] hover:shadow-[0_0_30px_rgba(192,132,252,0.7)] border border-purple-300/40 hover:scale-[1.02]"
-                    : "bg-purple-950/70 hover:bg-purple-900 border border-purple-500/30 hover:border-purple-400 text-purple-200 hover:text-white shadow-[0_0_15px_rgba(168,85,247,0.15)] hover:scale-[1.02]"
-                }`}
+                onClick={() => openBookingModal()}
+                className="inline-flex items-center justify-center gap-3 px-8 sm:px-12 py-4 sm:py-5 rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-500 hover:to-fuchsia-500 text-white font-black text-xs sm:text-sm uppercase tracking-widest shadow-[0_0_40px_rgba(192,132,252,0.7)] hover:shadow-[0_0_60px_rgba(232,121,249,0.95)] border border-purple-300/50 hover:scale-105 active:scale-95 transition-all cursor-pointer"
               >
-                <Sparkles className="w-4 h-4 text-fuchsia-300" />
-                <span>Select &amp; Inquire Booking</span>
+                <Sparkles className="w-5 h-5 text-fuchsia-200 animate-pulse" />
+                <span>Customize &amp; Book on WhatsApp</span>
+                <MessageCircle className="w-5 h-5 text-emerald-400" />
               </button>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Custom Inquiry WhatsApp Banner */}
-        <div className="mt-12 rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-[#170833] via-[#210947] to-[#170833] border border-purple-500/40 shadow-[0_0_35px_rgba(168,85,247,0.25)] flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-center md:text-left">
-            <div className="inline-flex items-center gap-2 text-fuchsia-300 text-xs font-bold uppercase tracking-wider mb-2">
-              <Sparkles className="w-4 h-4 text-fuchsia-400" />
-              Bespoke Routines &amp; Full Troupe Production
             </div>
-            <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
-              Need a Custom Routine or Large Ensemble?
-            </h3>
-            <p className="text-sm text-purple-200/80 max-w-xl mt-1">
-              Have a unique wedding entrance concept, corporate theme, or music video shoot? Contact our Troupe Director on WhatsApp for tailored choreography planning and a direct quotation.
-            </p>
+
+            {/* Highlight Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] sm:text-xs font-bold text-purple-300/80 uppercase tracking-wider">
+              <span className="flex items-center gap-1.5 bg-purple-950/70 border border-purple-500/30 px-3.5 py-1.5 rounded-full">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                Direct WhatsApp Quotation
+              </span>
+              <span className="flex items-center gap-1.5 bg-purple-950/70 border border-purple-500/30 px-3.5 py-1.5 rounded-full">
+                <CheckCircle2 className="w-3.5 h-3.5 text-fuchsia-400" />
+                Custom Stage Costumes
+              </span>
+              <span className="flex items-center gap-1.5 bg-purple-950/70 border border-purple-500/30 px-3.5 py-1.5 rounded-full">
+                <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+                Traditional &amp; Western Genres
+              </span>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              setBookingCategory("custom");
-              setBookingDancers("8+ Mega Troupe");
-              setBookingActs("Full Concert Lineup");
-              setIsBookingModalOpen(true);
-            }}
-            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-gradient-to-r from-[#25D366] to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white text-xs font-black uppercase tracking-widest shadow-[0_0_25px_rgba(37,211,102,0.5)] hover:scale-105 transition-all shrink-0 cursor-pointer"
-          >
-            <MessageCircle className="w-5 h-5" />
-            <span>Customize Troupe Booking</span>
-          </button>
         </div>
       </section>
 
@@ -867,14 +489,14 @@ Please share a customized quotation, troupe availability, and booking procedure.
                         <button
                           key={cat.id}
                           type="button"
-                          onClick={() => setBookingCategory(cat.id as "weddings" | "events" | "music_video" | "custom")}
-                          className={`p-3 rounded-2xl border text-xs font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
+                          onClick={() => handleCategoryChange(cat.id as EventCategoryKey)}
+                          className={`p-3.5 rounded-2xl border text-xs font-bold uppercase tracking-wider flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
                             isSelected
-                              ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 border-purple-300 text-white shadow-[0_0_20px_rgba(168,85,247,0.5)]"
-                              : "bg-[#140728]/80 border-purple-900/60 text-purple-300 hover:border-purple-600 hover:text-white"
+                              ? "bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-600 border-fuchsia-300 text-white shadow-[0_0_25px_rgba(232,121,249,0.6)] ring-2 ring-fuchsia-400/50 scale-[1.02]"
+                              : "bg-[#140728]/80 border-purple-900/60 text-purple-300/80 hover:border-purple-600 hover:text-white"
                           }`}
                         >
-                          <Icon className="w-5 h-5 shrink-0" />
+                          <Icon className={`w-5 h-5 shrink-0 ${isSelected ? "text-white" : "text-purple-400"}`} />
                           <span className="text-center">{cat.label}</span>
                         </button>
                       );
@@ -888,16 +510,16 @@ Please share a customized quotation, troupe availability, and booking procedure.
                     2. Troupe Size (Dancers) *
                   </label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    {["4 Dancers", "5 Dancers", "6 Dancers", "8+ Mega Troupe"].map((dancers) => {
+                    {activeConfig.dancerOptions.map((dancers) => {
                       const isSelected = bookingDancers === dancers;
                       return (
                         <button
                           key={dancers}
                           type="button"
                           onClick={() => setBookingDancers(dancers)}
-                          className={`py-3 px-4 rounded-xl border text-xs font-bold uppercase tracking-wider text-center transition-all cursor-pointer ${
+                          className={`py-3 px-3 rounded-xl border text-xs font-bold uppercase tracking-wider text-center transition-all cursor-pointer ${
                             isSelected
-                              ? "bg-purple-600 border-fuchsia-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+                              ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 border-purple-300 text-white font-black shadow-[0_0_20px_rgba(168,85,247,0.6)] ring-1 ring-purple-300/60 scale-[1.02]"
                               : "bg-[#140728]/80 border-purple-900/60 text-purple-300 hover:border-purple-600 hover:text-white"
                           }`}
                         >
@@ -908,64 +530,65 @@ Please share a customized quotation, troupe availability, and booking procedure.
                   </div>
                 </div>
 
-                {/* 3. Program / Acts Count */}
+                {/* 3. Program / Acts Count (Dynamically adapts to selected event type) */}
                 <div>
-                  <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2.5">
-                    3. Dance Acts / Routines *
-                  </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    {[
-                      "Welcome Dance Entry",
-                      "3 Dance Acts",
-                      "4 Grand Stage Acts",
-                      "Full Concert Lineup",
-                    ].map((acts) => {
+                  <div className="flex items-center justify-between mb-2.5">
+                    <label className="text-xs font-extrabold uppercase tracking-wider text-purple-300">
+                      3. Dance Acts / Routines for {activeConfig.title} *
+                    </label>
+                    <span className="text-[10px] text-fuchsia-300 font-bold uppercase tracking-wider bg-fuchsia-500/10 border border-fuchsia-500/30 px-2.5 py-0.5 rounded-full">
+                      Relevant to {bookingCategory.replace("_", " ")}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {activeConfig.actOptions.map((acts) => {
                       const isSelected = bookingActs === acts;
                       return (
                         <button
                           key={acts}
                           type="button"
                           onClick={() => setBookingActs(acts)}
-                          className={`py-2.5 px-3 rounded-xl border text-[11px] font-bold uppercase tracking-wider text-center transition-all cursor-pointer ${
+                          className={`py-3 px-4 rounded-xl border text-xs font-bold uppercase tracking-wider text-left sm:text-center transition-all cursor-pointer flex items-center justify-between sm:justify-center gap-2 ${
                             isSelected
-                              ? "bg-fuchsia-600 border-purple-300 text-white shadow-[0_0_15px_rgba(232,121,249,0.5)]"
+                              ? "bg-gradient-to-r from-fuchsia-600 via-purple-600 to-fuchsia-700 border-fuchsia-300 text-white font-black shadow-[0_0_22px_rgba(232,121,249,0.6)] ring-2 ring-fuchsia-400/50 scale-[1.01]"
                               : "bg-[#140728]/80 border-purple-900/60 text-purple-300 hover:border-purple-600 hover:text-white"
                           }`}
                         >
-                          {acts}
+                          <span>{acts}</span>
+                          {isSelected && <Sparkles className="w-4 h-4 text-fuchsia-200 shrink-0" />}
                         </button>
                       );
                     })}
                   </div>
                 </div>
 
-                {/* 4. Preferred Dance Genres */}
+                {/* 4. Preferred Dance Genres (Dynamically tailored to selected event type) */}
                 <div>
-                  <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2.5">
-                    4. Preferred Dance Style(s) (Select multiple)
-                  </label>
+                  <div className="flex items-center justify-between mb-2.5">
+                    <label className="text-xs font-extrabold uppercase tracking-wider text-purple-300">
+                      4. Preferred Dance Style(s) (Select multiple)
+                    </label>
+                    <span className="text-[10px] text-purple-300/70">Click to toggle</span>
+                  </div>
                   <div className="flex flex-wrap gap-2">
-                    {[
-                      "Traditional Kandyan",
-                      "Bollywood",
-                      "Hip-Hop / Urban",
-                      "Latin / Ballroom",
-                      "Freestyle Fusion",
-                      "Contemporary",
-                    ].map((style) => {
+                    {activeConfig.recommendedStyles.map((style) => {
                       const isSelected = selectedStyles.includes(style);
                       return (
                         <button
                           key={style}
                           type="button"
                           onClick={() => toggleStyle(style)}
-                          className={`px-3.5 py-2 rounded-full border text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-1.5 cursor-pointer ${
+                          className={`px-4 py-2.5 rounded-full border text-xs font-semibold tracking-wider uppercase transition-all flex items-center gap-2 cursor-pointer ${
                             isSelected
-                              ? "bg-purple-600/90 border-fuchsia-400 text-white shadow-[0_0_12px_rgba(192,132,252,0.4)]"
-                              : "bg-[#140728] border-purple-900 text-purple-300/80 hover:border-purple-600 hover:text-white"
+                              ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 border-fuchsia-300 text-white font-black shadow-[0_0_15px_rgba(192,132,252,0.5)] ring-1 ring-fuchsia-400/50 scale-[1.02]"
+                              : "bg-[#140728] border-purple-900/70 text-purple-300/70 hover:border-purple-600 hover:text-white"
                           }`}
                         >
-                          {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                          {isSelected ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
+                          ) : (
+                            <span className="w-1.5 h-1.5 rounded-full bg-purple-600/50 shrink-0" />
+                          )}
                           <span>{style}</span>
                         </button>
                       );

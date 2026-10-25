@@ -55,15 +55,16 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
-  // Close mobile drawer on route change
+  // Close mobile drawer on route change & restore body scroll
   useEffect(() => {
     setIsOpen(false);
+    document.body.style.overflow = "unset";
   }, [pathname]);
 
   // Handle scroll detection
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 120) {
+      if (window.scrollY > 40) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -87,29 +88,33 @@ const Navbar = () => {
     };
   }, [isOpen]);
 
-  // On the home page, desktop header smoothly reveals when scrolling down past the hero
-  // On other pages, desktop header is always visible
-  const isHomePage = pathname === "/";
-  const showDesktopHeader = !isHomePage || isScrolled;
-
-  // Do not render public Navbar in Admin pages
-  if (pathname?.startsWith("/admin")) {
+  // Do not render public Navbar in Admin or student account / portal pages
+  if (
+    pathname?.startsWith("/admin") ||
+    pathname?.startsWith("/pending-approval") ||
+    pathname?.startsWith("/dashboard") ||
+    pathname?.startsWith("/verify-email")
+  ) {
     return null;
   }
 
   return (
     <>
       {/* ========================================================= */}
-      {/* MAIN TOP BAR (Mobile Always Visible, Desktop Conditional) */}
+      {/* MAIN TOP BAR (Always Visible with Glassmorphic Backdrop) */}
       {/* ========================================================= */}
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-          showDesktopHeader
-            ? "md:translate-y-0 md:opacity-100"
-            : "md:-translate-y-full md:opacity-0 pointer-events-none md:pointer-events-none"
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 md:translate-y-0 md:opacity-100 ${
+          isScrolled
+            ? "shadow-[0_10px_35px_-5px_rgba(147,51,234,0.35)]"
+            : "shadow-[0_4px_20px_-5px_rgba(0,0,0,0.5)]"
         }`}
       >
-        <div className="w-full bg-gradient-to-r from-[#130427]/75 via-[#0a0117]/65 to-[#16042e]/75 backdrop-blur-2xl border-b border-purple-500/30 shadow-[inset_0_1px_0_0_rgba(192,132,252,0.18),0_10px_35px_-5px_rgba(147,51,234,0.25)]">
+        <div className={`w-full transition-colors duration-300 backdrop-blur-2xl border-b border-purple-500/30 ${
+          isScrolled
+            ? "bg-gradient-to-r from-[#130427]/90 via-[#0a0117]/85 to-[#16042e]/90"
+            : "bg-gradient-to-r from-[#130427]/75 via-[#0a0117]/65 to-[#16042e]/75"
+        }`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
             
             {/* BRAND LOGO */}

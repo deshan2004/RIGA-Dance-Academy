@@ -7,7 +7,12 @@ import { MapPin, Mail, Phone } from "lucide-react";
 
 const Footer = () => {
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin")) {
+  if (
+    pathname?.startsWith("/admin") ||
+    pathname?.startsWith("/pending-approval") ||
+    pathname?.startsWith("/dashboard") ||
+    pathname?.startsWith("/verify-email")
+  ) {
     return null;
   }
   return (
