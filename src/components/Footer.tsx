@@ -161,8 +161,8 @@ const Footer = () => {
             © {new Date().getFullYear()} RIGA Dance Academy. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0 text-xs">
-            <Link href="#" className="text-purple-300/50 hover:text-purple-200 transition-colors">Privacy Policy</Link>
-            <Link href="#" className="text-purple-300/50 hover:text-purple-200 transition-colors">Terms of Service</Link>
+            <Link href="/privacy-policy" className="text-purple-300/50 hover:text-purple-200 transition-colors">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="text-purple-300/50 hover:text-purple-200 transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>
