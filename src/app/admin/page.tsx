@@ -672,52 +672,53 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-academy-black pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
       {/* ========================================================= */}
-      {/* ADMIN CONTROL PANEL TOP NAVBAR                            */}
-      {/* ========================================================= */}
       {/* ========================================================= */}
       {/* ADMIN CONTROL CENTER TOP NAVBAR                           */}
       {/* ========================================================= */}
       <header className="fixed top-0 left-0 right-0 z-40 bg-[#090314]/95 backdrop-blur-2xl border-b border-purple-500/30 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
           
           {/* BRAND / LOGO & TITLE */}
           <div className="flex items-center gap-3 shrink-0">
-            <Link href="/" className="flex items-center gap-2.5 group" title="Return to Academy Home">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-purple-700 via-fuchsia-600 to-purple-800 p-1 border border-purple-400/40 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.4)] group-hover:scale-105 transition-transform">
+            <Link href="/" className="flex items-center gap-3 group" title="Return to Academy Public Site">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl overflow-hidden bg-purple-950/80 p-0.5 border border-purple-500/40 group-hover:border-purple-300 transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)] flex items-center justify-center">
                 <Image
-                  src="/images/riga-original-transparent.png"
+                  src="/apple-icon.png"
                   alt="RIGA Admin"
-                  width={36}
-                  height={36}
-                  className="w-full h-auto object-contain"
+                  width={44}
+                  height={44}
+                  className="w-full h-full object-cover rounded-xl"
                 />
               </div>
-              <div className="hidden xs:flex flex-col">
-                <span className="text-base sm:text-lg font-black tracking-widest text-metallic-purple uppercase group-hover:text-white transition-colors leading-none">
-                  RIGA ADMIN
-                </span>
-                <span className="text-[9px] sm:text-[10px] font-bold tracking-wider text-purple-300/80 uppercase">
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <span className="text-base sm:text-lg font-black tracking-widest text-metallic-purple uppercase group-hover:text-white transition-colors leading-none">
+                    RIGA
+                  </span>
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-purple-900/60 text-fuchsia-300 border border-purple-500/30">
+                    Admin
+                  </span>
+                </div>
+                <span className="text-[10px] font-semibold tracking-wider text-purple-300/70">
                   Control Center
                 </span>
               </div>
             </Link>
           </div>
 
-          {/* TWO-WAY SEAMLESS WEBSITE NAVIGATION (WITHOUT SIGNING OUT) */}
-          <div className="flex items-center">
+          {/* ACTIONS & NAVIGATION */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Visit Public Site */}
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-gradient-to-r from-purple-950/80 to-[#190636]/90 hover:from-purple-900 hover:to-fuchsia-950 border border-purple-500/40 hover:border-purple-300 text-purple-200 hover:text-white text-xs font-black uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] hover:scale-105 active:scale-95 group"
-              title="Visit Live Academy Website without signing out"
+              className="px-3 sm:px-3.5 py-1.5 sm:py-2 bg-purple-950/50 hover:bg-purple-900/80 text-purple-300 hover:text-white border border-purple-700/50 hover:border-purple-400 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm group"
+              title="Browse Public Academy Website (stays logged in)"
             >
-              <Globe className="w-4 h-4 text-fuchsia-400 group-hover:rotate-12 transition-transform" />
-              <span>Live Website</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-purple-400 group-hover:text-white transition-colors" />
+              <Globe className="w-3.5 h-3.5 text-purple-400 group-hover:text-fuchsia-300 transition-colors" />
+              <span className="hidden sm:inline">Public Site</span>
+              <ArrowUpRight className="w-3 h-3 text-purple-400 group-hover:text-white transition-colors" />
             </Link>
-          </div>
 
-          {/* ACTIONS & SIGN OUT */}
-          <div className="flex items-center gap-2 shrink-0">
             {/* Live Sync */}
             <button
               onClick={async () => {

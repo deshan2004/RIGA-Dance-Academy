@@ -172,13 +172,13 @@ const Navbar = () => {
               className="group flex items-center gap-3 relative z-10 pointer-events-auto"
               aria-label="RIGA Dance Academy Home"
             >
-              <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-purple-900/80 to-purple-700/40 p-1 border border-purple-500/40 group-hover:border-purple-300 transition-all shadow-[0_0_15px_rgba(168,85,247,0.35)] flex items-center justify-center">
+              <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-2xl overflow-hidden bg-purple-950/80 p-0.5 border border-purple-500/40 group-hover:border-purple-300 transition-all shadow-[0_0_15px_rgba(168,85,247,0.35)] flex items-center justify-center">
                 <Image
-                  src="/images/riga-original-transparent.png"
+                  src="/apple-icon.png"
                   alt="RIGA"
                   width={44}
                   height={44}
-                  className="w-full h-auto object-contain"
+                  className="w-full h-full object-cover rounded-xl"
                 />
               </div>
               <div className="flex flex-col">
@@ -231,20 +231,24 @@ const Navbar = () => {
                 authState.isAdmin ? (
                   <Link
                     href="/admin"
-                    className="group relative overflow-hidden inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.16em] text-white bg-gradient-to-r from-amber-600 via-fuchsia-600 to-purple-800 hover:from-amber-500 hover:to-fuchsia-500 shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:shadow-[0_0_30px_rgba(245,158,11,0.6)] border border-amber-400/50 hover:scale-[1.03] active:scale-[0.98] transition-all"
+                    className="group relative inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold text-white bg-[#15062c]/90 hover:bg-purple-900/80 border border-purple-500/50 hover:border-fuchsia-400/80 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    title="Open Administration Console"
                   >
-                    <Shield className="w-3.5 h-3.5 text-amber-300" />
-                    <span>Admin Console</span>
-                    <ArrowRight className="w-3 h-3 text-white group-hover:translate-x-0.5 transition-transform" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+                    <Shield className="w-3.5 h-3.5 text-fuchsia-300" />
+                    <span className="tracking-widest uppercase text-[11px] font-black">Admin Console</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-purple-300 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 ) : (
                   <Link
                     href="/dashboard"
-                    className="group relative overflow-hidden inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.16em] text-white bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 hover:from-purple-600 hover:to-fuchsia-500 shadow-[0_0_20px_rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] border border-purple-400/40 hover:scale-[1.03] active:scale-[0.98] transition-all"
+                    className="group relative inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold text-white bg-[#15062c]/90 hover:bg-purple-900/80 border border-purple-500/50 hover:border-fuchsia-400/80 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    title="Open Student Dashboard"
                   >
+                    <span className="w-2 h-2 rounded-full bg-fuchsia-400 shadow-[0_0_8px_#e879f9]" />
                     <LayoutDashboard className="w-3.5 h-3.5 text-fuchsia-300" />
-                    <span>My Dashboard</span>
-                    <ArrowRight className="w-3 h-3 text-white group-hover:translate-x-0.5 transition-transform" />
+                    <span className="tracking-widest uppercase text-[11px] font-black">My Dashboard</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-purple-300 group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 )
               ) : (
@@ -320,13 +324,13 @@ const Navbar = () => {
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-3"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-purple-950/80 p-1 border border-purple-500/50 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+                  <div className="w-10 h-10 rounded-2xl overflow-hidden bg-purple-950/80 p-0.5 border border-purple-500/50 flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.4)]">
                     <Image
-                      src="/images/riga-original-transparent.png"
+                      src="/apple-icon.png"
                       alt="RIGA"
                       width={40}
                       height={40}
-                      className="w-full h-auto object-contain"
+                      className="w-full h-full object-cover rounded-xl"
                     />
                   </div>
                   <div>
