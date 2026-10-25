@@ -225,42 +225,16 @@ const Navbar = () => {
               })}
             </nav>
 
-            {/* DESKTOP RIGHT CTA */}
+            {/* DESKTOP RIGHT CTA (ALWAYS NORMAL PUBLIC JOIN CLASSES) */}
             <div className="hidden md:flex items-center gap-3 pointer-events-auto">
-              {authState.isLoggedIn ? (
-                authState.isAdmin ? (
-                  <Link
-                    href="/admin"
-                    className="group relative inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold text-white bg-[#15062c]/90 hover:bg-purple-900/80 border border-purple-500/50 hover:border-fuchsia-400/80 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all hover:scale-[1.02] active:scale-[0.98]"
-                    title="Open Administration Console"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
-                    <Shield className="w-3.5 h-3.5 text-fuchsia-300" />
-                    <span className="tracking-widest uppercase text-[11px] font-black">Admin Console</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-purple-300 group-hover:translate-x-0.5 transition-transform" />
-                  </Link>
-                ) : (
-                  <Link
-                    href="/dashboard"
-                    className="group relative inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs font-bold text-white bg-[#15062c]/90 hover:bg-purple-900/80 border border-purple-500/50 hover:border-fuchsia-400/80 shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-all hover:scale-[1.02] active:scale-[0.98]"
-                    title="Open Student Dashboard"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-fuchsia-400 shadow-[0_0_8px_#e879f9]" />
-                    <LayoutDashboard className="w-3.5 h-3.5 text-fuchsia-300" />
-                    <span className="tracking-widest uppercase text-[11px] font-black">My Dashboard</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-purple-300 group-hover:translate-x-0.5 transition-transform" />
-                  </Link>
-                )
-              ) : (
-                <Link
-                  href="/login"
-                  className="group relative overflow-hidden inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.16em] text-white bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 hover:from-purple-600 hover:to-fuchsia-500 shadow-[0_0_20px_rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] border border-purple-400/40 hover:scale-[1.03] active:scale-[0.98] transition-all"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-fuchsia-300" />
-                  <span>Join Classes</span>
-                  <ArrowRight className="w-3 h-3 text-white group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-              )}
+              <Link
+                href="/login"
+                className="group relative overflow-hidden inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.16em] text-white bg-gradient-to-r from-purple-700 via-fuchsia-600 to-purple-800 hover:from-purple-600 hover:to-fuchsia-500 shadow-[0_0_20px_rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] border border-purple-400/40 hover:scale-[1.03] active:scale-[0.98] transition-all"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-fuchsia-300" />
+                <span>Join Classes</span>
+                <ArrowRight className="w-3 h-3 text-white group-hover:translate-x-0.5 transition-transform" />
+              </Link>
             </div>
 
             {/* MOBILE HAMBURGER TOGGLE BUTTON */}
@@ -353,30 +327,6 @@ const Navbar = () => {
                 </button>
               </div>
 
-              {/* Logged in User Quick Access Card in Mobile Drawer */}
-              {authState.isLoggedIn && (
-                <div className="relative z-10 mx-6 mt-3 p-4 rounded-2xl bg-gradient-to-r from-purple-950/90 to-fuchsia-950/80 border border-purple-500/50 shadow-[0_0_25px_rgba(168,85,247,0.3)] flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-fuchsia-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
-                      {authState.isAdmin ? <Shield className="w-5 h-5 text-amber-300" /> : <LayoutDashboard className="w-5 h-5 text-fuchsia-200" />}
-                    </div>
-                    <div>
-                      <p className="text-sm font-black text-white">{authState.name}</p>
-                      <p className="text-[10px] text-fuchsia-300 font-semibold uppercase tracking-wider">
-                        {authState.isAdmin ? "Administrator" : "Student Member"}
-                      </p>
-                    </div>
-                  </div>
-                  <Link
-                    href={authState.isAdmin ? "/admin" : "/dashboard"}
-                    onClick={() => setIsOpen(false)}
-                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white text-xs font-black uppercase tracking-wider shadow-md hover:scale-105 active:scale-95 transition-all"
-                  >
-                    Open
-                  </Link>
-                </div>
-              )}
-
               {/* Drawer Navigation Links */}
               <div className="relative z-10 px-6 py-6 flex-1 flex flex-col justify-center gap-3">
                 {navItems.map((item, index) => {
@@ -438,6 +388,28 @@ const Navbar = () => {
           </>
         )}
       </AnimatePresence>
+
+      {/* Floating Discrete Return Pill for Logged-In Admin / Student */}
+      {authState.isLoggedIn && (
+        <aside aria-label="Return to Portal" className="fixed bottom-6 right-6 z-50 pointer-events-auto">
+          <Link
+            href={authState.isAdmin ? "/admin" : "/dashboard"}
+            className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#0d031c]/95 border border-purple-500/50 hover:border-purple-300 text-white shadow-[0_10px_35px_rgba(0,0,0,0.8),0_0_20px_rgba(168,85,247,0.35)] hover:scale-105 active:scale-95 transition-all group backdrop-blur-xl"
+            title={authState.isAdmin ? "Return to Admin Console" : "Return to Student Dashboard"}
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            {authState.isAdmin ? (
+              <Shield className="w-4 h-4 text-fuchsia-300" />
+            ) : (
+              <LayoutDashboard className="w-4 h-4 text-fuchsia-300" />
+            )}
+            <span className="text-xs font-bold tracking-wide">
+              {authState.isAdmin ? "Back to Admin Console" : "My Dashboard"}
+            </span>
+            <ArrowRight className="w-3.5 h-3.5 text-purple-300 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </aside>
+      )}
     </>
   );
 };
