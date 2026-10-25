@@ -5,7 +5,7 @@ import { auth, db } from "@/lib/firebase";
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy, RefreshCw, LogOut, Globe, ArrowUpRight } from "lucide-react";
+import { Users, Mail, Phone, Calendar, UserCog, Shield, BookOpen, Plus, Edit, Trash2, X, Star, FileText, Image as ImageIcon, Upload, Camera, ShoppingBag, Bell, Video, Trophy, RefreshCw, LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import EventsTab from "@/components/admin/EventsTab";
@@ -708,16 +708,6 @@ export default function AdminDashboard() {
 
           {/* ACTIONS & NAVIGATION */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {/* Visit Public Site */}
-            <Link
-              href="/"
-              className="px-3 sm:px-3.5 py-1.5 sm:py-2 bg-purple-950/50 hover:bg-purple-900/80 text-purple-300 hover:text-white border border-purple-700/50 hover:border-purple-400 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm group"
-              title="Browse Public Academy Website (stays logged in)"
-            >
-              <Globe className="w-3.5 h-3.5 text-purple-400 group-hover:text-fuchsia-300 transition-colors" />
-              <span className="hidden sm:inline">Public Site</span>
-              <ArrowUpRight className="w-3 h-3 text-purple-400 group-hover:text-white transition-colors" />
-            </Link>
 
             {/* Live Sync */}
             <button
