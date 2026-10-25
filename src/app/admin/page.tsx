@@ -773,8 +773,13 @@ export default function AdminDashboard() {
 
             {/* Sign Out */}
             <button
-              onClick={() => {
-                auth.signOut();
+              onClick={async () => {
+                try {
+                  sessionStorage.removeItem("riga_admin_tab");
+                  await auth.signOut();
+                } catch {
+                  // ignore
+                }
                 router.push("/login");
               }}
               className="px-3 py-2 bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/60 rounded-xl transition-all shadow-sm hover:scale-105 cursor-pointer flex items-center gap-1.5 text-xs font-bold"
