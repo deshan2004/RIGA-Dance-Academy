@@ -16,6 +16,8 @@
 
 @layer base {
   :root {
+    color-scheme: dark;
+    accent-color: #a855f7;
     --background: #07020e;
     --foreground: #f8f5ff;
   }
@@ -26,6 +28,19 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+  }
+
+  /* Form & Native Calendar Picker Dark Purple Theme */
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"] {
+    color-scheme: dark;
+    accent-color: #a855f7;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    filter: invert(0.8) sepia(100%) saturate(300%) hue-rotate(240deg);
   }
 }
 

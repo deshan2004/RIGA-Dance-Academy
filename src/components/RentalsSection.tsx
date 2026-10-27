@@ -27,6 +27,7 @@ import {
   Music,
   Feather
 } from "lucide-react";
+import CustomDatePicker from "./CustomDatePicker";
 
 interface RentalItem {
   id: string;
@@ -953,12 +954,11 @@ function RentalDetailModal({
                     className="w-full px-3.5 py-2.5 rounded-xl bg-[#1a0b33] border border-purple-800 text-white text-xs placeholder:text-purple-400/50 focus:outline-none focus:border-purple-500"
                   />
                 </div>
-                <input
-                  type="date"
-                  required
+                <CustomDatePicker
                   value={eventDate}
-                  onChange={(e) => setEventDate(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#1a0b33] border border-purple-800 text-white text-xs focus:outline-none focus:border-purple-500"
+                  onChange={setEventDate}
+                  placeholder="Event Date *"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#1a0b33] border border-purple-800 text-white text-xs hover:border-purple-600 focus:border-purple-500 focus:outline-none"
                 />
                 <button
                   type="submit"

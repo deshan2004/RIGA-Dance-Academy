@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Trash2, Plus, X } from "lucide-react";
+import CustomDatePicker from "../CustomDatePicker";
 
 interface EventItem {
   _id: string;
@@ -165,12 +166,11 @@ export default function EventsTab() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-400 mb-1">Date</label>
-                  <input
-                    type="date"
-                    required
+                  <CustomDatePicker
                     value={formData.date}
-                    onChange={(e) => setFormData({...formData, date: e.target.value})}
-                    className="w-full bg-academy-black border border-gray-700 rounded-lg px-4 py-2 text-white"
+                    onChange={(date) => setFormData({ ...formData, date })}
+                    placeholder="Select Date"
+                    className="w-full bg-academy-black border border-gray-700 hover:border-purple-500 rounded-lg px-4 py-2 text-white text-sm"
                   />
                 </div>
                 <div>

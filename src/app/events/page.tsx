@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, MapPin, Clock, Star, ArrowLeft, Heart, Sparkles, CheckCircle2, MessageCircle, Video, PartyPopper, Flame, Zap, Crown, Users, Radio, X, Check } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import CustomDatePicker from "@/components/CustomDatePicker";
 
 interface EventItem {
   _id: string;
@@ -602,11 +603,11 @@ Please share a customized quotation, troupe availability, and booking procedure.
                     <label className="block text-xs font-extrabold uppercase tracking-wider text-purple-300 mb-2">
                       Event Date (Optional)
                     </label>
-                    <input
-                      type="date"
+                    <CustomDatePicker
                       value={bookingDate}
-                      onChange={(e) => setBookingDate(e.target.value)}
-                      className="w-full bg-[#140728] border border-purple-900/80 focus:border-purple-500 rounded-xl px-4 py-3 text-white text-xs focus:outline-none"
+                      onChange={setBookingDate}
+                      placeholder="yyyy - mm - dd"
+                      className="w-full bg-[#140728] border border-purple-900/80 hover:border-purple-600 focus:border-purple-500 rounded-xl px-4 py-3 text-white text-xs focus:outline-none"
                     />
                   </div>
                   <div>
